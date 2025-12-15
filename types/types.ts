@@ -16,8 +16,6 @@ export interface Config {
 
     RATE_LIMIT_INTERVAL_S: number;
 
-    MAX_READS_PER_DAY: number;
-
     IPS_PURGE_TIME_DAYS: number;
 
     MAX_RANDOM_METEORITES: number;

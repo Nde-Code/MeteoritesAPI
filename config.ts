@@ -4,9 +4,7 @@ export const config: Config = {
 
     HASH_KEY: "",
 
-    RATE_LIMIT_INTERVAL_S: 60,
-
-    MAX_READS_PER_DAY: 15,
+    RATE_LIMIT_INTERVAL_S: 1,
 
     IPS_PURGE_TIME_DAYS: 1,
 

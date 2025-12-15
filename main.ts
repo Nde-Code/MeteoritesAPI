@@ -62,8 +62,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         RATE_LIMIT_INTERVAL_S: 1,
 
-        MAX_READS_PER_DAY: 5,
-
         IPS_PURGE_TIME_DAYS: 1,
 
         MAX_RANDOM_METEORITES: 100,
