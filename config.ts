@@ -6,8 +6,6 @@ export const config: Config = {
 
     RATE_LIMIT_INTERVAL_S: 1,
 
-    IPS_PURGE_TIME_DAYS: 1,
-
     MAX_RANDOM_METEORITES: 1000,
 
     MAX_RETURNED_SEARCH_RESULTS: 1000,

@@ -30,7 +30,7 @@ const safeParseFloat = (s: string | undefined): number | null => {
 
 };
 
-export const CACHED_METEORITES_CLEANED: Meteorites = initialRawData.map((m) => ({...m,
+export const cachedMeteoritesCleaned: Meteorites = initialRawData.map((m) => ({...m,
 
         year: safeParseInt(m.year),
 
@@ -44,37 +44,37 @@ export const CACHED_METEORITES_CLEANED: Meteorites = initialRawData.map((m) => (
 
 );
 
-export let CACHED_STATS_RESULT: any | null = null;
+export let cachedStatsResult: unknown | null = null;
 
-export let CACHED_SHUFFLED_METEORITES: Meteorites = [];
+export let cachedShuffledMeteorites: Meteorites = [];
 
-export const METEORITES_BY_ID: Map<string, Meteorite> = new Map();
+export const meteoritesByID: Map<string, Meteorite> = new Map();
 
-export const METEORITES_BY_NAME: Map<string, Meteorite> = new Map();
+export const meteoritesByName: Map<string, Meteorite> = new Map();
 
-export const METEORITES_BY_RECCLASS: Map<string, Meteorite[]> = new Map();
+export const meteoritesByRecclass: Map<string, Meteorite[]> = new Map();
 
-export const METEORITES_BY_FALL: Map<string, Meteorite[]> = new Map();
+export const meteoritesByFall: Map<string, Meteorite[]> = new Map();
 
 function initializeIndexes(meteorites: Meteorites) {
 
     for (const m of meteorites) {
 
-        if (m.id) METEORITES_BY_ID.set(m.id, m);
+        if (m.id) meteoritesByID.set(m.id, m);
 
-        if (m.name) METEORITES_BY_NAME.set(normalizeString(m.name), m);
+        if (m.name) meteoritesByName.set(normalizeString(m.name), m);
 
         if (m.recclass) {
 
             const key = m.recclass.toLowerCase();
 
-            if (!METEORITES_BY_RECCLASS.has(key)) {
+            if (!meteoritesByRecclass.has(key)) {
 
-                METEORITES_BY_RECCLASS.set(key, []);
+                meteoritesByRecclass.set(key, []);
 
             }
 
-            METEORITES_BY_RECCLASS.get(key)!.push(m);
+            meteoritesByRecclass.get(key)!.push(m);
 
         }
 
@@ -82,9 +82,9 @@ function initializeIndexes(meteorites: Meteorites) {
 
             const key = m.fall.toLowerCase();
 
-            if (!METEORITES_BY_FALL.has(key)) METEORITES_BY_FALL.set(key, []);
+            if (!meteoritesByFall.has(key)) meteoritesByFall.set(key, []);
 
-            METEORITES_BY_FALL.get(key)!.push(m);
+            meteoritesByFall.get(key)!.push(m);
 
         }
 
@@ -104,7 +104,7 @@ function preShuffle(meteorites: Meteorites) {
 
     }
 
-    CACHED_SHUFFLED_METEORITES = shuffled;
+    cachedShuffledMeteorites = shuffled;
 
 }
 
@@ -174,7 +174,7 @@ function calculateAndCacheStats(meteorites: Meteorites) {
     
     }
 
-    CACHED_STATS_RESULT = {
+    cachedStatsResult = {
 
         "meteorites_count": totalCount,
 
@@ -210,10 +210,10 @@ function calculateAndCacheStats(meteorites: Meteorites) {
 
 }
 
-initializeIndexes(CACHED_METEORITES_CLEANED);
+initializeIndexes(cachedMeteoritesCleaned);
 
-preShuffle(CACHED_METEORITES_CLEANED);
+preShuffle(cachedMeteoritesCleaned);
 
-calculateAndCacheStats(CACHED_METEORITES_CLEANED);
+calculateAndCacheStats(cachedMeteoritesCleaned);
 
-export async function loadMeteorites(): Promise<Meteorites> { return CACHED_METEORITES_CLEANED; }
+export async function loadMeteorites(): Promise<Meteorites> { return cachedMeteoritesCleaned; }

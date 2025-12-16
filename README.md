@@ -1,376 +1,320 @@
-# 🛠️ API code adjustment for Cloudflare Workers:
+# NASA Meteorites Landings API:
 
-This branch contains source code compatible with Cloudflare Workers.
+A RESTful API built with **TypeScript** and **Wrangler** to query and analyze the NASA Meteorites Landings dataset.
 
-**NB:** you can go to the main branch by clicking [here](https://github.com/Nde-Code/meteorites-api).
+Normally, this dataset comes as a CSV file with over 40,000 entries. I've compiled and cleaned it into a JSON format containing only the data I need for a simple visualization application (~15K of entries). But may be I can extend the dataset size if really needed.
 
-# 🚀 To begin working with this version:
+> You can found the dataset here and by: [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)
 
-- 1. Create or login to your cloudflare account: [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)
+## 🚀 Features:   
 
-- 2. Install Node.js and npm (I've used [Volta](https://volta.sh/Volta) on WSL): [https://nodejs.org/fr/download](https://nodejs.org/fr/download)
+- CORS: You're free to use the API in your website or any other project, but daily rate limits still apply.
 
-- 3. Install the Wrangler CLI using:
-```bash
-npm install -g wrangler
-```
+- No sign-up, no credit card, or other personal information required.
 
-> If you haven't installed Wrangler globally, you'll need to prefix commands with `npx`, like `npx wrangler`.
+- No logs are maintained to track user activity (logs are only for debugging and performance).
 
-- 4. Clone the project branch:
-```bash
-git clone --branch cf-workers --single-branch https://github.com/Nde-Code/meteorites-api.git
-```
+- Rate limiting implemented to prevent API abuse.
 
-- 5. Log your Wrangler CLI to your Cloudflare account using:
-```bash
-wrangler login
-```
-> Make sure to do this securely on a trusted network.
+- GDPR compliant: IP addresses are hashed using `SHA-256` with a strong, secure key and stored for max a day.
 
-# ⚙️ Setting up the configuration:
+- Accurate Search: You can apply multiple filters to tailor the request as precisely as needed.
 
-First, create the `wrangler.jsonc` file, which contains the full configuration for your project. It should look like this:
-```jsonc
-{
+## 📚 API Endpoints:
 
-  "name": "project_name",
+The API is available in two versions, each with its own usage details:
 
-  "main": "main.ts",
+- URL: [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/)
+- Rate limit: 1 request per minute, up to 15 requests per day.
+- Privacy policy: [privacy.md (cf-workers branch)](https://github.com/Nde-Code/meteorites-api/blob/cf-workers/privacy.md)
+- Source code: [GitHub repository (cf-workers branch)](https://github.com/Nde-Code/meteorites-api/tree/cf-workers)
 
-  "compatibility_date": "2025-10-08",
+### 1. **[GET]** `/search`:
 
-  "preview_urls": false,
+Search meteorites using various filters, including name, class, date, mass, and geographic location.
 
-  "observability": {
+#### **Query Parameters:**
 
-    "enabled": true,
+| Parameter     | Type   | Description                                                                |
+| ------------- | ------ | -------------------------------------------------------------------------- |
+| `recclass`    | string | Meteorite classification                                |
+| `fall`        | string | Fall status (`Fell` or `Found`)                                            |
+| `year`        | number | Exact year the meteorite fell or was found                                 |
+| `minYear`     | number | Minimum year for filtering                                                 |
+| `maxYear`     | number | Maximum year for filtering                                                 |
+| `mass`        | number | Exact mass in grams                                                        |
+| `minMass`     | number | Minimum mass in grams                                                      |
+| `maxMass`     | number | Maximum mass in grams                                                      |
+| `centerLatitude`  | number | Latitude of the center point for location filtering **(required with radius)** |
+| `centerLongitude` | number | Longitude of the center point **(required with radius)**                       |
+| `radius`      | number | Radius in kilometers for location filtering **(required with center coords)**  |
+| `limit`      | number | Maximum number of search results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`)  |
 
-    "head_sampling_rate": 1,
+> Invalid, non-required parameters will be completely ignored.
 
-    "logs": {
+#### **Response:**
 
-      "invocation_logs": false
+* `200 OK`: Successful query with results
 
-    },
+* `400 Bad Request`: Missing or invalid parameters
 
-    "traces": {
+* `404 Not Found`: No meteorite data available
 
-      "enabled": false
+* `429 Too Many Requests`: Rate limit exceeded
 
-    }
-
-  },
-
-  "kv_namespaces": [
-
-    {
-
-      "binding": "YOUR_KV_NAME",
-
-      "id": "YOUR_KV_ID"
-
-    }
-
-  ],
-
-  "vars": {
-
-	  "FIREBASE_HOST_LINK": "YOUR_FIREBASE_URL",
-
-	  "FIREBASE_HIDDEN_PATH": "YOUR_SECRET_PATH",
-
-	  "HASH_KEY": "THE_KEY_USED_TO_HASH_IPS"
-
-  }
-
-}
-``` 
-
-## Main elements:
-
-### **`name`**
-
-Defines the **name of your Worker project**.
-This determines the public URL for your Worker on Cloudflare (for example:
-`https://project_name.username.workers.dev`).
-
-### **`main`**
-
-Specifies the **entry point** of your Worker script.
-This is the file that exports your main fetch handler.
-
-### **`compatibility_date`**
-
-Locks your Worker to a specific version of the Cloudflare Workers runtime.
-This ensures your code continues to work as expected, even if Cloudflare updates the runtime.
-
-### **`preview_urls`**
-
-It’s used to create a previewable URL. That’s a feature in Cloudflare Workers, but it’s not really useful for a small project. Feel free to take a look at: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/)
-
-## Observability:
-
-### **`observability.enabled`**
-
-When set to `true`, enables **automatic metrics and logs collection** for your Worker.
-This lets you monitor performance and errors in the Cloudflare dashboard.
-
-### **`observability.head_sampling_rate`**
-
-Defines the **percentage of requests sampled for tracing** (from `0` to `1`).
-
-* `1` = 100% of requests are sampled (useful for debugging).
-* `0.1` = 10% of requests are traced (better for production environments).
-
-### **`observability.logs.invocation_logs`**
-
-Controls whether **automatic invocation logs** are collected for each Worker execution.
-
-* `true` (default) = Cloudflare logs metadata like request method, URL, headers, and execution details.
-* `false` = Disables automatic logs, keeping only your custom `console.log` entries.
-
-> Disabling invocation logs is recommended for **GDPR compliance**, as it prevents Cloudflare from storing potentially sensitive request data.
-
-### **`observability.tracing.enabled`**
-
-Controls whether **distributed tracing** is enabled for your Worker.
-
-* `true` = Enables tracing spans and trace IDs for each request (requires compatible tracing backend).
-* `false` = Disables tracing entirely.
-
-> Tracing is disabled by default. If you're not using OpenTelemetry or a tracing system, leave this off to reduce data collection.
-
-## KV Namespaces:
-
-### **`kv_namespaces`**
-
-Binds your Worker to your **Cloudflare KV (Key-Value)** namespace.
-
-Create a Workers KV via the dashboard or using:
-```bash
-wrangler kv namespace create YOUR_KV_NAME
-```
-
-> If you feel stuck, take a look at: [https://developers.cloudflare.com/kv/get-started/](https://developers.cloudflare.com/kv/get-started/)
-
-And complete the `wrangler.jsonc` file with the following configuration:
-
-* **`binding`** → The variable name you’ll use inside your code (here: `YOUR_KV_NAME`).
-* **`id`** → The unique namespace ID from your Cloudflare dashboard.
-
-## Environment Variables:
-
-### **`vars`**
-
-Defines global environment variables accessible inside your Worker via the `env` object.
-
-**List of variables in this project:**
-
-| Variable               | Description                                                           |
-| ---------------------- | --------------------------------------------------------------------- |
-| `FIREBASE_HOST_LINK`   | The public or private Firebase endpoint used by your Worker.          |
-| `FIREBASE_HIDDEN_PATH` | A hidden or secure subpath for sensitive Firebase operations.         |
-| `HASH_KEY`             | The cryptographic key used to hash user IPs or sensitive identifiers. |
-
-⚠️ **Note:** Values defined in `vars` are stored **in plaintext** when you deploy with `vars` in `wrangler.jsonc`. For sensitive information, use **Wrangler Secrets** instead:
+#### **Example Request:**
 
 ```bash
-wrangler secret put FIREBASE_HOST_LINK
-wrangler secret put FIREBASE_HIDDEN_PATH
-wrangler secret put HASH_KEY
+curl "https://meteorites.nde-code.workers.dev/search?minYear=1998&centerLatitude=45.0&centerLongitude=5.0&radius=200"
 ```
 
-> Check out [https://developers.cloudflare.com/workers/configuration/secrets/](https://developers.cloudflare.com/workers/configuration/secrets/) to learn how to use the command.
-
-And make sure to **comment out the `vars` key** before deploying to Cloudflare.
-
-# 🧰 Code adjustments for Wrangler compatibility:
-
-Cloudflare Workers use the V8 isolate engine to run applications. They don’t use traditional Node.js runtimes like Deno, Node.js, or Bun under the hood. Therefore, to make this project compatible, every use of `Deno.*` must be replaced with an equivalent API that works in the Cloudflare Workers environment.
-
-This section explains how the code was transformed to be compatible with Cloudflare Workers.
-
-## First, initialize TypeScript types
-
-To benefit from TypeScript definitions in your editor and avoid compilation errors, you can add the Cloudflare Workers type definitions by running:
-
-```bash
-wrangler types
-```
-
-> Be sure that your `wrangler.jsonc` is correctly configured before running this command.
-
-⚠️ **Note:** When you’ve configured environment variables, this command may sometimes include your secrets directly in the generated type file. Be very careful, so always review this file (`worker-configuration.d.ts`) before committing or sharing your code. This file has been added to `.gitignore` and is excluded from the source tree in VS Code by default. (1)
-
-and put in `tsconfig.json`: 
-
-> already done, if you've cloned the project so you don't need to do that.
+#### **Example Response:**
 
 ```json
 {
-  "compilerOptions": {
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "target": "ES2020",
-    "lib": ["ES2020", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": ["./worker-configuration.d.ts"]
-  },
-  "include": ["utilities", "worker-configuration.d.ts", "main.ts", "config.ts", "types"],
-  "exclude": ["node_modules", "dist"]
+  "success": {
+    "count": 1,
+    "meteorites": [
+      {
+        "fall": "Fell",
+        "id": "458",
+        "latitude": "45.821330",
+        "longitude": "6.015330",
+        "mass": "252",
+        "name": "Alby sur Chéran",
+        "recclass": "Eucrite-mmict",
+        "year": "2002"
+      }
+    ]
+  }
 }
 ```
 
-Here's a brief summary of what the `tsconfig.json` file do:
+### 2. **[GET]** `/get`:
 
-* **`noEmit: true`**
-  Prevents TypeScript from emitting compiled JS files locally. The build and bundling is handled by **Wrangler/esbuild**, so this is only for type checking.
+Retrieve detailed information about a single meteorite by either its unique `id` or its exact `name`.
 
-* **`allowImportingTsExtensions: true`**
-  Allows importing `.ts` files directly, which is required for Deno-style and relative imports.
+#### **Query Parameters:**
 
-* **`target: "ES2020"`**
-  Uses modern JavaScript syntax supported by the Worker runtime.
+| Parameter | Type   | Description                                  |
+| --------- | ------ | --------------------------------------------|
+| `id`      | string | Unique identifier of the meteorite          |
+| `name`    | string | Exact name of the meteorite (case-insensitive, normalized) |
 
-* **`lib: ["ES2020", "DOM"]`**
-  Includes modern JS features (`ES2020`) and standard Web APIs (`DOM`) like `fetch`, `Request`, and `Response`.
+> **Note:** You must provide **either** `id` **or** `name`. Supplying **both** parameters will result in an error. If **neither** is provided, the request will be rejected.
 
-* **`module: "ESNext"`**
-  Uses ES Modules, which is the standard for Workers and modern TypeScript projects.
+#### **Response:**
 
-* **`moduleResolution: "Node"`**
-  Tells TypeScript/IDE how to resolve modules.
+* `200 OK`: Meteorite found and returned  
 
-  * Not strictly needed for relative `.ts` imports (they work anyway).
-  * Useful if you later add npm packages: TypeScript and VS Code will correctly locate modules.
-  * Does **not affect the final bundle**; esbuild handles module resolution.
+* `400 Bad Request`: Both parameters are missing or invalid  
 
-* **`strict: true`**
-  Enables all strict type checking options for safer, more predictable code.
+* `404 Not Found`: No meteorite matches the given identifier  
 
-* **`esModuleInterop: true`**
-  Facilitates interoperability with CommonJS modules if needed.
+* `429 Too Many Requests`: Rate limit exceeded (per second or daily)
 
-* **`skipLibCheck: true`**
-  Skips type checking for `.d.ts` files in dependencies to speed up compilation.
+#### **Example Requests:**
 
-* **`forceConsistentCasingInFileNames: true`**
-  Prevents file casing errors across different operating systems.
+Get meteorite by `id`:
 
-* **`types: ["./worker-configuration.d.ts"]`**
-  Includes type definitions for Wrangler bindings (KV, R2, Durable Objects, etc.).
+```bash
+curl "https://meteorites.nde-code.workers.dev/get?id=12345"
+````
 
-* **`include`**
-  Files/folders that TypeScript will type check: project source code and types.
+Get meteorite by `name`:
 
-* **`exclude`**
-  Ignored folders: build artifacts (`dist`), dependencies (`node_modules`).
-
-This project doesn't rely on any external libraries or dependencies, so there's no `package.json` or npm-related files.
-
-## Merge original Deno source code to make it Wrangler-compatible:
-
-Let's briefly summarize how the code was adapted for compatibility with Cloudflare Workers.
-
-- 1. The `.serve()` method needs to be replaced:
-```ts
-Deno.serve(handler);
+```bash
+curl "https://meteorites.nde-code.workers.dev/get?name=Kopjes%20Vlei"
 ```
-by:
-```ts
-export default {
 
-	async fetch(req: Request, env: Env): Promise<Response> {
+#### **Example Response:**
 
-		return handler(req, env);
-
-	}
-
-};
-```
-- 2. Create an `Env` type (see point 1 to understand why we define our own type):
-```ts
- export interface Env {
-
-    FIREBASE_HOST_LINK: string;
-
-    FIREBASE_HIDDEN_PATH: string;
-
-    HASH_KEY: string;
-
-    RATE_LIMIT_KV: KVNamespace;
-    
+```json
+{
+  "success": {
+    "meteorite": {
+      "fall": "Found",
+      "id": "12345",
+      "latitude": "-29.300000",
+      "longitude": "21.150000",
+      "mass": "13600",
+      "name": "Kopjes Vlei",
+      "recclass": "Iron, IIAB",
+      "year": "1914"
+    }
+  }
 }
 ```
 
-in the `types/types.ts` file, define your types and import them into `main.ts`.
-Then, set your variables inside the `handler` function with `env`:
+### 3. **[GET]** `/random`:
 
-```ts
-async function handler(req: Request, env: Env): Promise<Response> {
+Get a random selection of meteorites.
 
-	config.FIREBASE_URL = env.FIREBASE_HOST_LINK ?? "";
+Returns a randomly selected subset of meteorites, limited by a configurable maximum.
 
-    config.FIREBASE_HIDDEN_PATH = env.FIREBASE_HIDDEN_PATH ?? "";
+#### **Query Parameters:**
 
-    config.HASH_KEY = env.HASH_KEY ?? "";
+| Parameter | Type   | Description                                                                                                                                    |
+| --------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `count`   | number | Number of random meteorites to return. Defaults to `config.DEFAULT_RANDOM_NUMBER_OF_METEORITES`. Cannot exceed `config.MAX_RANDOM_METEORITES`. |
 
-	// ...
+> Invalid `count` parameters will be ignored, and the default value will be applied.
 
+#### **Response:**
+
+* `200 OK`: Successfully returns a random list of meteorites.
+
+* `400 Bad Request`: The `count` parameter exceeds the maximum allowed number of meteorites. 
+
+* `404 Not Found`: No meteorites data available.
+
+* `429 Too Many Requests`: Rate limit exceeded.
+
+If the requested `count` exceeds the maximum allowed, the result will be limited and a note will be included in the response.
+
+#### **Example Request:**
+
+```bash
+curl "https://meteorites.nde-code.workers.dev/random?count=3"
+```
+
+#### **Example Response:**
+
+```json
+{
+  "success": {
+    "count": 3,
+    "meteorites": [
+      {
+        "fall": "Fell",
+        "id": "18013",
+        "latitude": "38.716670",
+        "longitude": "-7.066670",
+        "mass": "150000",
+        "name": "Olivenza",
+        "recclass": "LL5",
+        "year": "1924"
+      },
+      {
+        "fall": "Found",
+        "id": "7653",
+        "latitude": "25.223670",
+        "longitude": "0.845600",
+        "mass": "1388",
+        "name": "Djebel Chaab 001",
+        "recclass": "L/LL6",
+        "year": "2003"
+      },
+      {
+        "fall": "Fell",
+        "id": "22793",
+        "latitude": "23.083330",
+        "longitude": "91.666670",
+        "mass": "478",
+        "name": "Sabrum",
+        "recclass": "LL6",
+        "year": "1999"
+      }
+    ]
+  }
 }
-``` 
+```
 
-Then remove `Deno.env.get(...)` and replace it with `""` in `config.ts` (see it [here](config.ts)).
+### 4. **[GET]** `/stats`:
 
-- 3. The `utilities/rate.ts` file is the only one that **has been completely rewritten**. If you'd like to review it, you can find it here: [utilities/rate.ts](utilities/rate.ts).
-To complete, replace each of the following lines:
+Retrieve aggregated statistics about the meteorite dataset stored.
+
+Returns useful insights such as year ranges, mass stats, classification counts, and geolocation information.
+
+#### **Fields Explained:**
+
+| Field                      | Type      | Description                                             |
+| -------------------------- | --------- | ------------------------------------------------------- |
+| `meteorites_count`         | number    | Total number of meteorites                              |
+| `min_year`, `max_year`     | string    | Earliest and latest year of meteorite fall/found        |
+| `min_mass_g`, `max_mass_g` | number    | Smallest and largest mass in grams                      |
+| `avg_mass_g`               | number    | Average mass in grams (rounded to 2 decimal places)     |
+| `years`                    | string[] | Sorted list of all available years in the dataset       |
+| `years_distribution`       | object | Frequency of each classification based on `year`       |
+| `recclasses`               | string[] | Sorted list of unique meteorite classifications         |
+| `recclasses_distribution`  | object    | Frequency of each classification based on `recclass`   |
+| `geolocated_count`         | number    | Number of meteorites with valid latitude and longitude  |
+| `fall_counts`              | object    | Breakdown of meteorites by fall type: `fell` vs `found` |
+
+> **Note:** Some meteorites are recorded with a mass of **0 grams**. This is not an error, but rather a reflection of specific characteristics—such as extreme alteration, fossilization, or missing recoverable fragments. It's important to recognize that these cases do occur. 
+
+#### **Response:**
+
+* `200 OK`: Statistics successfully returned
+
+* `404 Not Found`: No meteorite data available
+
+* `429 Too Many Requests`: Rate limit exceeded
+
+#### **Example Request:**
+
+```bash
+curl "https://meteorites.nde-code.workers.dev/stats"
+```
+
+#### **Returned JSON Structure:**
+
 ```js
-if (!(await checkTimeRateLimit(hashedIP)))
-if (!(await checkDailyRateLimit(hashedIP)))
+{
+  "success": {
+    "meteorites_count": 5057,
+    "min_year": "860",
+    "max_year": "2013",
+    "min_mass_g": 0.1,
+    "max_mass_g": 60000000,
+    "avg_mass_g": 116343.79,
+    "years": [
+      "860",
+      "920",
+      "1399",
+      "1490",
+      "1491",
+      ...
+    ],
+    "years_distribution": {
+      "860": 1,
+      "920": 1,
+      "1399": 1,
+      "1490": 1,
+      "1491": 1,
+      ...
+    }
+    "recclasses": [
+      "Acapulcoite",
+      "Achondrite-ung",
+      "Angrite",
+      "Aubrite",
+      "Aubrite-an",
+      ...
+    ],
+    "recclasses_distribution": {
+      "L6": 866,
+      "H5": 778,
+      "H6": 373,
+      "H4": 368,
+      "L5": 341,
+      ...
+    },
+    "geolocated_count": 31963,
+    "fall_counts": {
+      "fell": 1091,
+      "found": 3966
+    }
+  }
+}
 ```
 
-by:
-```js
-if (!(await checkTimeRateLimit(env.YOUR_KV_NAME, hashedIP)))
-if (!(await checkDailyRateLimit(env.YOUR_KV_NAME, hashedIP)))
-```
+## 📄 License:
 
-- 4. To retrieve the IP address in Cloudflare Workers, use the following code:
-```ts
-const ip: string = req.headers.get("cf-connecting-ip") ?? "unknown";
-```
-You can check: [https://community.cloudflare.com/t/ip-address-of-the-remote-origin-of-the-request/13080/3](https://community.cloudflare.com/t/ip-address-of-the-remote-origin-of-the-request/13080/3) for more information.
+This project is licensed under the [Apache License v2.0](LICENSE).
 
-# 📌 Run the project and deploy it once it's ready:
+## 📞 Contact:
 
-To run locally, run:
+Created and maintained by [Nde-Code](https://nde-code.github.io/).
 
-```bash
-wrangler dev
-```
-
-> If everything works correctly, that indicates your code is now compatible with Cloudflare Workers.
-
-To bundle the project before deploying, run:
-
-```bash
-wrangler build
-```
-
-And in the end, to deploy in the Workers network, run:
-
-```bash
-wrangler deploy
-```
-
-and your project is now deployed and accessible to anyone with the link.
-
-# 🧩 At the end:
-
-If you need any assistance, feel free to open an issue at [https://github.com/Nde-Code/meteorites-api/issues](https://github.com/Nde-Code/meteorites-api/issues).
+> Feel free to reach out for questions or collaboration, or open an issue or pull request and I'll be happy to help.

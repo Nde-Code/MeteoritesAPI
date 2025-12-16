@@ -4,19 +4,19 @@ import { checkTimeRateLimit, hashIp } from "./utilities/rate.ts";
 
 import {
 
-    CACHED_METEORITES_CLEANED,
+    cachedMeteoritesCleaned,
 
-    CACHED_SHUFFLED_METEORITES,
+    cachedShuffledMeteorites,
 
-    CACHED_STATS_RESULT,
+    cachedStatsResult,
 
-    METEORITES_BY_ID,
+    meteoritesByID,
 
-    METEORITES_BY_NAME,
+    meteoritesByName,
 
-    METEORITES_BY_RECCLASS,
+    meteoritesByRecclass,
 
-    METEORITES_BY_FALL, 
+    meteoritesByFall, 
 
 } from "./utilities/cache.ts";
 
@@ -62,8 +62,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         RATE_LIMIT_INTERVAL_S: 1,
 
-        IPS_PURGE_TIME_DAYS: 1,
-
         MAX_RANDOM_METEORITES: 100,
 
         MAX_RETURNED_SEARCH_RESULTS: 100,
@@ -104,7 +102,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     }
 
-    if (req.method === "GET" && pathname === "/") return createJsonResponse({"success": "Welcome to the API root. Refer to the documentation at https://github.com/Nde-Code/meteorites-api."}, 200);
+    if (req.method === "GET" && pathname === "/") return createJsonResponse({ "success": "Welcome to the API root. Refer to the documentation at https://github.com/Nde-Code/meteorites-api." }, 200);
 
     if (req.method === "GET" && pathname === "/stats") {
 
@@ -112,9 +110,9 @@ async function handler(req: Request, env: Env): Promise<Response> {
         
         const startPerformanceWithStats: number = performance.now();
 
-        if (!CACHED_STATS_RESULT) return createJsonResponse({"error": "Internal error: Stats not pre-calculated."}, 500);
+        if (!cachedStatsResult) return createJsonResponse({ "error": "Internal error: Stats not pre-calculated." }, 500);
 
-        const statsResponse: Response = createJsonResponse({"success": CACHED_STATS_RESULT}, 200);
+        const statsResponse: Response = createJsonResponse({ "success": cachedStatsResult }, 200);
 
         printLogLine("INFO", `Returned /stats data after: ${(performance.now() - startPerformanceWithStats).toFixed(2)} ms.`);
         
@@ -134,11 +132,11 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         const count: number = Math.min(requestedCount ?? config.DEFAULT_RANDOM_NUMBER_OF_METEORITES, config.MAX_RANDOM_METEORITES);
 
-        if (count > config.MAX_RANDOM_METEORITES) return createJsonResponse({"error": `The number of meteorites requested exceeded the limit of ${config.MAX_RANDOM_METEORITES}`}, 400);
+        if (count > config.MAX_RANDOM_METEORITES) return createJsonResponse({ "error": `The number of meteorites requested exceeded the limit of ${config.MAX_RANDOM_METEORITES}` }, 400);
 
         const startPerformanceWithRandom: number = performance.now();
 
-        const shuffled: Meteorites = CACHED_SHUFFLED_METEORITES;
+        const shuffled: Meteorites = cachedShuffledMeteorites;
 
         const randomMeteorites: Meteorites = shuffled.slice(0, Math.min(count, shuffled.length));
 
@@ -163,7 +161,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
     if (req.method === "GET" && pathname === "/get") {
 
         if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
-
         
         const query: URLSearchParams = url.searchParams;
 
@@ -171,25 +168,25 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         const name: string | null = getTrimmedParam(query.get("name"));
 
-        if (!id && !name) return createJsonResponse({"error": "Please provide either 'id' or 'name' as a query parameter."}, 400);
+        if (!id && !name) return createJsonResponse({ "error": "Please provide either 'id' or 'name' as a query parameter." }, 400);
 
-        if (id && name) return createJsonResponse({"error": "Please provide either 'id' or 'name', not both."}, 400);
+        if (id && name) return createJsonResponse({ "error": "Please provide either 'id' or 'name', not both." }, 400);
 
-        if (id && isPositiveInteger(parseFloat(id)) === false) return createJsonResponse({"error": "The ID must be a positive integer."}, 400);
+        if (id && isPositiveInteger(parseFloat(id)) === false) return createJsonResponse({ "error": "The ID must be a positive integer." }, 400);
 
         const startPerformanceWithGet: number = performance.now();
 
         let result: Meteorite | undefined;
 
-        if (id) result = METEORITES_BY_ID.get(id);
+        if (id) result = meteoritesByID.get(id);
             
-        else if (name) result = METEORITES_BY_NAME.get(normalizeString(name!));
+        else if (name) result = meteoritesByName.get(normalizeString(name!));
 
         if (!result) {
 
             printLogLine("WARN", `Unable to find using ${pathname + url.search} after: ${(performance.now() - startPerformanceWithGet).toFixed(2)} ms.`);
 
-            return createJsonResponse({"error": "No meteorite found for the given identifier."}, 404);
+            return createJsonResponse({ "error": "No meteorite found for the given identifier." }, 404);
 
         }
 
@@ -261,38 +258,41 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         const startPerformanceWithSearch: number = performance.now();
 
-        const meteoritesData: Meteorites = CACHED_METEORITES_CLEANED;
+        const meteoritesData: Meteorites = cachedMeteoritesCleaned;
 
-        if (!meteoritesData || meteoritesData.length === 0) return createJsonResponse({"error": "No meteorites data available."}, 404);
+        if (!meteoritesData || meteoritesData.length === 0) return createJsonResponse({ "error": "No meteorites data available." }, 404);
 
         let results: Meteorites;
 
-        const hasRecclassFilter = filters.recclass;
+        const hasRecclassFilter: string | null = filters.recclass;
 
-        const hasFallFilter = filters.fall;
+        const hasFallFilter: string | null = filters.fall;
 
         if (hasRecclassFilter) {
 
-            const key = filters.recclass!.toLowerCase();
+            const key: string = filters.recclass!.toLowerCase();
 
-            const keyedResults = METEORITES_BY_RECCLASS.get(key);
+            const keyedResults: Meteorites | undefined = meteoritesByRecclass.get(key);
 
             results = keyedResults ? keyedResults.slice() : [];
 
-        } else results = meteoritesData.slice();
+        }
+        
+        else results = meteoritesData.slice();
 
         if (hasFallFilter) {
 
             const key = filters.fall!.toLowerCase();
             
             if (!hasRecclassFilter) {
-
                 
-                const keyedResults = METEORITES_BY_FALL.get(key);
+                const keyedResults = meteoritesByFall.get(key);
 
                 results = keyedResults ? keyedResults.slice() : [];
 
-            } else if (hasRecclassFilter && results.length > 0) results = results.filter((m) => typeof m.fall === "string" && m.fall.toLowerCase() === key);
+            }
+            
+            else if (hasRecclassFilter && results.length > 0) results = results.filter((m) => typeof m.fall === "string" && m.fall.toLowerCase() === key);
         
         }
         
@@ -338,10 +338,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
 export default {
 
-    async fetch(req: Request, env: Env): Promise<Response> {
-
-        return handler(req, env);
-
-    }
+    async fetch(req: Request, env: Env): Promise<Response> { return handler(req, env); }
 
 };

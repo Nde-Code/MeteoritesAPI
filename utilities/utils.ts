@@ -20,7 +20,7 @@ export function isConfigValidWithMinValues(config: Config,rules: Partial<Record<
 
 }
 
-export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string) {
+export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string): void {
 
     const now: Date = new Date();
 
@@ -30,7 +30,7 @@ export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string) {
 
 }
 
-function equirectangularDistance(latitude_1: number,longitude_1: number, latitude_2: number, longitude_2: number): number {
+function getEquiRectangularDistance(latitude_1: number,longitude_1: number, latitude_2: number, longitude_2: number): number {
     
     const R: number = 6371;
 
@@ -132,7 +132,7 @@ export function filterByLocation(results: Meteorites, centerLat: number | null, 
 
         if (latM < latMin || latM > latMax || lonM < lonMin || lonM > lonMax) return false;
 
-        return equirectangularDistance(centerLat, centerLon, latM, lonM) <= radius;
+        return getEquiRectangularDistance(centerLat, centerLon, latM, lonM) <= radius;
 
     });
 }
