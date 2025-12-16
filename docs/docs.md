@@ -33,57 +33,20 @@ wrangler login
 First, create the `wrangler.jsonc` file, which contains the full configuration for your project. It should look like this:
 ```jsonc
 {
-
-  "name": "project_name",
-
-  "main": "main.ts",
-
-  "compatibility_date": "2025-10-08",
-
-  "preview_urls": false,
-
-  "observability": {
-
-    "enabled": true,
-
-    "head_sampling_rate": 1,
-
-    "logs": {
-
-      "invocation_logs": false
-
-    },
-
-    "traces": {
-
-      "enabled": false
-
-    }
-
-  },
-
-  "kv_namespaces": [
-
-    {
-
-      "binding": "YOUR_KV_NAME",
-
-      "id": "YOUR_KV_ID"
-
-    }
-
-  ],
-
-  "vars": {
-
-	  "FIREBASE_HOST_LINK": "YOUR_FIREBASE_URL",
-
-	  "FIREBASE_HIDDEN_PATH": "YOUR_SECRET_PATH",
-
-	  "HASH_KEY": "THE_KEY_USED_TO_HASH_IPS"
-
-  }
-
+	"name": "meteorites",
+	"main": "main.ts",
+	"compatibility_date": "2025-10-08",
+	"preview_urls": false,
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1,
+		"logs": {
+			"invocation_logs": false
+		},
+		"traces": {
+			"enabled": false
+		}
+	}
 }
 ``` 
 

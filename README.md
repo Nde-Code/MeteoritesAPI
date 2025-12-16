@@ -2,32 +2,37 @@
 
 A RESTful API built with **TypeScript** and **Wrangler** to query and analyze the NASA Meteorites Landings dataset.
 
-Normally, this dataset comes as a CSV file with over 40,000 entries. I've compiled and cleaned it into a JSON format containing only the data I need for a simple visualization application (~15K of entries). But may be I can extend the dataset size if really needed.
+Normally, this dataset is provided as a CSV file with over 40,000 entries. I’ve compiled and cleaned it into a JSON format, retaining only the data required for a simple visualization/statistical application (~8.5k of entries). The project runs well even on the free Workers plan, with generous limits (10ms CPU, 128MB memory, ...).
 
-> You can found the dataset here and by: [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)
+You can deploy your own instance of this API using the button below:
+
+> I host the project on the free plan, so it works well with medium and small datasets (see data/). However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/nsh&branch=cf-workers)
+
+You can found the original dataset here and by: [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)
 
 ## 🚀 Features:   
 
-- CORS: You're free to use the API in your website or any other project, but daily rate limits still apply.
+- CORS: You're free to use the API in your website or any other project.
 
 - No sign-up, no credit card, or other personal information required.
 
 - No logs are maintained to track user activity (logs are only for debugging and performance).
 
-- Rate limiting implemented to prevent API abuse.
+- Basic rate limiting implemented to prevent API abuse.
 
-- GDPR compliant: IP addresses are hashed using `SHA-256` with a strong, secure key and stored for max a day.
+- GDPR compliant: IP addresses are hashed using `SHA-256` with a strong, secure key.
 
-- Accurate Search: You can apply multiple filters to tailor the request as precisely as needed.
+- Accurate search: You can apply multiple filters to tailor the request as precisely as needed.
 
 ## 📚 API Endpoints:
 
-The API is available in two versions, each with its own usage details:
+The API is available in:
 
 - URL: [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/)
-- Rate limit: 1 request per minute, up to 15 requests per day.
-- Privacy policy: [privacy.md (cf-workers branch)](https://github.com/Nde-Code/meteorites-api/blob/cf-workers/privacy.md)
-- Source code: [GitHub repository (cf-workers branch)](https://github.com/Nde-Code/meteorites-api/tree/cf-workers)
+- Rate limit: 1 request per second.
+- Privacy policy: [privacy.md](docs/privacy.md)
 
 ### 1. **[GET]** `/search`:
 
@@ -76,14 +81,14 @@ curl "https://meteorites.nde-code.workers.dev/search?minYear=1998&centerLatitude
     "count": 1,
     "meteorites": [
       {
-        "fall": "Fell",
         "id": "458",
-        "latitude": "45.821330",
-        "longitude": "6.015330",
-        "mass": "252",
         "name": "Alby sur Chéran",
         "recclass": "Eucrite-mmict",
-        "year": "2002"
+        "mass": 252,
+        "fall": "Fell",
+        "year": 2002,
+        "latitude": 45.82133,
+        "longitude": 6.01533
       }
     ]
   }
@@ -133,14 +138,14 @@ curl "https://meteorites.nde-code.workers.dev/get?name=Kopjes%20Vlei"
 {
   "success": {
     "meteorite": {
-      "fall": "Found",
       "id": "12345",
-      "latitude": "-29.300000",
-      "longitude": "21.150000",
-      "mass": "13600",
       "name": "Kopjes Vlei",
       "recclass": "Iron, IIAB",
-      "year": "1914"
+      "mass": 13600,
+      "fall": "Found",
+      "year": 1914,
+      "latitude": -29.3,
+      "longitude": 21.15
     }
   }
 }
@@ -186,34 +191,34 @@ curl "https://meteorites.nde-code.workers.dev/random?count=3"
     "count": 3,
     "meteorites": [
       {
-        "fall": "Fell",
-        "id": "18013",
-        "latitude": "38.716670",
-        "longitude": "-7.066670",
-        "mass": "150000",
-        "name": "Olivenza",
-        "recclass": "LL5",
-        "year": "1924"
-      },
-      {
+        "id": "6493",
+        "name": "Dar al Gani 953",
+        "recclass": "H4",
+        "mass": 50.5,
         "fall": "Found",
-        "id": "7653",
-        "latitude": "25.223670",
-        "longitude": "0.845600",
-        "mass": "1388",
-        "name": "Djebel Chaab 001",
-        "recclass": "L/LL6",
-        "year": "2003"
+        "year": 1999,
+        "latitude": 27.125,
+        "longitude": 16.34533
       },
       {
-        "fall": "Fell",
-        "id": "22793",
-        "latitude": "23.083330",
-        "longitude": "91.666670",
-        "mass": "478",
-        "name": "Sabrum",
-        "recclass": "LL6",
-        "year": "1999"
+        "id": "44707",
+        "name": "Cordes",
+        "recclass": "H4",
+        "mass": 54.5,
+        "fall": "Found",
+        "year": 1998,
+        "latitude": 34.30333,
+        "longitude": -112.16617
+      },
+      {
+        "id": "7457",
+        "name": "Dhofar 701",
+        "recclass": "L5",
+        "mass": 220,
+        "fall": "Found",
+        "year": 2002,
+        "latitude": 19.14833,
+        "longitude": 54.80333
       }
     ]
   }
@@ -262,12 +267,12 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 ```js
 {
   "success": {
-    "meteorites_count": 5057,
+    "meteorites_count": 8500,
     "min_year": "860",
     "max_year": "2013",
-    "min_mass_g": 0.1,
+    "min_mass_g": 0.03,
     "max_mass_g": 60000000,
-    "avg_mass_g": 116343.79,
+    "avg_mass_g": 60692.95,
     "years": [
       "860",
       "920",
@@ -286,28 +291,34 @@ curl "https://meteorites.nde-code.workers.dev/stats"
     }
     "recclasses": [
       "Acapulcoite",
+      "Acapulcoite/Lodranite",
       "Achondrite-ung",
       "Angrite",
       "Aubrite",
-      "Aubrite-an",
       ...
     ],
     "recclasses_distribution": {
-      "L6": 866,
-      "H5": 778,
-      "H6": 373,
-      "H4": 368,
-      "L5": 341,
+      "L6": 1743,
+      "H5": 1488,
+      "H6": 822,
+      "L5": 609,
+      "H4": 587,
       ...
     },
-    "geolocated_count": 31963,
+    "geolocated_count": 8500,
     "fall_counts": {
-      "fell": 1091,
-      "found": 3966
+      "fell": 1094,
+      "found": 7406
     }
   }
 }
 ```
+
+## 📦 Documentation for developers:
+
+The project is a [Cloudflare Workers](https://workers.cloudflare.com/) application that uses the Cloudflare runtime called [Workerd](https://github.com/cloudflare/workerd). The setup and code are not very different from a Node.js or Deno project, but there are a few things to keep in mind.
+
+So, for that, I provide documentation here: [https://github.com/Nde-Code/meteorites-v2/docs/docs.md](docs/docs.md)
 
 ## 📄 License:
 
