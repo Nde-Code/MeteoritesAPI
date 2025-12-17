@@ -14,10 +14,6 @@ import {
 
     meteoritesByName,
 
-    meteoritesByRecclass,
-
-    meteoritesByFall, 
-
 } from "./utilities/cache.ts";
 
 import { Config, Env, Filters, Meteorite, Meteorites } from "./types/types.ts";
@@ -25,12 +21,6 @@ import { Config, Env, Filters, Meteorite, Meteorites } from "./types/types.ts";
 import { config } from "./config.ts";
 
 import {
-
-    filterByDate,
-
-    filterByLocation,
-
-    filterByMass,
 
     getTrimmedParam,
 
@@ -198,8 +188,8 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/search") {
 
-        if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
-        
+        if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);
+
         const query: URLSearchParams = url.searchParams;
 
         const filters: Filters = {
@@ -230,105 +220,123 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         };
 
-        const noFiltersProvided: boolean = Object.values(filters).every(value => value === null || value === undefined || value === "");
+        if (!filters.recclass && !filters.fall && filters.year === null && filters.minYear === null && filters.maxYear === null && filters.mass === null && filters.minMass === null && filters.maxMass === null && filters.centerLat === null && filters.centerLon === null && filters.radius === null) return createJsonResponse({ "error": "At least one valid filter parameter is required in the search query." }, 400);
 
-		if (noFiltersProvided) return createJsonResponse({ "error": "At least one valid filter parameter is required in the search query." }, 400);
+        if (filters.fall && filters.fall.toLowerCase() !== "fell" && filters.fall.toLowerCase() !== "found") return createJsonResponse({ "error": "The fall filter must be set to either 'fell' or 'found'." }, 400);
 
-		if (filters.fall && filters.fall.toLowerCase() !== "fell" && filters.fall.toLowerCase() !== "found") return createJsonResponse({ "error": "The fall filter must be set to either 'fell' or 'found', and only these two values are allowed." }, 400);
+        if (filters.year !== null && (filters.minYear !== null || filters.maxYear !== null)) return createJsonResponse({ "error": "Cannot combine 'year' with 'minYear' or 'maxYear'." }, 400);
 
-		if (filters.minYear !== null && filters.maxYear !== null && filters.minYear > filters.maxYear) return createJsonResponse({ "error": "Invalid year range: minYear cannot be greater than maxYear." }, 400);
+        if (filters.mass !== null && (filters.minMass !== null || filters.maxMass !== null)) return createJsonResponse({ "error": "Cannot combine 'mass' with 'minMass' or 'maxMass'." }, 400);
 
-		if (filters.year !== null && (filters.minYear !== null || filters.maxYear !== null)) return createJsonResponse({ "error": "Cannot combine 'year' with 'minYear' or 'maxYear'." }, 400);
+        if (filters.radius !== null && (filters.radius < config.MIN_RADIUS || filters.radius > config.MAX_RADIUS)) return createJsonResponse({ "error": `The radius must be between ${config.MIN_RADIUS} km and ${config.MAX_RADIUS} km.` }, 400);
 
-		if (filters.minMass !== null && filters.maxMass !== null && filters.minMass > filters.maxMass) return createJsonResponse({ "error": "Invalid mass range: minMass cannot be greater than maxMass." }, 400);
+        const limit = (filters.limit && isPositiveInteger(filters.limit)) ? Math.min(filters.limit, config.MAX_RETURNED_SEARCH_RESULTS) : config.MAX_RETURNED_SEARCH_RESULTS;
 
-		if (filters.mass !== null && (filters.minMass !== null || filters.maxMass !== null)) return createJsonResponse({ "error": "Cannot combine 'mass' with 'minMass' or 'maxMass'." }, 400);
-
-		if ((filters.minYear && isPositiveInteger(filters.minYear) === false) || (filters.year && isPositiveInteger(filters.year) === false) || (filters.maxYear && isPositiveInteger(filters.maxYear) === false)) return createJsonResponse({ "error": "The parameters minYear, year, and maxYear must be positive integers." }, 400);
-
-		if (filters.limit && (isPositiveInteger(filters.limit) === false || filters.limit < 1 || filters.limit > config.MAX_RETURNED_SEARCH_RESULTS)) return createJsonResponse({ "error": `The 'limit' parameter must be an integer between 1 and ${config.MAX_RETURNED_SEARCH_RESULTS}.` }, 400);
-
-		const isInvalidCoord = (lat: number | null, lon: number | null, radius: number | null, minRadius: number, maxRadius: number): boolean => {
-				
-			return (lat === null || isNaN(lat) || lat < -90 || lat > 90 || lon === null || isNaN(lon) || lon < -180 || lon > 180 || radius === null || isNaN(radius) || radius <= 0 || radius < minRadius || radius > maxRadius);
-			
-		};
-
-		if ((filters.centerLat !== null || filters.centerLon !== null || filters.radius !== null) && isInvalidCoord(filters.centerLat, filters.centerLon, filters.radius, config.MIN_RADIUS, config.MAX_RADIUS)) return createJsonResponse({ "error": "Invalid location search request. The parameters centerLatitude, centerLongitude, and radius must be included and valid." }, 400);
+        const useLocation: boolean = filters.centerLat !== null && filters.centerLon !== null && filters.radius !== null;
 
         const startPerformanceWithSearch: number = performance.now();
 
-        const meteoritesData: Meteorites = cachedMeteoritesCleaned;
+        let latMin = 0, latMax = 0, lonMin = 0, lonMax = 0;
 
-        if (!meteoritesData || meteoritesData.length === 0) return createJsonResponse({ "error": "No meteorites data available." }, 404);
+        const R_EARTH = 6371;
 
-        let results: Meteorites;
+        let maxDistSq: number = 0;
 
-        const hasRecclassFilter: string | null = filters.recclass;
+        if (useLocation) {
 
-        const hasFallFilter: string | null = filters.fall;
+            const latRad = filters.centerLat! * Math.PI / 180;
 
-        if (hasRecclassFilter) {
+            const latDelta = filters.radius! / R_EARTH * (180 / Math.PI);
 
-            const key: string = filters.recclass!.toLowerCase();
+            const cosLat = Math.cos(latRad) || 1;
 
-            const keyedResults: Meteorites | undefined = meteoritesByRecclass.get(key);
+            latMin = filters.centerLat! - latDelta;
 
-            results = keyedResults ? keyedResults.slice() : [];
+            latMax = filters.centerLat! + latDelta;
+
+            lonMin = filters.centerLon! - latDelta / cosLat;
+
+            lonMax = filters.centerLon! + latDelta / cosLat;
+
+            maxDistSq = (filters.radius! / R_EARTH) ** 2;
 
         }
-        
-        else results = meteoritesData.slice();
 
-        if (hasFallFilter) {
+        const results: Meteorites = [];
 
-            const key = filters.fall!.toLowerCase();
-            
-            if (!hasRecclassFilter) {
-                
-                const keyedResults = meteoritesByFall.get(key);
+        const data: Meteorites = cachedMeteoritesCleaned;
 
-                results = keyedResults ? keyedResults.slice() : [];
+        const recclassFilter = filters.recclass?.toLowerCase() ?? null;
+
+        const fallFilter = filters.fall?.toLowerCase() ?? null;
+
+        const centerLat: number | null = filters.centerLat;
+
+        const centerLon: number | null = filters.centerLon;
+
+        const radius: number | null = filters.radius;
+
+        const degToRad = Math.PI / 180;
+
+        for (let i = 0; i < data.length; i++) {
+
+            const m = data[i];
+
+            if (recclassFilter && m.recclass?.toLowerCase() !== recclassFilter) continue;
+
+            if (fallFilter && m.fall?.toLowerCase() !== fallFilter) continue;
+
+            if (filters.year !== null) {
+
+                if (m.year !== filters.year) continue;
+
+            } else {
+
+                if (filters.minYear !== null && (m.year === null || m.year < filters.minYear)) continue;
+
+                if (filters.maxYear !== null && (m.year === null || m.year > filters.maxYear)) continue;
 
             }
-            
-            else if (hasRecclassFilter && results.length > 0) results = results.filter((m) => typeof m.fall === "string" && m.fall.toLowerCase() === key);
-        
+
+            if (filters.mass !== null) {
+
+                if (m.mass !== filters.mass) continue;
+
+            } else {
+
+                if (filters.minMass !== null && (m.mass === null || m.mass < filters.minMass)) continue;
+
+                if (filters.maxMass !== null && (m.mass === null || m.mass > filters.maxMass)) continue;
+
+            }
+
+            if (useLocation) {
+
+                const lat = m.latitude as number | null;
+
+                const lon = m.longitude as number | null;
+
+                if (lat === null || lon === null || lat < latMin || lat > latMax || lon < lonMin || lon > lonMax) continue;
+
+                const dLat = (lat - centerLat!) * degToRad;
+
+                const dLon = (lon - centerLon!) * degToRad;
+
+                const x = dLon * Math.cos((lat + centerLat!) * degToRad * 0.5);
+
+                if ((x * x + dLat * dLat) > maxDistSq) continue;
+
+            }
+
+            results.push(m);
+
+            if (results.length >= limit) break;
+
         }
-        
-        results = filterByDate(results, filters.year, filters.minYear, filters.maxYear);
-
-        results = filterByMass(results, filters.mass, filters.minMass, filters.maxMass);
-
-        results = filterByLocation(results, filters.centerLat, filters.centerLon, filters.radius);
-
-        results = results.slice(0, (filters.limit !== null) ? filters.limit : config.MAX_RETURNED_SEARCH_RESULTS);
-
-        if (results.length === 0) {
-            
-            printLogLine("WARN", `No data found with: ${pathname + url.search} after: ${(performance.now() - startPerformanceWithSearch).toFixed(2)} ms.`,);
-            
-            return createJsonResponse({
-
-                "success": {
-
-                    "count": 0,
-
-                    "meteorites": [],
-
-                    note: "No results found for the given criteria.",
-
-                },
-
-            }, 200);
-
-        }
-
-        const searchResponse: Response = createJsonResponse({"success": { "count": results.length, "meteorites": results }}, 200);
 
         printLogLine("INFO", `Returned ${results.length} meteorite${(results.length !== 1) ? "s" : ""} from ${pathname + url.search} after: ${(performance.now() - startPerformanceWithSearch).toFixed(2)} ms.`);
 
-        return searchResponse;
+        return createJsonResponse({ "success": { "count": results.length, "meteorites": results } }, 200);
 
     }
 

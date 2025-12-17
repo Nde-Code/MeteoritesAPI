@@ -30,19 +30,19 @@ const safeParseFloat = (s: string | undefined): number | null => {
 
 };
 
-export const cachedMeteoritesCleaned: Meteorites = initialRawData.map((m) => ({...m,
+export const cachedMeteoritesCleaned: Meteorites = initialRawData.map((m) => ({
 
-        year: safeParseInt(m.year),
+    ...m,
 
-        mass: safeParseFloat(m.mass),
+    year: safeParseInt(m.year),
 
-        latitude: safeParseFloat(m.latitude),
+    mass: safeParseFloat(m.mass),
 
-        longitude: safeParseFloat(m.longitude),
+    latitude: safeParseFloat(m.latitude),
 
-    })
+    longitude: safeParseFloat(m.longitude),
 
-);
+}));
 
 export let cachedStatsResult: unknown | null = null;
 
@@ -52,10 +52,6 @@ export const meteoritesByID: Map<string, Meteorite> = new Map();
 
 export const meteoritesByName: Map<string, Meteorite> = new Map();
 
-export const meteoritesByRecclass: Map<string, Meteorite[]> = new Map();
-
-export const meteoritesByFall: Map<string, Meteorite[]> = new Map();
-
 function initializeIndexes(meteorites: Meteorites) {
 
     for (const m of meteorites) {
@@ -63,30 +59,6 @@ function initializeIndexes(meteorites: Meteorites) {
         if (m.id) meteoritesByID.set(m.id, m);
 
         if (m.name) meteoritesByName.set(normalizeString(m.name), m);
-
-        if (m.recclass) {
-
-            const key = m.recclass.toLowerCase();
-
-            if (!meteoritesByRecclass.has(key)) {
-
-                meteoritesByRecclass.set(key, []);
-
-            }
-
-            meteoritesByRecclass.get(key)!.push(m);
-
-        }
-
-        if (m.fall) {
-
-            const key = m.fall.toLowerCase();
-
-            if (!meteoritesByFall.has(key)) meteoritesByFall.set(key, []);
-
-            meteoritesByFall.get(key)!.push(m);
-
-        }
 
     }
 
@@ -118,27 +90,27 @@ function calculateAndCacheStats(meteorites: Meteorites) {
 
     let maxMass: number | null = null;
 
-    let totalMass: number = 0;
+    let totalMass = 0;
 
-    let countMass: number = 0;
+    let countMass = 0;
 
     const yearsSet: Set<string> = new Set();
 
     const recclassesSet: Set<string> = new Set();
 
-    let countFell: number = 0;
+    let countFell = 0;
 
-    let countFound: number = 0;
+    let countFound = 0;
 
-    let totalCount: number = 0;
+    let totalCount = 0;
 
-    let geolocatedCount: number = 0;
+    let geolocatedCount = 0;
 
     for (const m of meteorites) {
 
         totalCount++;
 
-        const y: number | null = m.year as number | null;
+        const y = m.year;
 
         if (y !== null && !isNaN(y)) {
 
@@ -148,7 +120,7 @@ function calculateAndCacheStats(meteorites: Meteorites) {
 
         }
 
-        const mass: number | null = m.mass as number | null;
+        const mass = m.mass;
 
         if (mass !== null && !isNaN(mass) && mass > 0) {
 
@@ -170,50 +142,40 @@ function calculateAndCacheStats(meteorites: Meteorites) {
 
         if (m.fall?.toLowerCase() === "found") countFound++;
 
-        if (m.latitude !== null && m.longitude !== null && !isNaN(m.latitude as number) && !isNaN(m.longitude as number)) geolocatedCount++;
-    
+        if (m.latitude !== null && m.longitude !== null && !isNaN(m.latitude) && !isNaN(m.longitude)) geolocatedCount++;
+
     }
 
     cachedStatsResult = {
 
-        "meteorites_count": totalCount,
+        meteorites_count: totalCount,
 
-        "min_year": minYear?.toString(),
+        min_year: minYear?.toString(),
 
-        "max_year": maxYear?.toString(),
+        max_year: maxYear?.toString(),
+        min_mass_g: minMass,
 
-        "min_mass_g": minMass,
+        max_mass_g: maxMass,
 
-        "max_mass_g": maxMass,
+        avg_mass_g: countMass > 0 ? parseFloat((totalMass / countMass).toFixed(2)) : null,
 
-        "avg_mass_g": (countMass > 0) ? parseFloat((totalMass / countMass).toFixed(2)) : null,
-        
-        "years": Array.from(yearsSet).map(Number).sort((a, b) => a - b).map(String),
+        years: Array.from(yearsSet).map(Number).sort((a, b) => a - b).map(String),
 
-        "years_distribution": getDistribution(meteorites, "year"),
+        years_distribution: getDistribution(meteorites, "year"),
 
-        "recclasses": Array.from(recclassesSet).sort(),
+        recclasses: Array.from(recclassesSet).sort(),
 
-        "recclasses_distribution": getDistribution(meteorites, "recclass"),
+        recclasses_distribution: getDistribution(meteorites, "recclass"),
 
-        "geolocated_count": geolocatedCount,
+        geolocated_count: geolocatedCount,
 
-        "fall_counts": {
-
-            "fell": countFell,
-
-            "found": countFound,
-
-        },
+        fall_counts: { fell: countFell, found: countFound },
 
     };
-
 }
 
 initializeIndexes(cachedMeteoritesCleaned);
-
 preShuffle(cachedMeteoritesCleaned);
-
 calculateAndCacheStats(cachedMeteoritesCleaned);
 
 export async function loadMeteorites(): Promise<Meteorites> { return cachedMeteoritesCleaned; }
