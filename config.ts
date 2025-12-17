@@ -12,7 +12,7 @@ export const config: Config = {
 
     MIN_RADIUS: 1,
 
-    MAX_RADIUS: 3000,
+    MAX_RADIUS: 2500,
 
     DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100
 

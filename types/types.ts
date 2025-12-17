@@ -1,12 +1,6 @@
 export interface Env {
 
-    FIREBASE_HOST_LINK: string;
-
-    FIREBASE_HIDDEN_PATH: string;
-
     HASH_KEY: string;
-
-    METEORITES_RATE_LIMIT_KV: KVNamespace;
 
 }
 
