@@ -2,11 +2,12 @@
 
 A RESTful API built with **TypeScript** and **Wrangler** to query and analyze the NASA Meteorites Landings dataset.
 
-Normally, this dataset is provided as a CSV file with over 40,000 entries. I’ve compiled and cleaned it into a JSON format, retaining only the data required for a simple visualization/statistical application (~8.5k of entries). The project runs well even on the free Workers plan, with generous limits (10ms CPU, 128MB memory, ...).
+Normally, this dataset is provided as a CSV file with over 40,000 entries. I’ve compiled and cleaned it into a JSON format, retaining only the data required for a simple visualization/statistical application (~8.5k of entries). The project runs well even on the free Workers plan.
 
 You can deploy your own instance of this API using the button below:
 
-> I host the project on the free plan, so it works well with medium and small datasets (see data/). However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
+> I host the project on the free plan, so it works well with medium and small datasets (see data/).
+> However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/nsh&branch=cf-workers)
 
@@ -25,6 +26,8 @@ You can found the original dataset here and by: [NASA Open Data Portal](https://
 - GDPR compliant: IP addresses are hashed using `SHA-256` with a strong, secure key.
 
 - Accurate search: You can apply multiple filters to tailor the request as precisely as needed.
+
+- This is a lightweight, highly optimized project for serverless environments that handles extensive computation and must use in-memory or embedded data storage as it cannot use an external DBMS.
 
 ## 📚 API Endpoints:
 
@@ -319,6 +322,16 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 The project is a [Cloudflare Workers](https://workers.cloudflare.com/) application that uses the Cloudflare runtime called [Workerd](https://github.com/cloudflare/workerd). The setup and code are not very different from a Node.js or Deno project, but there are a few things to keep in mind.
 
 So, for that, I provide documentation here: [https://github.com/Nde-Code/meteorites-v2/docs/docs.md](docs/docs.md)
+
+As explained above, this API works on data, and I designed something highly optimized. However, with limited resources, I had to make choices and reduce the dataset a little bit. Here are the different databases you can use if you deploy the project on your own instance:
+
+- The entire database (33K entries): [meteorites_complete.json](data/meteorites_complete.json)
+
+- The medium dataset (15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
+
+- The small dataset **(used)** (8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
+
+> The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
 
 ## 📄 License:
 
