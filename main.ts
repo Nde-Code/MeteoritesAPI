@@ -274,8 +274,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         const centerLon: number | null = filters.centerLon;
 
-        const radius: number | null = filters.radius;
-
         const degToRad = Math.PI / 180;
 
         for (let i = 0; i < data.length; i++) {
@@ -330,7 +328,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
             results.push(m);
 
-            if (results.length >= limit) break;
+            if (results.length >= limit || results.length >= config.MAX_RETURNED_SEARCH_RESULTS) break;
 
         }
 

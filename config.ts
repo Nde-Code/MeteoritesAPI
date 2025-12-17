@@ -8,7 +8,7 @@ export const config: Config = {
 
     MAX_RANDOM_METEORITES: 1000,
 
-    MAX_RETURNED_SEARCH_RESULTS: 1000,
+    MAX_RETURNED_SEARCH_RESULTS: 500,
 
     MIN_RADIUS: 1,
 
