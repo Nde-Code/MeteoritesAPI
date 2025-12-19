@@ -120,7 +120,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         if (isNaN(requestedCount) || requestedCount <= 0) requestedCount = config.DEFAULT_RANDOM_NUMBER_OF_METEORITES;
 
-        if (requestedCount > config.MAX_RANDOM_METEORITES) return createJsonResponse({ "error": `The number of meteorites requested exceeded the limit of ${config.MAX_RANDOM_METEORITES}` }, 400);
+        if (requestedCount > config.MAX_RANDOM_METEORITES) return createJsonResponse({ "error": `The number of meteorites requested exceeded the limit of ${config.MAX_RANDOM_METEORITES}.` }, 400);
 
         const startPerformanceWithRandom: number = performance.now();
     
