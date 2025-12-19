@@ -112,23 +112,19 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/random") {
 
-        if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
+        if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);
 
         const countParam: string | null = url.searchParams.get("count");
 
-        let requestedCount: number | null = countParam ? parseInt(countParam) : null;
-        
-        if (requestedCount !== null && (isNaN(requestedCount) || requestedCount <= 0)) requestedCount = config.DEFAULT_RANDOM_NUMBER_OF_METEORITES;
+        let requestedCount: number = countParam ? parseInt(countParam) : config.DEFAULT_RANDOM_NUMBER_OF_METEORITES;
 
-        const count: number = Math.min(requestedCount ?? config.DEFAULT_RANDOM_NUMBER_OF_METEORITES, config.MAX_RANDOM_METEORITES);
+        if (isNaN(requestedCount) || requestedCount <= 0) requestedCount = config.DEFAULT_RANDOM_NUMBER_OF_METEORITES;
 
-        if (count > config.MAX_RANDOM_METEORITES) return createJsonResponse({ "error": `The number of meteorites requested exceeded the limit of ${config.MAX_RANDOM_METEORITES}` }, 400);
+        if (requestedCount > config.MAX_RANDOM_METEORITES) return createJsonResponse({ "error": `The number of meteorites requested exceeded the limit of ${config.MAX_RANDOM_METEORITES}` }, 400);
 
         const startPerformanceWithRandom: number = performance.now();
-
-        const shuffled: Meteorites = cachedShuffledMeteorites;
-
-        const randomMeteorites: Meteorites = shuffled.slice(0, Math.min(count, shuffled.length));
+    
+        const randomMeteorites: Meteorites = cachedShuffledMeteorites.slice(0, requestedCount);
 
         const randomResponse: Response = createJsonResponse({
 
@@ -142,7 +138,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         }, 200);
 
-        printLogLine("INFO", `Returned ${randomMeteorites.length} meteorite${(randomMeteorites.length !== 1) ? "s" : ""} from ${pathname + url.search} after: ${(performance.now() - startPerformanceWithRandom).toFixed(2)} ms.`,);
+        printLogLine("INFO", `Returned ${randomMeteorites.length} meteorite${randomMeteorites.length !== 1 ? "s" : ""} from ${pathname + url.search} after: ${(performance.now() - startPerformanceWithRandom).toFixed(2)} ms.`);
 
         return randomResponse;
 
