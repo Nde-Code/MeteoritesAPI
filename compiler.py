@@ -10,6 +10,16 @@ def debug_print(level: int, current: int, message: str):
     if current >= level:
         print(message)
 
+def is_invalid_location(lat: float, lon: float, geolocation: str | None) -> bool:
+    if lat == 0.0 and lon == 0.0:
+        return True
+
+    if geolocation:
+        geo = geolocation.strip().replace('"', "")
+        if geo == "(0.0, 0.0)":
+            return True
+
+    return False
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -40,6 +50,12 @@ def parse_args():
         type=int,
         default=0,
         help="Maximum number of records (0 = unlimited)"
+    )
+
+    parser.add_argument(
+        "--clean-up",
+        action="store_true",
+        help="Remove meteorites with invalid coordinates (0.0, 0.0 or GeoLocation '(0.0, 0.0)')"
     )
 
     parser.add_argument(
@@ -91,7 +107,10 @@ def main():
             except ValueError:
                 continue
 
-            if lat_val == 0.0 or lon_val == 0.0:
+            geo_location = row.get("GeoLocation")
+
+            if args.clean_up and is_invalid_location(lat_val, lon_val, geo_location):
+                debug_print(2, args.debug, f"Clean-up: removed row {row_index} ({row.get('name', 'Unknown')}) with invalid location")
                 continue
 
             if use_grid:
