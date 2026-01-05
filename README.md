@@ -333,6 +333,18 @@ As explained above, this API works on data, and I designed something highly opti
 
 > The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
 
+If you need to create your own dataset, you can use the Python CLI (requires **Python 3.8+**, **no external dependencies**) with the following arguments:
+* `--input` : input CSV file (required)
+* `--output` : output JSON file (required)
+* `--grid` : grid cell size in degrees (optional, > 0 enables grid filtering)
+* `--limit` : maximum number of records (optional, 0 = unlimited)
+* `--debug` : debug level `0` (silent), `1` (info), `2` (verbose)
+
+Navigate to the directory containing `compiler.py` and run the following command:
+```bash
+python compiler.py --input data/meteorites.csv --output data/my_db.json --grid 0.07 --limit 8000 --debug 1
+```
+
 ## 📄 License:
 
 This project is licensed under the [Apache License v2.0](LICENSE).
