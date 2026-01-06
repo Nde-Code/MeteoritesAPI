@@ -159,7 +159,7 @@ def main():
         json.dump(data_dict, f, indent=4)
 
     print(
-        "\n========================================\n"
+        "========================================\n"
         "    Export completed successfully\n"
         "----------------------------------------\n"
         f"- Output file path  : {output_path}\n"
