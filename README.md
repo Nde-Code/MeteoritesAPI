@@ -343,7 +343,7 @@ If you need to create your own dataset, you can use the Python CLI (requires **P
 
 Navigate to the directory containing `compiler.py` and run the following command:
 ```bash
-python compiler.py --input data/meteorites.csv --output data/my_db.json --grid 0.07 --limit 8000 --debug 1
+python compiler.py --input data/meteorites.csv --output data/my_db.json --clean-up --debug 2
 ```
 
 ## 📄 License:

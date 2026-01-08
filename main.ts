@@ -66,7 +66,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (!config.HASH_KEY) return createJsonResponse({ "error": "Your credentials are missing." }, 500);
     
-    if (!isConfigValidWithMinValues(config, configMinValues)) return createJsonResponse({"error": "Invalid configuration detected. Please refer to the documentation."}, 500);
+    if (!isConfigValidWithMinValues(config, configMinValues) || config.DEFAULT_RANDOM_NUMBER_OF_METEORITES > config.MAX_RANDOM_METEORITES) return createJsonResponse({"error": "Invalid configuration detected. Please refer to the documentation."}, 500);
 
     if (!hashedIP || hashedIP.length !== 64) return createJsonResponse({"error": "Unable to hash your IP, which is required for security."}, 403);
     
@@ -232,9 +232,9 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         const startPerformanceWithSearch: number = performance.now();
 
-        let latMin = 0, latMax = 0, lonMin = 0, lonMax = 0;
+        let latMin: number = 0, latMax: number = 0, lonMin: number = 0, lonMax: number = 0;
 
-        const R_EARTH = 6371;
+        const R_EARTH: number = 6371;
 
         let maxDistSq: number = 0;
 
