@@ -1,36 +1,34 @@
-# 🛠️ Developer documentation:
+# The developer documentation:
 
 Here is the complete developer guide for anyone who wants to contribute or create their own version of this project and make it work on [Cloudflare Workers](https://workers.cloudflare.com/) using [Wrangler](https://developers.cloudflare.com/workers/wrangler/).
 
-## 🚀 To begin working with this version
+## 🚀 To begin:
 
-1. Create or login to your cloudflare account: [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)
+**1.** Create or login to your cloudflare account: [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)
 
-2. Install Node.js and npm (I've used [Volta](https://volta.sh/Volta) on WSL): [https://nodejs.org/fr/download](https://nodejs.org/fr/download)
+**2.** Install Node.js and npm *(I've used [Volta](https://volta.sh/Volta)* on WSL): [https://nodejs.org/fr/download](https://nodejs.org/fr/download)
 
-3. Install the Wrangler CLI using:
+**3.** Install the Wrangler CLI using:
 
 ```bash
 npm install -g wrangler
 ```
 
-> If you haven't installed Wrangler globally, prefix commands with `npx`, for example `npx wrangler`. If you're using Wrangler v4 or earlier, use `npx`; otherwise use the globally installed `wrangler` command.
+> If you haven't installed Wrangler globally, prefix commands with `npx`, for example `npx wrangler`. 
 
-4. Clone the project branch:
+**4.** Clone the project branch:
 
 ```bash
-git clone --branch cf-workers --single-branch https://github.com/Nde-Code/meteorites-api.git
+git clone https://github.com/Nde-Code/meteorites-v2.git
 ```
 
-5. Log your Wrangler CLI to your Cloudflare account using:
+**5.** Log your Wrangler CLI to your Cloudflare account using:
 
 ```bash
 wrangler login
 ```
 
-> Make sure to do this securely on a trusted network.
-
-## ⚙️ Setting up the configuration
+## ⚙️ Setting up the configuration:
 
 First, create the `wrangler.jsonc` file, which contains the full configuration for your project. It should look like this:
 
@@ -53,7 +51,7 @@ First, create the `wrangler.jsonc` file, which contains the full configuration f
 }
 ```
 
-### Main elements
+### Main elements:
 
 #### `name`
 
@@ -75,21 +73,21 @@ This ensures your code continues to work as expected, even if Cloudflare updates
 
 It’s used to create a previewable URL. That’s a feature in Cloudflare Workers, but it’s not really useful for a small project. Feel free to take a look at: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/)
 
-## Observability
+### Observability:
 
-### `observability.enabled`
+#### `observability.enabled`
 
 When set to `true`, enables **automatic metrics and logs collection** for your Worker.
 This lets you monitor performance and errors in the Cloudflare dashboard.
 
-### `observability.head_sampling_rate`
+#### `observability.head_sampling_rate`
 
 Defines the **percentage of requests sampled for tracing** (from `0` to `1`).
 
 * `1` = 100% of requests are sampled (useful for debugging).
 * `0.1` = 10% of requests are traced (better for production environments).
 
-### `observability.logs.invocation_logs`
+#### `observability.logs.invocation_logs`
 
 Controls whether **automatic invocation logs** are collected for each Worker execution.
 
@@ -98,7 +96,7 @@ Controls whether **automatic invocation logs** are collected for each Worker exe
 
 > Disabling invocation logs is recommended for **GDPR compliance**, as it prevents Cloudflare from storing potentially sensitive request data.
 
-### `observability.tracing.enabled`
+#### `observability.tracing.enabled`
 
 Controls whether **distributed tracing** is enabled for your Worker.
 
@@ -107,7 +105,7 @@ Controls whether **distributed tracing** is enabled for your Worker.
 
 > Tracing is disabled by default. If you're not using OpenTelemetry or a tracing system, leave this off to reduce data collection.
 
-## Environment Variables
+### Environment Variables:
 
 To start working **locally** with environment variables, create a file called `.dev.vars` and add the following content:
 
@@ -130,13 +128,43 @@ wrangler secret put HASH_KEY
 
 > Check out [https://developers.cloudflare.com/workers/configuration/secrets/](https://developers.cloudflare.com/workers/configuration/secrets/) if you need further information.
 
-## 🧰 Code adjustments for Wrangler compatibility
+### Now let's look at the software configuration file [config.ts](../config.ts):
 
-Cloudflare Workers use the V8 isolate engine to run applications. They don’t use traditional Node.js runtimes like Deno, Node.js, or Bun under the hood. Therefore, to make this project compatible, every use of `Deno.*` must be replaced with an equivalent API that works in the Cloudflare Workers environment.
+```ts
+export const config: Config = {
 
-This section explains how the code was transformed to be compatible with Cloudflare Workers.
+  HASH_KEY: "", // Do not modify
 
-### First, initialize TypeScript types
+  RATE_LIMIT_INTERVAL_S: 1, // Min: 1
+
+  MAX_RANDOM_METEORITES: 1000, // Min: 100
+
+  MAX_RETURNED_SEARCH_RESULTS: 500, // Min: 100
+
+  MIN_RADIUS: 1, // Min: 1
+
+  MAX_RADIUS: 2500, // Min: 1000
+
+  DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100 // Min: 100
+
+};
+```
+
+- **RATE_LIMIT_INTERVAL_S** *in second*: This is the rate limit based on requests. Currently: one request per second.
+
+- **MAX_RANDOM_METEORITES**: The maximum number of meteorites retrieved from `/random`. Currently: 1000 meteorites.
+ 
+- **MAX_RETURNED_SEARCH_RESULTS**: The maximum number of meteorites retrieved from `/search` when the result set is large. Currently: 500 meteorites.
+
+- **MIN_RADIUS** & **MAX_RADIUS**: The minimum and maximum radius values allowed by the API to define the circular search area. Currently: min = 1 and max = 1000.
+
+- **DEFAULT_RANDOM_NUMBER_OF_METEORITES**: In `/random`, if no `count` parameter is provided, this is the default number of meteorites retrieved. Currently: 100 meteorites.
+
+> Ensure that you respect the `min` value specified in the comment; otherwise, you will get an error message with your configuration.
+
+## 💻 Start the development server:
+
+### First, initialize TypeScript types:
 
 To benefit from TypeScript definitions in your editor and avoid compilation errors, you can add the Cloudflare Workers type definitions by running:
 
@@ -146,7 +174,7 @@ wrangler types
 
 > Be sure that your `wrangler.jsonc` is correctly configured before running this command.
 
-⚠️ **Note:** When you’ve configured environment variables, this command may sometimes include your secrets directly in the generated type file. Be very careful, so always review this file (`worker-configuration.d.ts`) before committing or sharing your code. This file has been added to `.gitignore` and is excluded from the source tree in VS Code by default. (1)
+⚠️ **Note:** When you’ve configured environment variables, this command may sometimes include your secrets directly in the generated type file. Be very careful, so always review this file (`worker-configuration.d.ts`) before committing or sharing your code. This file has been added to `.gitignore` and is excluded from the source tree in VS Code by default.
 
 and put in `tsconfig.json`: 
 
@@ -223,7 +251,7 @@ Here's a brief summary of what the `tsconfig.json` file do:
 
 This project doesn't rely on any external libraries or dependencies, so there's no `package.json` or npm-related files.
 
-## 📌 Run the project and deploy it once it's ready
+### Run the project and deploy it once it's ready:
 
 To run locally, run:
 
@@ -247,6 +275,6 @@ wrangler deploy
 
 and your project is now deployed and accessible to anyone with the link.
 
-## 🧩 At the end
+## 📌 At the end:
 
 If you need any assistance, feel free to open an issue at [https://github.com/Nde-Code/meteorites-api/issues](https://github.com/Nde-Code/meteorites-api/issues).
