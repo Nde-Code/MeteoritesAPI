@@ -6,6 +6,19 @@ import random
 import sys
 from pathlib import Path
 
+EXPECTED_FIELDS = [
+    "name",
+    "id",
+    "nametype",
+    "recclass",
+    "mass (g)",
+    "fall",
+    "year",
+    "reclat",
+    "reclong",
+    "GeoLocation",
+]
+
 def debug_print(level: int, current: int, message: str):
     if current >= level:
         print(message)
@@ -90,7 +103,19 @@ def main():
     with input_path.open(newline="", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
 
+        if reader.fieldnames != EXPECTED_FIELDS:
+            print("ERROR: CSV header does not match expected format.\n" f"Expected: {EXPECTED_FIELDS}\n" f"Found   : {reader.fieldnames}", file=sys.stderr)
+            sys.exit(1)
+
         for row_index, row in enumerate(reader, start=1):
+
+            if any(field not in row or row[field] is None for field in EXPECTED_FIELDS):
+                print(f"ERROR: Invalid row structure at line {row_index + 1}. " "Missing or malformed fields.", file=sys.stderr)
+                sys.exit(1)
+
+            if not row["id"].isdigit():
+                print(f"ERROR: Invalid id at line {row_index + 1}.", file=sys.stderr)
+                sys.exit(1)
 
             if use_limit and len(data_list) >= args.limit:
                 break
@@ -110,7 +135,7 @@ def main():
             geo_location = row.get("GeoLocation")
 
             if args.clean_up and is_invalid_location(lat_val, lon_val, geo_location):
-                debug_print(2, args.debug, f"Clean-up: removed row {row_index} ({row.get('name', 'Unknown')}) with invalid location")
+                debug_print(2, args.debug, f"Clean-up: removed meteorite ({row.get('name', 'Unknown')}) with invalid location")
                 continue
 
             if use_grid:
@@ -139,7 +164,7 @@ def main():
             debug_print(
                 2,
                 args.debug,
-                f"Accepted row {row_index}: {meteorite['name']} ({lat_val}, {lon_val})"
+                f"Accepted meteorite: {meteorite['name']} ({lat_val}, {lon_val})"
             )
 
     debug_print(1, args.debug, f"Shuffling {len(data_list)} records")
