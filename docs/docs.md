@@ -160,7 +160,9 @@ export const config: Config = {
 
 - **DEFAULT_RANDOM_NUMBER_OF_METEORITES**: In `/random`, if no `count` parameter is provided, this is the default number of meteorites retrieved. Currently: 100 meteorites.
 
-> Ensure that you respect the `min` value specified in the comment; otherwise, you will get an error message with your configuration.
+**NB:** `MAX_RANDOM_METEORITES` must be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`.
+
+> Ensure these values and rules are respected; otherwise, your configuration will trigger an error message.
 
 ## 💻 Start the development server:
 

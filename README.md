@@ -31,11 +31,11 @@ You can found the original dataset here and by: [NASA Open Data Portal](https://
 
 ## 📚 API Endpoints:
 
-The API is available in:
+The API is available here:
 
-- URL: [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/)
-- Rate limit: 1 request per second.
-- Privacy policy: [privacy.md](docs/privacy.md)
+| Link: | Rate limit: | Owner: | Privacy Notice: |
+| :--- | :--- | :-- | :--- |
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) |
 
 ### 1. **[GET]** `/search`:
 
