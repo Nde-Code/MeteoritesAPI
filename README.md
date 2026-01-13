@@ -333,19 +333,19 @@ As explained above, this API works on data, and I designed something highly opti
 
 > The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
 
-If you need to create your own dataset, you can use the Python CLI (requires **Python 3.8+**, **no external dependencies**) with the following arguments:
-
 ### Arguments of the Python CLI:
 
-| Argument      | Description |
-|--------------|-------------|
-| `--input`    | Path to the input CSV file (e.g., `meteorites.csv`) **(required)** |
-| `--output`   | Path to the output JSON file **(required)** |
-| `--grid`     | Grid cell size in degrees (optional, > 0 enables grid filtering) |
-| `--limit`    | Maximum number of records (optional, `0` = unlimited) |
-| `--clean-up` | Removes meteorites with invalid or placeholder coordinates *(filters entries where `reclat` and `reclong` are `0.0`, or where `GeoLocation` is `(0.0, 0.0)`)* |
-| `--debug`    | Debug level: `0` (silent), `1` (info), `2` (verbose) |
-| `--help`     | Displays help directly in the terminal |
+If you need to create your own dataset, you can use the Python CLI (requires **Python 3.8+**, **no external dependencies**) with the following arguments:
+
+| Argument        | Description |
+|-----------------|-------------|
+| `--input`       | Path to the input CSV file (e.g., `meteorites.csv`) **(required)** |
+| `--output`      | Path to the output JSON file **(required)** |
+| `--grid`        | Grid cell size in degrees (optional, > 0 enables grid filtering) |
+| `--limit`       | Maximum number of records (optional, `0` = unlimited) |
+| `--clean-up`    | Removes meteorites with invalid or placeholder coordinates *(filters entries where `reclat` and `reclong` are `0.0`, or where `GeoLocation` is `(0.0, 0.0)`)* |
+| `--debug`       | Debug level: `0` (silent), `1` (info), `2` (verbose) |
+| `--help`        | Displays help directly in the terminal |
 
 Navigate to the directory containing `compiler.py` and run the following command:
 ```bash
