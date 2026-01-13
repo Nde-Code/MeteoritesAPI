@@ -1,5 +1,25 @@
 import { Config, Meteorites } from "../types/types.ts";
 
+export function createJsonResponse(body: object, status: number = 200, headers: HeadersInit = {}): Response {
+
+    return new Response(JSON.stringify(body), {
+
+        status,
+
+        headers: {
+
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            ...headers,
+
+        },
+
+    });
+
+}
+
 export function normalizeString(str: string): string {
 
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();

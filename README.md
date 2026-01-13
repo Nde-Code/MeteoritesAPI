@@ -35,7 +35,7 @@ The API is available here:
 
 | Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
 | :--- | :--- | :-- | :--- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~9K of entries ([meteorites_small](../meteorites-v2/data/meteorites_small.json)) |  
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~8.5K of entries ([meteorites_small](../meteorites-v2/data/meteorites_small.json)) |  
 
 ### 1. **[GET]** `/search`:
 
