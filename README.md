@@ -33,9 +33,9 @@ You can found the original dataset here and by: [NASA Open Data Portal](https://
 
 The API is available here:
 
-| Link: | Rate limit: | Owner: | Privacy Notice: |
-| :--- | :--- | :-- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) |
+| Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
+| :--- | :--- | :-- | :--- | :--- |
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~9K of entries ([meteorites_small](../meteorites-v2/data/meteorites_small.json)) |  
 
 ### 1. **[GET]** `/search`:
 
@@ -317,7 +317,7 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 }
 ```
 
-## 📦 Documentation for developers:
+## 🖥️ Documentation for developers:
 
 The project is a [Cloudflare Workers](https://workers.cloudflare.com/) application that uses the Cloudflare runtime called [Workerd](https://github.com/cloudflare/workerd). The setup and code are not very different from a Node.js or Deno project, but there are a few things to keep in mind.
 
@@ -334,24 +334,32 @@ As explained above, this API works on data, and I designed something highly opti
 > The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
 
 If you need to create your own dataset, you can use the Python CLI (requires **Python 3.8+**, **no external dependencies**) with the following arguments:
-* `--input`: input [meteorites.csv](data/meteorites.csv) file **(required)**
-* `--output`: output JSON file **(required)**
-* `--grid`: grid cell size in degrees (optional, > 0 enables grid filtering)
-* `--limit`: maximum number of records (optional, 0 = unlimited)
-* `--clean-up`: remove meteorites with invalid or placeholder coordinates *(filters out entries where `reclat` and `reclong` are `0.0`, or where `GeoLocation` is `(0.0, 0.0))`*
-* `--debug` : debug level `0` (silent), `1` (info), `2` (verbose)
-* `--help`: to get help from terminal.
+### Arguments du CLI Python
+
+| Argument      | Description |
+|--------------|-------------|
+| `--input`    | Chemin vers le fichier CSV d’entrée (ex. : `meteorites.csv`) **(obligatoire)** |
+| `--output`   | Chemin du fichier JSON de sortie **(obligatoire)** |
+| `--grid`     | Taille des cellules de grille en degrés (optionnel, > 0 active le filtrage par grille) |
+| `--limit`    | Nombre maximum d’enregistrements (optionnel, `0` = illimité) |
+| `--clean-up` | Supprime les météorites avec des coordonnées invalides ou par défaut *(filtre les entrées où `reclat` et `reclong` valent `0.0`, ou `GeoLocation = (0.0, 0.0)`)* |
+| `--debug`    | Niveau de debug : `0` (silencieux), `1` (info), `2` (verbeux) |
 
 Navigate to the directory containing `compiler.py` and run the following command:
 ```bash
 python compiler.py --input data/meteorites.csv --output data/my_db.json --clean-up --debug 2
 ```
 
-## 📄 License:
+You can also get help directly in your terminal via:
+```bash
+python compiler.py --help
+```
+
+## ⚖️ License:
 
 This project is licensed under the [Apache License v2.0](LICENSE).
 
-## 📞 Contact:
+## 🎯 Reach me:
 
 Created and maintained by [Nde-Code](https://nde-code.github.io/).
 
