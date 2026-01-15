@@ -68,7 +68,7 @@ Search meteorites using various filters, including name, class, date, mass, and 
 | `radius`      | number | Radius in kilometers for location filtering **(required with center coords)**  |
 | `limit`      | number | Maximum number of search results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`)  |
 
-> Invalid, non-required parameters will be completely ignored.
+> **Note:** Invalid, non-required parameters will be completely ignored.
 
 #### **Response:**
 
@@ -184,7 +184,7 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 | --------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `count`   | number | Number of random meteorites to return. Defaults to `config.DEFAULT_RANDOM_NUMBER_OF_METEORITES`. Cannot exceed `config.MAX_RANDOM_METEORITES`. |
 
-> Invalid `count` parameters will be ignored, and the default value will be applied.
+> **Note:** Invalid `count` parameters will be ignored, and the default value will be applied.
 
 #### **Response:**
 
@@ -271,7 +271,7 @@ Returns useful insights such as year ranges, mass stats, classification counts, 
 | `geolocated_count`         | number    | Number of meteorites with valid latitude and longitude  |
 | `fall_counts`              | object    | Breakdown of meteorites by fall type: `fell` vs `found` |
 
-> **Note:** Some meteorites are recorded with a mass of **0 grams**. This is not an error, but rather a reflection of specific characteristics—such as extreme alteration, fossilization, or missing recoverable fragments. It's important to recognize that these cases do occur. 
+> **Note:** Some meteorites are recorded with a mass of **0 grams**. This is not an error, but rather a reflection of specific characteristics such as extreme alteration, fossilization, or missing recoverable fragments. It's important to recognize that these cases do occur. 
 
 #### **Response:**
 
