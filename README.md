@@ -27,7 +27,7 @@ You can found the original dataset here and by: [NASA Open Data Portal](https://
 
 - Accurate search: You can apply multiple filters to tailor the request as precisely as needed.
 
-- This is a lightweight, highly optimized project for serverless environments that handles extensive computation and must use in-memory or embedded data storage as it cannot use an external DBMS.
+- This is a lightweight, highly optimized project for serverless environments that handles extensive computation.
 
 ## 📚 API Endpoints:
 
