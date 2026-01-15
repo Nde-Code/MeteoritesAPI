@@ -35,7 +35,7 @@ The API is available here:
 
 | Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
 | :--- | :--- | :-- | :--- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~8.5K of entries ([meteorites_small](../meteorites-v2/data/meteorites_small.json)) |  
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~8.5K of ([entries](../meteorites-v2/data/meteorites_small.json)) |  
 
 ### 1. **[GET]** `/search`:
 
@@ -62,13 +62,17 @@ Search meteorites using various filters, including name, class, date, mass, and 
 
 #### **Response:**
 
-* `200 OK`: Successful query with results
+* `200 OK`: Successful query with results.
 
-* `400 Bad Request`: Missing or invalid parameters
+* `400 Bad Request`: Missing or invalid parameters.
 
-* `404 Not Found`: No meteorite data available
+* `404 Not Found`: No meteorite data available.
 
-* `429 Too Many Requests`: Rate limit exceeded
+* `429 Too Many Requests`: Rate limit exceeded.
+
+* `403 Forbidden`: Unable to hash your IP.
+
+* `500 Internal Server Error`: Wrong environment variable or server error.
 
 #### **Example Request:**
 
@@ -113,13 +117,17 @@ Retrieve detailed information about a single meteorite by either its unique `id`
 
 #### **Response:**
 
-* `200 OK`: Meteorite found and returned  
+* `200 OK`: Meteorite found and returned.  
 
-* `400 Bad Request`: Both parameters are missing or invalid  
+* `400 Bad Request`: Both parameters are missing or invalid.  
 
-* `404 Not Found`: No meteorite matches the given identifier  
+* `404 Not Found`: No meteorite matches the given identifier.  
 
-* `429 Too Many Requests`: Rate limit exceeded (per second or daily)
+* `429 Too Many Requests`: Rate limit exceeded.
+
+* `403 Forbidden`: Unable to hash your IP.
+
+* `500 Internal Server Error`: Wrong environment variable or server error.
 
 #### **Example Requests:**
 
@@ -177,6 +185,10 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 * `404 Not Found`: No meteorites data available.
 
 * `429 Too Many Requests`: Rate limit exceeded.
+
+* `403 Forbidden`: Unable to hash your IP.
+
+* `500 Internal Server Error`: Wrong environment variable or server error.
 
 If the requested `count` exceeds the maximum allowed, the result will be limited and a note will be included in the response.
 
@@ -253,11 +265,15 @@ Returns useful insights such as year ranges, mass stats, classification counts, 
 
 #### **Response:**
 
-* `200 OK`: Statistics successfully returned
+* `200 OK`: Statistics successfully returned.
 
-* `404 Not Found`: No meteorite data available
+* `404 Not Found`: No meteorite data available.
 
-* `429 Too Many Requests`: Rate limit exceeded
+* `429 Too Many Requests`: Rate limit exceeded.
+
+* `403 Forbidden`: Unable to hash your IP.
+
+* `500 Internal Server Error`: Wrong environment variable or server error.
 
 #### **Example Request:**
 
@@ -345,7 +361,6 @@ If you need to create your own dataset, you can use the Python CLI (requires **P
 | `--limit`       | Maximum number of records (optional, `0` = unlimited) |
 | `--clean-up`    | Removes meteorites with invalid or placeholder coordinates *(filters entries where `reclat` and `reclong` are `0.0`, or where `GeoLocation` is `(0.0, 0.0)`)* |
 | `--debug`       | Debug level: `0` (silent), `1` (info), `2` (verbose) |
-| `--help`        | Displays help directly in the terminal |
 
 Navigate to the directory containing `compiler.py` and run the following command:
 ```bash
