@@ -4,11 +4,11 @@ Here is the complete developer guide for anyone who wants to contribute or creat
 
 ## 🚀 To begin:
 
-**1.** Create or login to your cloudflare account: [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)
+### 1. Create or login to your cloudflare account: [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)
 
-**2.** Install Node.js and npm *(I've used [Volta](https://volta.sh/Volta)* on WSL): [https://nodejs.org/fr/download](https://nodejs.org/fr/download)
+### 2. Install Node.js and npm *(I've used [Volta](https://volta.sh/Volta)* on WSL): [https://nodejs.org/fr/download](https://nodejs.org/fr/download)
 
-**3.** Install the Wrangler CLI using:
+### 3. Install the Wrangler CLI using:
 
 ```bash
 npm install -g wrangler
@@ -16,13 +16,13 @@ npm install -g wrangler
 
 > If you haven't installed Wrangler globally, prefix commands with `npx`, for example `npx wrangler`. 
 
-**4.** Clone the project branch:
+### 4. Clone the project branch:
 
 ```bash
 git clone https://github.com/Nde-Code/meteorites-v2.git
 ```
 
-**5.** Log your Wrangler CLI to your Cloudflare account using:
+### 5. Log your Wrangler CLI to your Cloudflare account using:
 
 ```bash
 wrangler login
@@ -30,7 +30,7 @@ wrangler login
 
 ## ⚙️ Setting up the configuration:
 
-First, create the `wrangler.jsonc` file, which contains the full configuration for your project. It should look like this:
+First, take a look at the `wrangler.jsonc` file, which contains the full configuration for your project:
 
 ```jsonc
 {
@@ -150,15 +150,22 @@ export const config: Config = {
 };
 ```
 
-- **RATE_LIMIT_INTERVAL_S** *in second*: This is the rate limit based on requests. Currently: one request per second.
+- **`RATE_LIMIT_INTERVAL_S`** *(in second)*: This is the rate limit based on requests.
+  - **Currently**: one request per second.
 
-- **MAX_RANDOM_METEORITES**: The maximum number of meteorites retrieved from `/random`. Currently: 1000 meteorites.
+- **`MAX_RANDOM_METEORITES`**: The maximum number of meteorites retrieved from `/random`.
+  - **Currently**: 1000 meteorites.
  
-- **MAX_RETURNED_SEARCH_RESULTS**: The maximum number of meteorites retrieved from `/search` when the result set is large. Currently: 500 meteorites.
+- **`MAX_RETURNED_SEARCH_RESULTS`**: The maximum number of meteorites retrieved from `/search` when the result set is large.
+  - **Currently**: 500 meteorites.
 
-- **MIN_RADIUS** & **MAX_RADIUS**: The minimum and maximum radius values allowed by the API to define the circular search area. Currently: min = 1 and max = 1000.
+- **`MIN_RADIUS`** & **`MAX_RADIUS`**: The minimum and maximum radius values allowed by the API to define the circular search area.
+  - **Currently**:
+    - **Min**: 1 
+    - **Max**: 1000
 
-- **DEFAULT_RANDOM_NUMBER_OF_METEORITES**: In `/random`, if no `count` parameter is provided, this is the default number of meteorites retrieved. Currently: 100 meteorites.
+- **`DEFAULT_RANDOM_NUMBER_OF_METEORITES`**: In `/random`, if no `count` parameter is provided, this is the default number of meteorites retrieved.
+  - **Currently**: 100 meteorites.
 
 **NB:** `MAX_RANDOM_METEORITES` must be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`.
 

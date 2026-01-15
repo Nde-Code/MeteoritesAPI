@@ -347,7 +347,7 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 
 The project is a [Cloudflare Workers](https://workers.cloudflare.com/) application that uses the Cloudflare runtime called [Workerd](https://github.com/cloudflare/workerd). The setup and code are not very different from a Node.js or Deno project, but there are a few things to keep in mind.
 
-So, for that, I provide documentation here: [https://github.com/Nde-Code/meteorites-v2/docs/docs.md](docs/docs.md)
+So, for that, I provide documentation [[here](docs/docs.md)].
 
 As explained above, this API works on data, and I designed something highly optimized. However, with limited resources, I had to make choices and reduce the dataset a little bit. Here are the different databases you can use if you deploy the project on your own instance:
 
