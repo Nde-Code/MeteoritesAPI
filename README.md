@@ -2,8 +2,6 @@
 
 A RESTful API built with **TypeScript** and **Wrangler** to query and analyze the NASA Meteorites Landings dataset.
 
-Normally, this dataset is provided as a CSV file with over 40,000 entries. I’ve compiled and cleaned it into a JSON format, retaining only the data required for a simple visualization/statistical application (~8.5k of entries). The project runs well even on the free Workers plan.
-
 You can deploy your own instance of this API using the button below:
 
 > I host the project on the free plan, so it works well with medium and small datasets (see data/).
@@ -37,17 +35,17 @@ The API is available here:
 | :--- | :--- | :-- | :--- | :--- |
 | [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~8.5K of [entries](../meteorites-v2/data/meteorites_small.json) |
 
-And here is an overview of how **[my config.ts](config.ts)** is currently configured for endpoints limitations:
+And here is an overview of how *[my config.ts](config.ts)* is currently configured for endpoints limitations:
 
-- **Maximum number of random meteorites**: `MAX_RANDOM_METEORITES = 1000`
+- **Maximum** number of random meteorites (`MAX_RANDOM_METEORITES`): `1000`
 
-- **Maximum search results returned**: `MAX_RETURNED_SEARCH_RESULTS = 500`
+- **Maximum** search results (`MAX_RETURNED_SEARCH_RESULTS`) returned: `500`
 
-- **Minimum radius allowed**: `MIN_RADIUS = 1`
+- **Minimum** radius (`MIN_RADIUS`) allowed: `1`
 
-- **Maximum radius allowed**: `MAX_RADIUS = 2500`
+- **Maximum** radius (`MAX_RADIUS`) allowed: `2500`
 
-- **Default number of meteorites**: `DEFAULT_RANDOM_NUMBER_OF_METEORITES = 100`
+- **Default** number of random meteorites (`DEFAULT_RANDOM_NUMBER_OF_METEORITES`): `100`
 
 ### 1. **[GET]** `/search`:
 
@@ -353,11 +351,11 @@ So, for that, I provide documentation here: [https://github.com/Nde-Code/meteori
 
 As explained above, this API works on data, and I designed something highly optimized. However, with limited resources, I had to make choices and reduce the dataset a little bit. Here are the different databases you can use if you deploy the project on your own instance:
 
-- The entire database (33K entries): [meteorites_complete.json](data/meteorites_complete.json)
+- The entire database (~33K entries): [meteorites_complete.json](data/meteorites_complete.json)
 
-- The medium dataset (15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
+- The medium dataset (~15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
 
-- The small dataset **(used)** (8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
+- The small dataset **(used)** (~8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
 
 > The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
 
@@ -367,7 +365,7 @@ If you need to create your own dataset, you can use the Python CLI (requires **P
 
 | Argument        | Description |
 |-----------------|-------------|
-| `--input`       | Path to the input CSV file (e.g., `meteorites.csv`) **(required)** |
+| `--input`       | Path to the input [meteorites.csv](data/meteorites.csv) CSV file **(required)** |
 | `--output`      | Path to the output JSON file **(required)** |
 | `--grid`        | Grid cell size in degrees (optional, > 0 enables grid filtering) |
 | `--limit`       | Maximum number of records (optional, `0` = unlimited) |
