@@ -35,7 +35,19 @@ The API is available here:
 
 | Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
 | :--- | :--- | :-- | :--- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~8.5K of ([entries](../meteorites-v2/data/meteorites_small.json)) |  
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~8.5K of [entries](../meteorites-v2/data/meteorites_small.json) |
+
+And here is an overview of how **[my config.ts](config.ts)** is currently configured for endpoints limitations:
+
+- **Maximum number of random meteorites**: `MAX_RANDOM_METEORITES = 1000`
+
+- **Maximum search results returned**: `MAX_RETURNED_SEARCH_RESULTS = 500`
+
+- **Minimum radius allowed**: `MIN_RADIUS = 1`
+
+- **Maximum radius allowed**: `MAX_RADIUS = 2500`
+
+- **Default number of meteorites**: `DEFAULT_RANDOM_NUMBER_OF_METEORITES = 100`
 
 ### 1. **[GET]** `/search`:
 
