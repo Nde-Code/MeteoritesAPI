@@ -23,7 +23,11 @@ def debug_print(level: int, current: int, message: str):
     if current >= level:
         print(message)
 
-def is_invalid_location(lat: float, lon: float, geolocation: str | None) -> bool:
+def is_invalid_location(lat: float | None, lon: float | None, geolocation: str | None) -> bool:
+
+    if lat is None or lon is None:
+        return True
+
     if lat == 0.0 and lon == 0.0:
         return True
 
@@ -123,22 +127,24 @@ def main():
             lat_str = (row.get("reclat") or "").strip()
             lon_str = (row.get("reclong") or "").strip()
 
-            if not lat_str or not lon_str:
-                continue
+            lat_val = None
+            lon_val = None
 
-            try:
-                lat_val = float(lat_str)
-                lon_val = float(lon_str)
-            except ValueError:
-                continue
+            if lat_str != "" and lon_str != "":
+                try:
+                    lat_val = float(lat_str)
+                    lon_val = float(lon_str)
+                except ValueError:
+                    lat_val = None
+                    lon_val = None
 
             geo_location = row.get("GeoLocation")
 
             if args.clean_up and is_invalid_location(lat_val, lon_val, geo_location):
-                debug_print(2, args.debug, f"Clean-up: removed meteorite ({row.get('name', 'Unknown')}) with invalid location")
+                debug_print(2, args.debug, f"Clean-up: removed meteorite ({row.get('name', 'Unknown')}) with invalid or missing location")
                 continue
 
-            if use_grid:
+            if use_grid and lat_val is not None and lon_val is not None:
                 grid_lat = round(lat_val / args.grid)
                 grid_lon = round(lon_val / args.grid)
                 cell_key = f"{grid_lat}_{grid_lon}"
