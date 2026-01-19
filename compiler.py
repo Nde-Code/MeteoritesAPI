@@ -38,6 +38,15 @@ def is_invalid_location(lat: float | None, lon: float | None, geolocation: str |
 
     return False
 
+def normalize_if_empty(value: str | None, default: str) -> str:
+
+    if value is None:
+        return default
+
+    value = value.strip()
+
+    return value if value else default
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Convert a meteorites CSV file to JSON with optional grid filtering."
@@ -154,13 +163,29 @@ def main():
 
                 seen_cells.add(cell_key)
 
+            recclass = row.get("recclass")
+            mass = row.get("mass (g)")
+            fall = row.get("fall")
+            year = row.get("year")
+
+            if args.clean_up:
+                recclass = normalize_if_empty(recclass, "Unknown")
+                mass = normalize_if_empty(mass, "N/A")
+                fall = normalize_if_empty(fall, "Unknown")
+                year = normalize_if_empty(year, "Unknown")
+            else:
+                recclass = recclass or ""
+                mass = (mass or "").strip()
+                fall = fall or ""
+                year = year or ""
+
             meteorite = {
-                "id": row.get("id", "N/A"),
+                "id": row.get("id"),
                 "name": row.get("name", "Unknown"),
-                "recclass": row.get("recclass", "Unknown"),
-                "mass": (row.get("mass (g)") or "").strip() or "N/A",
-                "fall": row.get("fall", "Unknown"),
-                "year": row.get("year", "N/A"),
+                "recclass": recclass,
+                "mass": mass,
+                "fall": fall,
+                "year": year,
                 "latitude": lat_str,
                 "longitude": lon_str,
             }
