@@ -366,7 +366,7 @@ If you need to create your own dataset, you can use the Python CLI (requires **P
 | `--output`      | Path to the output JSON file **(required)** |
 | `--grid`        | Grid cell size in degrees (optional, > 0 enables grid filtering) |
 | `--limit`       | Maximum number of records (optional, `0` = unlimited) |
-| `--clean-up`    | Removes meteorites with invalid or placeholder coordinates *(filters entries where `reclat` and `reclong` are `0.0`, or where `GeoLocation` is `(0.0, 0.0)`)* |
+| `--clean-up` **(Recommended)**    | Removes meteorite records with missing, invalid, or placeholder location data (e.g. `reclat`/`reclong` equal to `0.0` or `GeoLocation` set to `(0.0, 0.0)`), and normalizes empty metadata fields to ensure cleaner and more consistent output. |
 | `--debug`       | Debug level: `0` (silent), `1` (info), `2` (verbose) |
 
 Navigate to the directory containing `compiler.py` and run the following command:
