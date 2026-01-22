@@ -33,19 +33,17 @@ The API is available here:
 
 | Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
 | :--- | :--- | :-- | :--- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | ~8.5K of [entries](../meteorites-v2/data/meteorites_small.json) |
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | 8.5K of [entries](../meteorites-v2/data/meteorites_small.json) |
 
-And here is an overview of how *[my config.ts](config.ts)* is currently configured for endpoints limitations:
+And here is an overview of how [my config.ts](config.ts) is currently configured for endpoints limitations:
 
-- **Maximum** number of random meteorites (`MAX_RANDOM_METEORITES`): `1000`
-
-- **Maximum** search results (`MAX_RETURNED_SEARCH_RESULTS`) returned: `500`
-
-- **Minimum** radius (`MIN_RADIUS`) allowed: `1`
-
-- **Maximum** radius (`MAX_RADIUS`) allowed: `2500`
-
-- **Default** number of random meteorites (`DEFAULT_RANDOM_NUMBER_OF_METEORITES`): `100`
+| Code: | Value: | Description: |
+| :--- | :---: | :--- |
+| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of random meteorites. |
+| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Maximum search results. |
+| `MIN_RADIUS` | 1 | Minimum radius allowed. |
+| `MAX_RADIUS` | 2500 | Maximum radius allowed. |
+| `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | 100 | Default number of random meteorites. |
 
 ### 1. **[GET]** `/search`:
 
@@ -216,34 +214,34 @@ curl "https://meteorites.nde-code.workers.dev/random?count=3"
     "count": 3,
     "meteorites": [
       {
-        "id": "6493",
-        "name": "Dar al Gani 953",
-        "recclass": "H4",
-        "mass": 50.5,
-        "fall": "Found",
-        "year": 1999,
-        "latitude": 27.125,
-        "longitude": 16.34533
-      },
-      {
-        "id": "44707",
-        "name": "Cordes",
-        "recclass": "H4",
-        "mass": 54.5,
-        "fall": "Found",
-        "year": 1998,
-        "latitude": 34.30333,
-        "longitude": -112.16617
-      },
-      {
-        "id": "7457",
-        "name": "Dhofar 701",
+        "id": "14764",
+        "name": "Mabwe-Khoywa",
         "recclass": "L5",
-        "mass": 220,
+        "mass": 540,
+        "fall": "Fell",
+        "year": 1937,
+        "latitude": 19,
+        "longitude": 97
+      },
+      {
+        "id": "11442",
+        "name": "Guibga",
+        "recclass": "L5",
+        "mass": 288,
+        "fall": "Fell",
+        "year": 1972,
+        "latitude": 13.5,
+        "longitude": -0.68333
+      },
+      {
+        "id": "8671",
+        "name": "Elephant Moraine 90262",
+        "recclass": "L6",
+        "mass": 9.2,
         "fall": "Found",
-        "year": 2002,
-        "latitude": 19.14833,
-        "longitude": 54.80333
+        "year": 1990,
+        "latitude": -76.28752,
+        "longitude": 156.44737
       }
     ]
   }
@@ -299,9 +297,9 @@ curl "https://meteorites.nde-code.workers.dev/stats"
     "meteorites_count": 8500,
     "min_year": "860",
     "max_year": "2013",
-    "min_mass_g": 0.03,
+    "min_mass_g": 0.1,
     "max_mass_g": 60000000,
-    "avg_mass_g": 60692.95,
+    "avg_mass_g": 68231.78,
     "years": [
       "860",
       "920",
@@ -320,24 +318,23 @@ curl "https://meteorites.nde-code.workers.dev/stats"
     }
     "recclasses": [
       "Acapulcoite",
-      "Acapulcoite/Lodranite",
       "Achondrite-ung",
       "Angrite",
       "Aubrite",
       ...
     ],
     "recclasses_distribution": {
-      "L6": 1743,
-      "H5": 1488,
-      "H6": 822,
-      "L5": 609,
-      "H4": 587,
+      "L6": 1616,
+      "H5": 1461,
+      "H6": 749,
+      "L5": 653,
+      "H4": 637,
       ...
     },
     "geolocated_count": 8500,
     "fall_counts": {
-      "fell": 1094,
-      "found": 7406
+      "fell": 1095,
+      "found": 7405
     }
   }
 }
@@ -347,15 +344,15 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 
 The project is a [Cloudflare Workers](https://workers.cloudflare.com/) application that uses the Cloudflare runtime called [Workerd](https://github.com/cloudflare/workerd). The setup and code are not very different from a Node.js or Deno project, but there are a few things to keep in mind.
 
-So, for that, I provide documentation [[here](docs/docs.md)].
+So, for that, I provide documentation [here](docs/docs.md).
 
 As explained above, this API works on data, and I designed something highly optimized. However, with limited resources, I had to make choices and reduce the dataset a little bit. Here are the different databases you can use if you deploy the project on your own instance:
 
-- The entire database (~33K entries): [meteorites_complete.json](data/meteorites_complete.json)
+- The entire database (33K entries): [meteorites_complete.json](data/meteorites_complete.json)
 
-- The medium dataset (~15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
+- The medium dataset (15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
 
-- The small dataset **(used)** (~8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
+- The small dataset **(used)** (8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
 
 > The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
 
@@ -365,7 +362,7 @@ If you need to create your own dataset, you can use the Python CLI (requires **P
 
 | Argument        | Description |
 |-----------------|-------------|
-| `--input`       | Path to the input [meteorites.csv](data/meteorites.csv) CSV file **(required)** |
+| `--input`       | Path to the input [meteorites.csv](data/meteorites.csv) file **(required)** |
 | `--output`      | Path to the output JSON file **(required)** |
 | `--grid`        | Grid cell size in degrees (optional, > 0 enables grid filtering) |
 | `--limit`       | Maximum number of records (optional, `0` = unlimited) |

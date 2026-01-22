@@ -134,7 +134,7 @@ function calculateAndCacheStats(meteorites: Meteorites) {
 
         }
 
-        if (m.year) yearsSet.add(m.year.toString());
+        if (m.year !== null) yearsSet.add(m.year.toString());
 
         if (m.recclass) recclassesSet.add(m.recclass.trim());
 
@@ -153,6 +153,7 @@ function calculateAndCacheStats(meteorites: Meteorites) {
         min_year: minYear?.toString(),
 
         max_year: maxYear?.toString(),
+        
         min_mass_g: minMass,
 
         max_mass_g: maxMass,

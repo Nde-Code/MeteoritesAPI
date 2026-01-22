@@ -30,7 +30,7 @@ wrangler login
 
 ## ⚙️ Setting up the configuration:
 
-First, take a look at the `wrangler.jsonc` file, which contains the full configuration for your project:
+First, take a look at the [wrangler.jsonc](../wrangler.jsonc) file, which contains the full configuration for your project:
 
 ```jsonc
 {
@@ -151,13 +151,16 @@ export const config: Config = {
 ```
 
 - **`RATE_LIMIT_INTERVAL_S`** *(in second)*: This is the rate limit based on requests.
-  - **Currently**: one request per second.
+  - **Currently**:
+    - **Max**: one request per second.
 
 - **`MAX_RANDOM_METEORITES`**: The maximum number of meteorites retrieved from `/random`.
-  - **Currently**: 1000 meteorites.
+  - **Currently**:
+    - **Max**: 1000 meteorites.
  
 - **`MAX_RETURNED_SEARCH_RESULTS`**: The maximum number of meteorites retrieved from `/search` when the result set is large.
-  - **Currently**: 500 meteorites.
+  - **Currently**:
+    - **Max**: 500 meteorites.
 
 - **`MIN_RADIUS`** & **`MAX_RADIUS`**: The minimum and maximum radius values allowed by the API to define the circular search area.
   - **Currently**:
@@ -165,7 +168,8 @@ export const config: Config = {
     - **Max**: 1000
 
 - **`DEFAULT_RANDOM_NUMBER_OF_METEORITES`**: In `/random`, if no `count` parameter is provided, this is the default number of meteorites retrieved.
-  - **Currently**: 100 meteorites.
+  - **Currently**:
+    - **Default**: 100 meteorites.
 
 **NB:** `MAX_RANDOM_METEORITES` must be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`.
 
