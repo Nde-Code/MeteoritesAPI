@@ -1,4 +1,4 @@
-# NASA Meteorites Landings API:
+# Meteorites Landings API:
 
 A RESTful API built with **TypeScript** and **Wrangler** to query and analyze the NASA Meteorites Landings dataset.
 
