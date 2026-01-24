@@ -6,7 +6,7 @@ Here is the complete developer guide for anyone who wants to contribute or creat
 
 ### 1. Create or login to your cloudflare account: [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)
 
-### 2. Install Node.js and npm: [https://nodejs.org/fr/download](https://nodejs.org/fr/download)
+### 2. Install Node.js and npm: [https://nodejs.org/en/download](https://nodejs.org/en/download)
 
 ### 3. Install the Wrangler CLI using:
 
