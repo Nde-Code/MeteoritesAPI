@@ -37,13 +37,13 @@ The API is available here:
 
 And here is an overview of how [my config.ts](config.ts) is currently configured for endpoints limitations:
 
-| Code: | Value: | Description: |
-| :--- | :---: | :--- |
-| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of random meteorites. |
-| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Maximum search results. |
-| `MIN_RADIUS` | 1 | Minimum radius allowed. |
-| `MAX_RADIUS` | 2500 | Maximum radius allowed. |
-| `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | 100 | Default number of random meteorites. |
+| Code: | Value: | Description: | Note: |
+| :--- | :---: | :--- | :-- |
+| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of random meteorites. | If the requested `count` exceeds this limit, an error will be returned. |
+| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Maximum number of search results. | The search process will stop if the results exceed this limit. |
+| `MIN_RADIUS` | 1 | Minimum allowed radius. | If the radius is below the minimum, an error will be returned. |
+| `MAX_RADIUS` | 2500 | Maximum allowed radius. | If the radius exceeds the maximum, an error will be returned. |
+| `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | 100 | Default number of random meteorites. | Default number returned when the `count` parameter is missing. |
 
 ### 1. **[GET]** `/search`:
 
@@ -188,7 +188,7 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 
 * `200 OK`: Successfully returns a random list of meteorites.
 
-* `400 Bad Request`: The `count` parameter exceeds the maximum allowed number of meteorites. 
+* `400 Bad Request`: Invalid `count` parameter.
 
 * `404 Not Found`: No meteorites data available.
 
@@ -197,8 +197,6 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 * `403 Forbidden`: Unable to hash your IP.
 
 * `500 Internal Server Error`: Wrong environment variable or server error.
-
-If the requested `count` exceeds the maximum allowed, the result will be limited and a note will be included in the response.
 
 #### **Example Request:**
 
