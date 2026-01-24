@@ -92,7 +92,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     }
 
-    if (req.method === "GET" && pathname === "/") return createJsonResponse({ "success": "Welcome to the API root. Refer to the documentation at https://github.com/Nde-Code/meteorites-api." }, 200);
+    if (req.method === "GET" && pathname === "/") return createJsonResponse({ "success": "Welcome to the API root. Refer to the documentation at https://github.com/Nde-Code/MeteoritesAPI." }, 200);
 
     if (req.method === "GET" && pathname === "/stats") {
 

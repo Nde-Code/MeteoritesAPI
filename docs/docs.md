@@ -19,7 +19,7 @@ npm install -g wrangler
 ### 4. Clone the project branch:
 
 ```bash
-git clone https://github.com/Nde-Code/meteorites-v2.git
+git clone https://github.com/Nde-Code/MeteoritesAPI.git
 ```
 
 ### 5. Log your Wrangler CLI to your Cloudflare account using:
@@ -290,4 +290,4 @@ and your project is now deployed and accessible to anyone with the link.
 
 ## 📌 At the end:
 
-If you need any assistance, feel free to open an issue at [https://github.com/Nde-Code/meteorites-api/issues](https://github.com/Nde-Code/meteorites-api/issues).
+If you need any assistance, feel free to open an issue at [https://github.com/Nde-Code/MeteoritesAPI/issues](https://github.com/Nde-Code/MeteoritesAPI/issues).
