@@ -9,7 +9,7 @@ You can deploy your own instance of this API using the button below:
 > I host the project on the free plan, so it works well with medium and small datasets (see data/).
 > However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/nsh&branch=cf-workers)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/MeteoritesAPI)
 
 ## 🚀 Features:   
 
