@@ -63,7 +63,7 @@ Search meteorites using various filters, including name, class, date, mass, and 
 | `maxMass`     | number | Maximum mass in grams                                                      |
 | `centerLatitude`  | number | Latitude of the center point for location filtering **(required with radius)** |
 | `centerLongitude` | number | Longitude of the center point **(required with radius)**                       |
-| `radius`      | number | Radius in kilometers for location filtering **(required with center coords)**  |
+| `radius`      | number | Radius in kilometers for location filtering (min: `MIN_RADIUS`, max: `MAX_RADIUS`) **(required with center coords)**  |
 | `limit`      | number | Maximum number of search results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`)  |
 
 > **Note:** Invalid, non-required parameters will be completely ignored.
@@ -180,7 +180,7 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 
 | Parameter | Type   | Description                                                                                                                                    |
 | --------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `count`   | number | Number of random meteorites to return. Defaults to `config.DEFAULT_RANDOM_NUMBER_OF_METEORITES`. Cannot exceed `config.MAX_RANDOM_METEORITES`. |
+| `count`   | number | Number of random meteorites to return. Defaults to `DEFAULT_RANDOM_NUMBER_OF_METEORITES`. Cannot exceed `MAX_RANDOM_METEORITES`. |
 
 > **Note:** Invalid `count` parameters will be ignored, and the default value will be applied.
 
