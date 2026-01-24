@@ -2,14 +2,14 @@
 
 A RESTful API built with **TypeScript** and **Wrangler** to query and analyze the NASA Meteorites Landings dataset.
 
+You can found the original dataset here and by: [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)
+
 You can deploy your own instance of this API using the button below:
 
 > I host the project on the free plan, so it works well with medium and small datasets (see data/).
 > However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/nsh&branch=cf-workers)
-
-You can found the original dataset here and by: [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)
 
 ## 🚀 Features:   
 
