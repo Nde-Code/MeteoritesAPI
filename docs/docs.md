@@ -128,7 +128,7 @@ wrangler secret put HASH_KEY
 
 > Check out [https://developers.cloudflare.com/workers/configuration/secrets/](https://developers.cloudflare.com/workers/configuration/secrets/) if you need further information.
 
-### Now let's look at the software configuration file [config.ts](../config.ts):
+### Software configuration file [config.ts](../config.ts):
 
 ```ts
 export const config: Config = {
