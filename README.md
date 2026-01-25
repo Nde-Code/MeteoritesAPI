@@ -354,7 +354,7 @@ As explained above, this API works on data, and I designed something highly opti
 
 > The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
 
-### Arguments of the Python CLI:
+### Compile your own dataset using the Python CLI:
 
 If you need to create your own dataset, you can use the Python CLI (requires **Python 3.8+**, **no external dependencies**) with the following arguments:
 
