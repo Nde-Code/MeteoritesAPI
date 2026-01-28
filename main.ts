@@ -98,13 +98,11 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
         
-        const startPerformanceWithStats: number = performance.now();
-
         if (!cachedStatsResult) return createJsonResponse({ "error": "Internal error: Stats not pre-calculated." }, 500);
 
         const statsResponse: Response = createJsonResponse({ "success": cachedStatsResult }, 200);
 
-        printLogLine("INFO", `Returned /stats data after: ${(performance.now() - startPerformanceWithStats).toFixed(2)} ms.`);
+        printLogLine("INFO", `Returned /stats data.`);
         
         return statsResponse;
 
@@ -121,8 +119,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
         if (isNaN(requestedCount) || requestedCount <= 0) requestedCount = config.DEFAULT_RANDOM_NUMBER_OF_METEORITES;
 
         if (requestedCount > config.MAX_RANDOM_METEORITES) return createJsonResponse({ "error": `The number of meteorites requested exceeded the limit of ${config.MAX_RANDOM_METEORITES}.` }, 400);
-
-        const startPerformanceWithRandom: number = performance.now();
     
         const randomMeteorites: Meteorites = cachedShuffledMeteorites.slice(0, requestedCount);
 
@@ -138,7 +134,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         }, 200);
 
-        printLogLine("INFO", `Returned ${randomMeteorites.length} meteorite${randomMeteorites.length !== 1 ? "s" : ""} from ${pathname + url.search} after: ${(performance.now() - startPerformanceWithRandom).toFixed(2)} ms.`);
+        printLogLine("INFO", `Returned ${randomMeteorites.length} meteorite${randomMeteorites.length !== 1 ? "s" : ""} from ${pathname + url.search}.`);
 
         return randomResponse;
 
@@ -160,8 +156,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         if (id && isPositiveInteger(parseFloat(id)) === false) return createJsonResponse({ "error": "The ID must be a positive integer." }, 400);
 
-        const startPerformanceWithGet: number = performance.now();
-
         let result: Meteorite | undefined;
 
         if (id) result = meteoritesByID.get(id);
@@ -170,13 +164,13 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         if (!result) {
 
-            printLogLine("WARN", `Unable to find using ${pathname + url.search} after: ${(performance.now() - startPerformanceWithGet).toFixed(2)} ms.`);
+            printLogLine("WARN", `Unable to find using ${pathname + url.search}.`);
 
             return createJsonResponse({ "error": "No meteorite found for the given identifier." }, 404);
 
         }
 
-        printLogLine("INFO", `Returned meteorite from ${pathname + url.search} after: ${(performance.now() - startPerformanceWithGet).toFixed(2)} ms.`);
+        printLogLine("INFO", `Returned meteorite from ${pathname + url.search}.`);
         
         return createJsonResponse({ "success": { "meteorite": result } }, 200);
 
@@ -229,8 +223,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
         const limit = (filters.limit && isPositiveInteger(filters.limit)) ? Math.min(filters.limit, config.MAX_RETURNED_SEARCH_RESULTS) : config.MAX_RETURNED_SEARCH_RESULTS;
 
         const useLocation: boolean = filters.centerLat !== null && filters.centerLon !== null && filters.radius !== null;
-
-        const startPerformanceWithSearch: number = performance.now();
 
         let latMin: number = 0, latMax: number = 0, lonMin: number = 0, lonMax: number = 0;
 
@@ -328,7 +320,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         }
 
-        printLogLine("INFO", `Returned ${results.length} meteorite${(results.length !== 1) ? "s" : ""} from ${pathname + url.search} after: ${(performance.now() - startPerformanceWithSearch).toFixed(2)} ms.`);
+        printLogLine("INFO", `Returned ${results.length} meteorite${(results.length !== 1) ? "s" : ""} from ${pathname + url.search}.`);
 
         return createJsonResponse({ "success": { "count": results.length, "meteorites": results } }, 200);
 

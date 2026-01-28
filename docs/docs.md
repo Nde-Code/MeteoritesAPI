@@ -117,7 +117,7 @@ HASH_KEY="THE_KEY_USED_TO_HASH_IPS"
 
 | Variable   | Description                                                                 |
 | ---------- | --------------------------------------------------------------------------- |
-| `HASH_KEY` | The cryptographic key used to hash user IPs or sensitive identifiers.       |
+| `HASH_KEY` | The cryptographic key used to hash user IPs.       |
 
 When you have finished, **make sure there are no traces of secrets** in your code, and run the following command.  
 *(Normally, you'll only need to do this once, when you first create the project.)*
