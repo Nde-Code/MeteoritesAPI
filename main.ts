@@ -44,9 +44,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     const pathname: string = url.pathname;
 
-    const ip: string = req.headers.get("cf-connecting-ip") ?? "unknown";
-
-    const hashedIP: string = await hashIp(ip);
+    if (pathname === "/favicon.ico") return new Response(null, { status: 204 });
 
     const configMinValues: Partial<Record<keyof Config, number>> = {
 
@@ -67,8 +65,6 @@ async function handler(req: Request, env: Env): Promise<Response> {
     if (!config.HASH_KEY) return createJsonResponse({ "error": "Your credentials are missing." }, 500);
     
     if (!isConfigValidWithMinValues(config, configMinValues) || config.DEFAULT_RANDOM_NUMBER_OF_METEORITES > config.MAX_RANDOM_METEORITES) return createJsonResponse({"error": "Invalid configuration detected. Please refer to the documentation."}, 500);
-
-    if (!hashedIP || hashedIP.length !== 64) return createJsonResponse({"error": "Unable to hash your IP, which is required for security."}, 403);
     
     if (req.method === "OPTIONS") {
 
@@ -96,6 +92,8 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/stats") {
 
+        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown");
+
         if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
         
         if (!cachedStatsResult) return createJsonResponse({ "error": "Internal error: Stats not pre-calculated." }, 500);
@@ -109,6 +107,8 @@ async function handler(req: Request, env: Env): Promise<Response> {
     }
 
     if (req.method === "GET" && pathname === "/random") {
+
+        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown");
 
         if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);
 
@@ -141,6 +141,8 @@ async function handler(req: Request, env: Env): Promise<Response> {
     }
 
     if (req.method === "GET" && pathname === "/get") {
+
+        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown");
 
         if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
         
@@ -177,6 +179,8 @@ async function handler(req: Request, env: Env): Promise<Response> {
     }
 
     if (req.method === "GET" && pathname === "/search") {
+
+        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown");
 
         if (!(await checkTimeRateLimit(hashedIP))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${config.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);
 

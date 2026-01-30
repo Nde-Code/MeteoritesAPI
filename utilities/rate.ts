@@ -1,36 +1,20 @@
 import { config } from "../config.ts";
 
-interface CloudflareCache {
-
-    default: {
-
-        match(request: Request): Promise<Response | undefined>;
-
-        put(request: Request, response: Response): Promise<void>;
-
-    };
-
-}
-
 export async function checkTimeRateLimit(hashedIp: string, limitSeconds = config.RATE_LIMIT_INTERVAL_S): Promise<boolean> {
     
-    const cache = caches as unknown as CloudflareCache;
-    
-    const cacheKey = new Request(`https://ratelimit/${hashedIp}`);
+    const cache = (caches as any).default;
 
-    const hit: Response | undefined = await cache.default.match(cacheKey);
+    const cacheKey = `https://ratelimit.local/${hashedIp}`;
+
+    const hit = await cache.match(cacheKey);
 
     if (hit) return false;
 
-    await cache.default.put(cacheKey,
+    await cache.put(cacheKey, new Response("1", {
 
-        new Response("ok", {
+        headers: { "Cache-Control": `max-age=${limitSeconds}` }
 
-            headers: { "Cache-Control": `max-age=${limitSeconds}` }
-
-        })
-
-    );
+    }));
 
     return true;
 
@@ -38,12 +22,22 @@ export async function checkTimeRateLimit(hashedIp: string, limitSeconds = config
 
 export async function hashIp(ip: string, salt = config.HASH_KEY): Promise<string> {
 
-    const encoder = new TextEncoder();
+    const msgBuffer = new TextEncoder().encode(ip + salt);
+
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+
+    const hashArray = new Uint8Array(hashBuffer);
     
-    const data = encoder.encode(ip + salt);
+    let hexString = "";
 
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    for (let i = 0; i < hashArray.length; i++) {
 
-    return Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, "0")).join("");
+        const b = hashArray[i];
+
+        hexString += (b < 16 ? '0' : '') + b.toString(16);
+
+    }
+
+    return hexString;
 
 }
