@@ -178,5 +178,3 @@ function calculateAndCacheStats(meteorites: Meteorites) {
 initializeIndexes(cachedMeteoritesCleaned);
 preShuffle(cachedMeteoritesCleaned);
 calculateAndCacheStats(cachedMeteoritesCleaned);
-
-export async function loadMeteorites(): Promise<Meteorites> { return cachedMeteoritesCleaned; }

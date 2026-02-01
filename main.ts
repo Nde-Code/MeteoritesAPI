@@ -36,9 +36,21 @@ import {
 
 } from "./utilities/utils.ts";
 
+let lastEnv: Env | null = null;
+
+function initConfig(env: Env) {
+
+    if (lastEnv === env) return;
+
+    config.HASH_KEY = env.HASH_KEY ?? "";
+
+    lastEnv = env;
+
+}
+
 async function handler(req: Request, env: Env): Promise<Response> {
         
-    config.HASH_KEY = env.HASH_KEY ?? "";
+    initConfig(env);
 
     const url: URL = new URL(req.url);
 
