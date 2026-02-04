@@ -36,6 +36,34 @@ import {
 
 } from "./utilities/utils.ts";
 
+const configMinValues: Partial<Record<keyof Config, number>> = {
+
+    RATE_LIMIT_INTERVAL_S: 1,
+
+    MAX_RANDOM_METEORITES: 100,
+
+    MAX_RETURNED_SEARCH_RESULTS: 100,
+
+    MIN_RADIUS: 1,
+
+    MAX_RADIUS: 1000,
+
+    DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100,
+
+};
+
+let configChecked: boolean = false;
+
+function checkConfigOnce(): boolean {
+
+    if (configChecked) return true;
+
+    configChecked = isConfigValidWithMinValues(config, configMinValues) && config.DEFAULT_RANDOM_NUMBER_OF_METEORITES <= config.MAX_RANDOM_METEORITES;
+
+    return configChecked;
+
+}
+
 let lastEnv: Env | null = null;
 
 function initConfig(env: Env) {
@@ -58,25 +86,9 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (pathname === "/favicon.ico") return new Response(null, { status: 204 });
 
-    const configMinValues: Partial<Record<keyof Config, number>> = {
-
-        RATE_LIMIT_INTERVAL_S: 1,
-
-        MAX_RANDOM_METEORITES: 100,
-
-        MAX_RETURNED_SEARCH_RESULTS: 100,
-
-        MIN_RADIUS: 1,
-
-        MAX_RADIUS: 1000,
-
-        DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100,
-
-    };
-
     if (!config.HASH_KEY) return createJsonResponse({ "error": "Your credentials are missing." }, 500);
     
-    if (!isConfigValidWithMinValues(config, configMinValues) || config.DEFAULT_RANDOM_NUMBER_OF_METEORITES > config.MAX_RANDOM_METEORITES) return createJsonResponse({"error": "Invalid configuration detected. Please refer to the documentation."}, 500);
+    if (!checkConfigOnce()) return createJsonResponse({"error": "Invalid configuration detected. Please refer to the documentation."}, 500);
     
     if (req.method === "OPTIONS") {
 
