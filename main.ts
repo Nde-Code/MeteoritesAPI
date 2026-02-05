@@ -56,7 +56,7 @@ let lastEnv: Env | null = null;
 
 let configChecked: boolean = false;
 
-function initConfig(env: Env) {
+function initConfig(env: Env): void {
 
     if (lastEnv === env) return;
 
