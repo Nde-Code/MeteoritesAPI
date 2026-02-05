@@ -52,19 +52,9 @@ const configMinValues: Partial<Record<keyof Config, number>> = {
 
 };
 
-let configChecked: boolean = false;
-
-function checkConfigOnce(): boolean {
-
-    if (configChecked) return true;
-
-    configChecked = isConfigValidWithMinValues(config, configMinValues) && config.DEFAULT_RANDOM_NUMBER_OF_METEORITES <= config.MAX_RANDOM_METEORITES;
-
-    return configChecked;
-
-}
-
 let lastEnv: Env | null = null;
+
+let configChecked: boolean = false;
 
 function initConfig(env: Env) {
 
@@ -73,6 +63,16 @@ function initConfig(env: Env) {
     config.HASH_KEY = env.HASH_KEY ?? "";
 
     lastEnv = env;
+
+}
+
+function checkConfigOnce(): boolean {
+
+    if (configChecked) return true;
+
+    configChecked = isConfigValidWithMinValues(config, configMinValues) && config.DEFAULT_RANDOM_NUMBER_OF_METEORITES <= config.MAX_RANDOM_METEORITES;
+
+    return configChecked;
 
 }
 
