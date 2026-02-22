@@ -1,0 +1,16 @@
+{
+	"name": "meteorites",
+	"main": "main.ts",
+	"compatibility_date": "2026-02-14",
+	"preview_urls": false,
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1,
+		"logs": {
+			"invocation_logs": false
+		},
+		"traces": {
+			"enabled": false
+		}
+	}
+}
