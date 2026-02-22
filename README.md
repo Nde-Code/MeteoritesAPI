@@ -6,7 +6,7 @@ You can found the original dataset here and by: [NASA Open Data Portal](https://
 
 You can deploy your own instance of this API using the button below:
 
-> I host the project on the free plan, so it works well with medium and small datasets (see data/).
+> I host the project on the free plan, so it works well with medium and small datasets (see [data/](data/)).
 > However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/MeteoritesAPI)

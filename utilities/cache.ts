@@ -173,6 +173,7 @@ function calculateAndCacheStats(meteorites: Meteorites) {
         fall_counts: { fell: countFell, found: countFound },
 
     };
+    
 }
 
 initializeIndexes(cachedMeteoritesCleaned);
