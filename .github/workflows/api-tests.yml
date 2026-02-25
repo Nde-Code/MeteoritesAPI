@@ -37,6 +37,7 @@ jobs:
           pip install requests
 
       # 4. Create .dev.vars with environment variables from GitHub Secrets.
+      # Here, we only have one variable: HASH_KEY.
       - name: Create .dev.vars file
         run: |
           echo "HASH_KEY=\"${{ secrets.HASH_KEY }}\"" >> .dev.vars
