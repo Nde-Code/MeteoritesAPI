@@ -1,0 +1,67 @@
+name: MeteoritesAPI Full Integration 
+
+on:
+
+  # Provide the option to run it manually if required.
+  workflow_dispatch:
+
+jobs:
+
+  api-testing:
+  
+    # Use ubuntu-latest as required for compatibility
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # 0. Init project sources.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Install Node.js and npm for Wrangler.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 2. Set up Python for the test script.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 3. Install Python dependencies.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      # 4. Create .dev.vars with environment variables from GitHub Secrets.
+      - name: Create .dev.vars file
+        run: |
+          echo "HASH_KEY=\"${{ secrets.HASH_KEY }}\"" >> .dev.vars
+
+      # 5. Generate Wrangler types for the TypeScript project.
+      - name: Generate Wrangler types
+        run: npx wrangler types
+
+      # 6. Start Wrangler Dev in the background.
+      - name: Start Wrangler Dev (Background)
+        run: |
+          npx wrangler dev --show-interactive-dev-session=false --port 8787 &
+          sleep 15
+
+      # 7. Execute the health check script against the local worker.
+      - name: Run full API test suite
+        env:
+          GIST_URL: ${{ secrets.GIST_SECRET_URL }}
+        run: |
+          curl -sL "$GIST_URL" -o meteorites-api.py && \
+          python3 meteorites-api.py \
+            --remote "http://localhost:8787" \
+            --timeout 25 \
+            --delay 10 \
+            --max-radius 2500 \
+            --max-random 1000 \
+            --max-search 500 ; \
+          rm -f meteorites-api.py
