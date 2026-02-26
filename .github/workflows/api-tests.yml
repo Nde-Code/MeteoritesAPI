@@ -40,7 +40,7 @@ jobs:
       # Here, we only have one variable: HASH_KEY.
       - name: Create .dev.vars file
         run: |
-          echo "HASH_KEY=\"${{ secrets.HASH_KEY }}\"" >> .dev.vars
+          echo "HASH_KEY=\"${{ secrets.HASH_KEY }}\"" > .dev.vars
 
       # 5. Generate Wrangler types for the TypeScript project.
       - name: Generate Wrangler types
