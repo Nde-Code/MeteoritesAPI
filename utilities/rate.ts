@@ -1,20 +1,34 @@
+import { printLogLine } from "./utils.ts";
+
 export async function checkTimeRateLimit(hashedIp: string, limitSeconds: number): Promise<boolean> {
-    
-    const cache = (caches as any).default;
 
-    const cacheKey = `https://ratelimit.local/${hashedIp}`;
+    try {
 
-    const hit = await cache.match(cacheKey);
+        const cache = (caches as any)?.default;
 
-    if (hit) return false;
+        if (!cache) return true; 
 
-    await cache.put(cacheKey, new Response("1", {
+        const cacheKey = `https://ratelimit.local/${hashedIp}`;
 
-        headers: { "Cache-Control": `max-age=${limitSeconds}` }
+        const hit = await cache.match(cacheKey);
 
-    }));
+        if (hit) return false;
 
-    return true;
+        await cache.put(cacheKey, new Response("1", {
+
+            headers: { "Cache-Control": `max-age=${limitSeconds}` }
+
+        }));
+
+        return true;
+
+    } catch (_err) {
+
+        printLogLine("ERROR", "Cache API failure.");
+
+        return true; 
+
+    }
 
 }
 
