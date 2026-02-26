@@ -82,7 +82,7 @@ Search meteorites using various filters, including name, class, date, mass, and 
 
 * `403 Forbidden`: Unable to hash your IP.
 
-* `500 Internal Server Error`: Wrong environment variable or server error.
+* `500 Internal Server Error`: Wrong environment variable, config or server error.
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
@@ -139,7 +139,7 @@ Retrieve detailed information about a single meteorite by either its unique `id`
 
 * `403 Forbidden`: Unable to hash your IP.
 
-* `500 Internal Server Error`: Wrong environment variable or server error.
+* `500 Internal Server Error`: Wrong environment variable, config or server error.
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
@@ -200,7 +200,7 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 
 * `403 Forbidden`: Unable to hash your IP.
 
-* `500 Internal Server Error`: Wrong environment variable or server error.
+* `500 Internal Server Error`: Wrong environment variable, config or server error.
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
@@ -285,7 +285,7 @@ Returns useful insights such as year ranges, mass stats, classification counts, 
 
 * `403 Forbidden`: Unable to hash your IP.
 
-* `500 Internal Server Error`: Wrong environment variable or server error.
+* `500 Internal Server Error`: Wrong environment variable, config or server error.
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
