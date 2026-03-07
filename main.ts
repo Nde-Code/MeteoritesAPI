@@ -188,7 +188,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         const name: string | null = getTrimmedParam(query.get("name"));
 
-        if (!id && !name) return createJsonResponse({ "error": "Please provide either 'id' or 'name' as a query parameter." }, 400);
+        if (!id && !name) return createJsonResponse({ "error": "Invalid or missing query parameter." }, 400);
 
         if (id && name) return createJsonResponse({ "error": "Please provide either 'id' or 'name', not both." }, 400);
 

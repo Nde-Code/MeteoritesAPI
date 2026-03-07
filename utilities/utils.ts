@@ -88,11 +88,17 @@ export function getDistribution(meteorites: Meteorites, field: "year" | "recclas
 
 export function getTrimmedParam(param: string | null | undefined): string | null {
 
+    const MAX_PARAM_LENGTH: number = 256;
+
     if (typeof param !== "string") return null;
 
     const trimmed: string = param.trim();
 
-    return (trimmed.length === 0) ? null : trimmed;
+    if (trimmed.length === 0) return null;
+
+    if (trimmed.length > MAX_PARAM_LENGTH) return null; 
+
+    return trimmed;
 
 }
 
