@@ -184,6 +184,8 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 | --------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `count`   | number | Number of random meteorites to return. Defaults to `DEFAULT_RANDOM_NUMBER_OF_METEORITES`. Cannot exceed `MAX_RANDOM_METEORITES`. |
 
+> **Note:** a `count` that is not a valid number will simply return the default number of meteorites.
+
 #### **Response:**
 
 * `200 OK`: Successfully returns a random list of meteorites.
