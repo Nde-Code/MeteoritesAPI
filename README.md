@@ -68,7 +68,7 @@ Search meteorites using various filters, including name, class, date, mass, and 
 | `radius`      | number | Radius in kilometers for location filtering (min: `MIN_RADIUS`, max: `MAX_RADIUS`) **(required with center coords)**  |
 | `limit`      | number | Maximum number of search results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`)  |
 
-⚠️ **Note on geographic radius precision:** The `/search` endpoint uses an equirectangular approximation for distance calculation (optimized for performance). It is highly accurate for local and regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, small distortions may occur compared to true geodesic (Haversine) distance calculations.
+⚠️ **Note on geographic radius precision:** The endpoint uses an equirectangular approximation for distance calculation (optimized for performance). It is highly accurate for local and regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, small distortions may occur compared to true geodesic (Haversine) distance calculations.
 
 > **Note:** Unrecognized parameters are ignored. The `limit` parameter is automatically capped if it exceeds `MAX_RETURNED_SEARCH_RESULTS`. However, any malformed parameters (e.g., text instead of a number), out-of-range coordinates, or conflicting filters (e.g., combining `year` with `minYear`) will trigger a `400 Bad Request` error.
 
