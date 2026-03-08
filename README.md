@@ -33,7 +33,7 @@ The API is available here:
 
 | Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
 | :--- | :--- | :-- | :--- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | 8.5K of [entries](../meteorites-v2/data/meteorites_small.json) |
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | 8.5K of [entries](data/meteorites_small.json) |
 
 And here is an overview of how [my config.ts](config.ts) is currently configured for endpoints limitations:
 
@@ -68,9 +68,9 @@ Search meteorites using various filters, including name, class, date, mass, and 
 | `radius`      | number | Radius in kilometers for location filtering (min: `MIN_RADIUS`, max: `MAX_RADIUS`) **(required with center coords)**  |
 | `limit`      | number | Maximum number of search results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`)  |
 
-> **Note:** Unrecognized parameters are ignored. The `limit` parameter is automatically capped if it exceeds `MAX_RETURNED_SEARCH_RESULTS`. However, any malformed parameters (e.g., text instead of a number), out-of-range coordinates, or conflicting filters (e.g., combining `year` with `minYear`) will trigger a `400 Bad Request` error.
+⚠️ **Note on geographic radius precision:** The `/search` endpoint uses an equirectangular approximation for distance calculation (optimized for performance). It is highly accurate for local and regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, small distortions may occur compared to true geodesic (Haversine) distance calculations.
 
-> ⚠️ **Note on geographic radius precision:** The `/search` endpoint uses an equirectangular approximation for distance calculation (optimized for performance). It is highly accurate for local and regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, small distortions may occur compared to true geodesic (Haversine) distance calculations.
+> **Note:** Unrecognized parameters are ignored. The `limit` parameter is automatically capped if it exceeds `MAX_RETURNED_SEARCH_RESULTS`. However, any malformed parameters (e.g., text instead of a number), out-of-range coordinates, or conflicting filters (e.g., combining `year` with `minYear`) will trigger a `400 Bad Request` error.
 
 #### **Response:**
 
@@ -385,7 +385,7 @@ You can also get help directly in your terminal via:
 python compiler.py --help
 ```
 
-> ⚠️ **Visualization Only:** The `--grid` option limits each cell to one meteorite to reduce clutter (e.g., in Antarctic fields). While individual record attributes remain 100% accurate, the resulting datasets (like `meteorites_medium.json` & `meteorites_small.json`) lose their original statistical distribution and must not be used for scientific research.
+⚠️ **Visualization Only:** The `--grid` option limits each cell to one meteorite to reduce clutter (e.g., in Antarctic fields). While individual record attributes remain 100% accurate, the resulting datasets (like `meteorites_medium.json` & `meteorites_small.json`) lose their original statistical distribution and must not be used for scientific research.
 
 ## ⚖️ License:
 
