@@ -37,13 +37,15 @@ The API is available here:
 
 And here is an overview of how [my config.ts](config.ts) is currently configured for endpoints limitations:
 
-| Code: | Value: | Description: | Note: |
-| :--- | :---: | :--- | :-- |
-| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of random meteorites. | If the requested `count` parameter exceeds this limit, an error will be returned. |
-| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Maximum number of search results. | The search process will stop if the results exceed this limit. |
-| `MIN_RADIUS` | 1 | Minimum allowed radius. | If the `radius` parameter is below the minimum, an error will be returned. |
-| `MAX_RADIUS` | 2500 | Maximum allowed radius. | If the `radius` parameter exceeds the maximum, an error will be returned. |
-| `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | 100 | Default number of random meteorites. | Default number returned when the `count` parameter is missing. |
+```yaml
+MAX_RANDOM_METEORITES: 1000       # Max meteorites allowed (Error if exceeded)
+MAX_RETURNED_SEARCH_RESULTS: 500  # Hard stop for search queries
+MIN_RADIUS: 1                     # Lower bound for radius
+MAX_RADIUS: 2500                  # Upper bound for radius
+DEFAULT_RANDOM_METEORITES: 100    # Fallback when 'count' is missing
+```
+
+> Ensure you follow these limitations. I will normally try to keep them the same, but changes are still possible, so feel free to follow the repository updates to stay informed.
 
 ### 1. **[GET]** `/search`:
 
@@ -68,7 +70,7 @@ Search meteorites using various filters, including name, class, date, mass, and 
 
 > **Note:** Unrecognized parameters are ignored. The `limit` parameter is automatically capped if it exceeds `MAX_RETURNED_SEARCH_RESULTS`. However, any malformed parameters (e.g., text instead of a number), out-of-range coordinates, or conflicting filters (e.g., combining `year` with `minYear`) will trigger a `400 Bad Request` error.
 
-> **Note on geographic radius precision:** The `/search` endpoint uses an equirectangular approximation for distance calculation (optimized for performance). It is highly accurate for local and regional queries (<= 1000–1500 km). For larger radii, especially at high latitudes, small distortions may occur compared to true geodesic (Haversine) distance calculations.
+> ⚠️ **Note on geographic radius precision:** The `/search` endpoint uses an equirectangular approximation for distance calculation (optimized for performance). It is highly accurate for local and regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, small distortions may occur compared to true geodesic (Haversine) distance calculations.
 
 #### **Response:**
 
@@ -355,12 +357,10 @@ As explained above, this API works on data, and I designed something highly opti
 - The entire database (33K entries): [meteorites_complete.json](data/meteorites_complete.json)
 
 - The medium dataset (15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
-> Compiled via: `python compiler.py --input data/meteorites.csv --output data/meteorites_medium.json --grid 0.00085 --limit 15000 --clean-up`
+> Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_medium.json --grid 0.00085 --limit 15000 --clean-up`
 
 - The small dataset **(used)** (8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
-> Compiled via: `python compiler.py --input data/meteorites.csv --output data/meteorites_small.json --grid 0.014 --limit 8500 --clean-up`
-
-> The small dataset is probably the best choice because the complete meteorites dataset contains a lot of noise. It depends on what you want to do with the project, but for statistics/visualization, the small dataset is likely the most suitable option.
+> Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_small.json --grid 0.014 --limit 8500 --clean-up`
 
 ### Compile your own dataset using the Python CLI:
 
@@ -385,7 +385,7 @@ You can also get help directly in your terminal via:
 python compiler.py --help
 ```
 
-> ⚠️ When the `--grid` option is enabled, the script applies a grid-based spatial filter for visualization only. It limits each grid cell to a maximum of one meteorite to reduce point density in highly concentrated areas (e.g., Antarctic fields like Yamato) and improve map readability. No scientific attributes are modified: latitude, longitude, year, mass, and classification remain **exactly** as in the original NASA CSV. Only some records are removed to reduce visual clutter. When used with `--grid`, the script produces datasets (like: [meteorites_medium.json](data/meteorites_medium.json) and [meteorites_small.json](data/meteorites_small.json)) that do not preserve the original spatial or statistical distribution and must not be used for scientific or analytical purposes.
+> ⚠️ **Visualization Only:** The `--grid` option limits each cell to one meteorite to reduce clutter (e.g., in Antarctic fields). While individual record attributes remain 100% accurate, the resulting datasets (like `meteorites_medium.json` & `meteorites_small.json`) lose their original statistical distribution and must not be used for scientific research.
 
 ## ⚖️ License:
 
