@@ -82,8 +82,6 @@ Search meteorites using various filters, including name, class, date, mass, and 
 
 * `429 Too Many Requests`: Rate limit exceeded.
 
-* `403 Forbidden`: Unable to hash your IP.
-
 * `500 Internal Server Error`: Wrong environment variable, config or server error.
 
 * `503 Service Unavailable`: Cache is empty or loading.
@@ -138,8 +136,6 @@ Retrieve detailed information about a single meteorite by either its unique `id`
 * `404 Not Found`: No meteorite matches the given identifier.  
 
 * `429 Too Many Requests`: Rate limit exceeded.
-
-* `403 Forbidden`: Unable to hash your IP.
 
 * `500 Internal Server Error`: Wrong environment variable, config or server error.
 
@@ -199,8 +195,6 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 * `404 Not Found`: No meteorites data available.
 
 * `429 Too Many Requests`: Rate limit exceeded.
-
-* `403 Forbidden`: Unable to hash your IP.
 
 * `500 Internal Server Error`: Wrong environment variable, config or server error.
 
@@ -284,8 +278,6 @@ Returns useful insights such as year ranges, mass stats, classification counts, 
 * `404 Not Found`: No meteorite data available.
 
 * `429 Too Many Requests`: Rate limit exceeded.
-
-* `403 Forbidden`: Unable to hash your IP.
 
 * `500 Internal Server Error`: Wrong environment variable, config or server error.
 
