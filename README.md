@@ -74,11 +74,9 @@ Search meteorites using various filters, including name, class, date, mass, and 
 
 #### **Response:**
 
-* `200 OK`: Successful query with results.
+* `200 OK`: Successful query. May return an empty result set.
 
 * `400 Bad Request`: Missing or invalid parameters.
-
-* `404 Not Found`: No meteorite data available.
 
 * `429 Too Many Requests`: Rate limit exceeded.
 
@@ -192,8 +190,6 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 
 * `400 Bad Request`: Invalid `count` parameter.
 
-* `404 Not Found`: No meteorites data available.
-
 * `429 Too Many Requests`: Rate limit exceeded.
 
 * `500 Internal Server Error`: Wrong environment variable, config or server error.
@@ -274,8 +270,6 @@ Returns useful insights such as year ranges, mass stats, classification counts, 
 #### **Response:**
 
 * `200 OK`: Statistics successfully returned.
-
-* `404 Not Found`: No meteorite data available.
 
 * `429 Too Many Requests`: Rate limit exceeded.
 
