@@ -70,7 +70,7 @@ Search meteorites using various filters, including name, class, date, mass, and 
 
 ⚠️ **Note on geographic radius precision:** The endpoint uses an equirectangular approximation for distance calculation (optimized for performance). It is highly accurate for local and regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, small distortions may occur compared to true geodesic (Haversine) distance calculations.
 
-> **Note:** Unrecognized parameters are ignored. The `limit` parameter is automatically capped if it exceeds `MAX_RETURNED_SEARCH_RESULTS`. However, any malformed parameters (e.g., text instead of a number), out-of-range coordinates, or conflicting filters (e.g., combining `year` with `minYear`) will trigger a `400 Bad Request` error.
+> **Note:** Unknown parameters are ignored. Parameters expecting numeric values (e.g., year, mass, radius) must contain valid numbers; if a value cannot be parsed (e.g., `year=abc`), the parameter is treated as not provided. Conflicting filters (such as `year` with `minYear`/`maxYear`, or `mass` with `minMass`/`maxMass`) result in a `400 Bad Request`. Geographic filtering requires `centerLatitude`, `centerLongitude`, and `radius` together with valid coordinate ranges. The `limit` parameter must be a positive integer and is automatically capped at `MAX_RETURNED_SEARCH_RESULTS`.
 
 #### **Response:**
 
