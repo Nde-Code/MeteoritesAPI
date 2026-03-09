@@ -1,6 +1,6 @@
 import { StaticConfig, Meteorites } from "../types/types.ts";
 
-export function createJsonResponse(body: object, status: number = 200, headers: HeadersInit = {}): Response {
+export function createJsonResponse(body: object, status = 200, headers: HeadersInit = {}): Response {
 
     return new Response(JSON.stringify(body), {
 
@@ -12,9 +12,9 @@ export function createJsonResponse(body: object, status: number = 200, headers: 
 
             "Access-Control-Allow-Origin": "*",
 
-            ...headers,
+            ...headers
 
-        },
+        }
 
     });
 
@@ -27,7 +27,7 @@ export function normalizeString(str: string): string {
 }
 
 export function isConfigValidWithMinValues(config: StaticConfig, rules: Partial<Record<keyof StaticConfig, number>>): boolean {
-
+    
     for (const key in rules) {
 
         const typedKey = key as keyof StaticConfig;
@@ -36,7 +36,7 @@ export function isConfigValidWithMinValues(config: StaticConfig, rules: Partial<
 
         const value = config[typedKey];
 
-        if (minValue !== undefined && value < minValue) return false;
+        if (minValue !== undefined && (value === undefined || value < minValue)) return false;
 
     }
 
@@ -48,42 +48,16 @@ export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string): vo
 
 export function isPositiveInteger(n: number): boolean { return Number.isInteger(n) && n > 0; }
 
-export function getDistribution(meteorites: Meteorites, field: "year" | "recclass"): Record<string, number> {
-    
-    const countMap: Record<string, number> = {};
+export function sortDistribution(countMap: Record<string, number>, field: "year" | "recclass"): Record<string, number> {
 
-    for (const m of meteorites) {
+    const entries = Object.entries(countMap);
 
-        const value = m[field];
+    if (field === "year") entries.sort((a, b) => Number(a[0]) - Number(b[0]));
 
-        if (!value) continue;
+    else entries.sort((a, b) => b[1] - a[1]);
 
-        const key: string = value.toString().trim();
+    return Object.fromEntries(entries);
 
-        if (!key) continue;
-
-        countMap[key] = (countMap[key] || 0) + 1;
-
-    }
-
-    const sorted: [string, number][] = Object.entries(countMap).sort((a, b) => {
-
-        if (field === "year") return (Number(a[0]) - Number(b[0]));
-
-        else return (b[1] - a[1]);
-
-    });
-
-    const distribution: Record<string, number> = {};
-
-    for (const [key, count] of sorted) {
-
-        distribution[key] = count;
-
-    }
-
-    return distribution;
-    
 }
 
 export function getTrimmedParam(param: string | null | undefined): string | null {
@@ -92,14 +66,14 @@ export function getTrimmedParam(param: string | null | undefined): string | null
 
     if (typeof param !== "string") return null;
 
+    if (param.length > MAX_PARAM_LENGTH + 100) return null; 
+
     const trimmed: string = param.trim();
 
-    if (trimmed.length === 0) return null;
-
-    if (trimmed.length > MAX_PARAM_LENGTH) return null; 
+    if (trimmed.length === 0 || trimmed.length > MAX_PARAM_LENGTH) return null;
 
     return trimmed;
-
+    
 }
 
 export function toNumber(value: string | null | undefined): number | null {
@@ -113,5 +87,5 @@ export function toNumber(value: string | null | undefined): number | null {
     const n: number = Number(trimmed);
 
     return isNaN(n) ? null : n;
-
+    
 }
