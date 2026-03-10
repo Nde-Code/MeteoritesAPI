@@ -2,7 +2,7 @@ import rawData from "../data/meteorites_small.json" assert { type: "json" };
 
 import { normalizeString, sortDistribution } from "./utils.ts";
 
-import { Meteorite, Meteorites, MeteoriteRaw, MeteoritesDBFormat } from "../types/types.ts";
+import { Meteorite, Meteorites, MeteoriteRaw, MeteoritesRaw, MeteoritesDBFormat } from "../types/types.ts";
 
 type MeteoritesRoot = { meteorites: MeteoritesDBFormat };
 
@@ -30,9 +30,9 @@ function initializeData() {
 
     const rootData: MeteoritesRoot = rawData as MeteoritesRoot;
 
-    const initialRawData: MeteoriteRaw[] = Object.values(rootData.meteorites);
+    const initialRawData: MeteoritesRaw = Object.values(rootData.meteorites);
     
-    const cleaned: Meteorite[] = [];
+    const cleaned: Meteorites = [];
 
     const yearsDist: Record<string, number> = {};
 

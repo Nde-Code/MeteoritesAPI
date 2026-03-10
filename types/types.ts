@@ -95,4 +95,6 @@ export interface MeteoriteRaw {
 
 }
 
+export type MeteoritesRaw = MeteoriteRaw[];
+
 export type MeteoritesDBFormat = Record<string, MeteoriteRaw>;
