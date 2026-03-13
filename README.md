@@ -373,7 +373,7 @@ You can also get help directly in your terminal via:
 python compiler.py --help
 ```
 
-⚠️ **Visualization Only:** The `--grid` option limits each cell to one meteorite to reduce clutter (e.g., in Antarctic fields). While individual record attributes remain 100% accurate, the resulting datasets (like `meteorites_medium.json` & `meteorites_small.json`) lose their original statistical distribution and must not be used for scientific research.
+⚠️ **Visualization only:** The `--grid` option limits each cell to one meteorite to reduce clutter (e.g., in Antarctic fields). While individual record attributes remain 100% accurate, the resulting datasets (like `meteorites_medium.json` & `meteorites_small.json`) lose their original statistical distribution and must not be used for scientific research.
 
 ## ⚖️ License:
 
