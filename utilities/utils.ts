@@ -44,7 +44,15 @@ export function isConfigValidWithMinValues(config: StaticConfig, rules: Partial<
 
 }
 
-export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string): void { console.log(`[${level}] ${text}`); }
+export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string): void {
+
+    const MAX_LOG_LENGTH: number = 2000;
+
+    const output: string = text.length <= MAX_LOG_LENGTH ? text : `${text.substring(0, MAX_LOG_LENGTH)} [...]`;
+
+    console.log(`[${level}] ${output}`);
+
+}
 
 export function isPositiveInteger(n: number): boolean { return Number.isInteger(n) && n > 0; }
 
