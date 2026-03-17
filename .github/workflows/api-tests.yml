@@ -2,6 +2,10 @@ name: MeteoritesAPI Full Integration
 
 on:
 
+  # Plan a monthly check to ensure proper integrity.
+  schedule:
+    - cron: '42 3 22 * *'
+
   # Provide the option to run it manually if required.
   workflow_dispatch:
 
