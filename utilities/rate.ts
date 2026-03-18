@@ -46,7 +46,7 @@ export async function hashIp(ip: string, salt: string): Promise<string> {
 
         const b = hashArray[i];
 
-        hexString += (b < 16 ? '0' : '') + b.toString(16);
+        hexString += ((b < 16) ? '0' : '') + b.toString(16);
 
     }
 

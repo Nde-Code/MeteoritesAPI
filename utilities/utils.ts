@@ -48,7 +48,7 @@ export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string): vo
 
     const MAX_LOG_LENGTH: number = 2000;
 
-    const output: string = text.length <= MAX_LOG_LENGTH ? text : `${text.substring(0, MAX_LOG_LENGTH)} [...]`;
+    const output: string = (text.length <= MAX_LOG_LENGTH) ? text : `${text.substring(0, MAX_LOG_LENGTH)} [...]`;
 
     console.log(`[${level}] ${output}`);
 
