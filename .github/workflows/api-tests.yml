@@ -70,5 +70,4 @@ jobs:
             --delay 10 \
             --max-radius 2500 \
             --max-random 1000 \
-            --max-search 500 ; \
-          rm -f meteorites-api.py
+            --max-search 500
