@@ -61,11 +61,9 @@ jobs:
           sleep 15
 
       # 7. Execute the health check script against the local worker.
-      - name: Run full API test suite
-        env:
-          GIST_URL: ${{ secrets.GIST_SECRET_URL }}
+      - name: Run full API test suite 
         run: |
-          curl -sL "$GIST_URL" -o meteorites-api.py && \
+          curl -sL "${{ secrets.GIST_SECRET_URL }}" -o meteorites-api.py && \
           python3 meteorites-api.py \
             --remote "http://localhost:8787" \
             --timeout 25 \
