@@ -8,7 +8,7 @@ To be clear and transparent about what data this software uses and how it is han
 
 To implement a `rate limiting` system, this software works with your IP address. 
 
-However, the IP is immediately hashed using `SHA-256`, combined with a `SALT` key (strong, secret, and secure) stored in the `.dev.vars` file. Your IP is **never logged** anywhere.
+However, the IP is immediately hashed using `SHA-256`, combined with a `SALT` key (strong, secret, and secure) stored in the `.dev.vars` file (in local) and in [Cloudflare Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/) in production. Your IP is **never logged** anywhere.
 
 The IP is **never stored in any external database** or service. 
 
