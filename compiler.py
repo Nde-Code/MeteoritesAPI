@@ -85,6 +85,12 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--minify",
+        action="store_true",
+        help="Minify the output JSON file (remove indentation and extra spaces)"
+    )
+
+    parser.add_argument(
         "--debug",
         type=int,
         choices=[0, 1, 2],
@@ -212,7 +218,8 @@ def main():
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as f:
-        json.dump(data_dict, f, indent=4)
+        if args.minify: json.dump(data_dict, f, separators=(',', ':'))
+        else: json.dump(data_dict, f, indent=4)
 
     print(
         "========================================\n"
