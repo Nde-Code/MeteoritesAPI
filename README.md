@@ -345,10 +345,10 @@ As explained above, this API works on data, and I designed something highly opti
 - The entire database (33K entries): [meteorites_complete.json](data/meteorites_complete.json)
 
 - The medium dataset (15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
-> Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_medium.json --grid 0.00085 --limit 15000 --clean-up`
+> Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_medium.json --grid 0.00085 --limit 15000 --clean-up --minify`
 
 - The small dataset **(used)** (8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
-> Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_small.json --grid 0.014 --limit 8500 --clean-up`
+> Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_small.json --grid 0.014 --limit 8500 --clean-up --minify`
 
 ### Compile your own dataset using the Python CLI:
 
