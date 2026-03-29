@@ -75,7 +75,7 @@ def parse_args():
         "--limit",
         type=int,
         default=0,
-        help="Maximum number of records (0 = unlimited) and stops processing the input file as soon as the limit is reached."
+        help="Maximum number of records (0 = unlimited) and stops processing the input file as soon as the limit is reached"
     )
 
     parser.add_argument(
