@@ -133,17 +133,17 @@ wrangler secret put HASH_KEY
 ```ts
 export const config: StaticConfig = {
 
-  RATE_LIMIT_INTERVAL_S: 1, // Min: 1
-
-  MAX_RANDOM_METEORITES: 1000, // Min: 100
-
-  MAX_RETURNED_SEARCH_RESULTS: 500, // Min: 100
-
-  MIN_RADIUS: 1, // Min: 1
-
-  MAX_RADIUS: 2500, // Min: 1000
-
-  DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100 // Min: 100
+	RATE_LIMIT_INTERVAL_S: 1, // Min: 1
+	
+	MAX_RANDOM_METEORITES: 1000, // Min: 100
+	
+	MAX_RETURNED_SEARCH_RESULTS: 500, // Min: 100
+	
+	MIN_RADIUS: 1, // Min: 1
+	
+	MAX_RADIUS: 2500, // Min: 1000
+	
+	DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100 // Min: 100
 
 };
 ```
