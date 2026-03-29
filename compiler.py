@@ -16,7 +16,7 @@ EXPECTED_FIELDS = [
     "year",
     "reclat",
     "reclong",
-    "GeoLocation",
+    "GeoLocation"
 ]
 
 def debug_print(level: int, current: int, message: str):
@@ -99,7 +99,6 @@ def parse_args():
     )
 
     return parser.parse_args()
-
 
 def main():
     args = parse_args()
@@ -231,7 +230,6 @@ def main():
         f"- Record limit      : {args.limit if use_limit else 'Unlimited'}\n"
         "========================================"
     )
-
 
 if __name__ == "__main__":
     main()
