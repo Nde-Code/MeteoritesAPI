@@ -94,21 +94,21 @@ curl "https://meteorites.nde-code.workers.dev/search?minYear=1998&centerLatitude
 
 ```json
 {
-  "success": {
-    "count": 1,
-    "meteorites": [
-      {
-        "id": "458",
-        "name": "Alby sur Chéran",
-        "recclass": "Eucrite-mmict",
-        "mass": 252,
-        "fall": "Fell",
-        "year": 2002,
-        "latitude": 45.82133,
-        "longitude": 6.01533
-      }
-    ]
-  }
+    "success": {
+        "count": 1,
+        "meteorites": [
+            {
+                "id": "458",
+                "name": "Alby sur Chéran",
+                "recclass": "Eucrite-mmict",
+                "mass": 252,
+                "fall": "Fell",
+                "year": 2002,
+                "latitude": 45.82133,
+                "longitude": 6.01533
+            }
+        ]
+    }
 }
 ```
 
@@ -157,18 +157,18 @@ curl "https://meteorites.nde-code.workers.dev/get?name=Kopjes%20Vlei"
 
 ```json
 {
-  "success": {
-    "meteorite": {
-      "id": "12345",
-      "name": "Kopjes Vlei",
-      "recclass": "Iron, IIAB",
-      "mass": 13600,
-      "fall": "Found",
-      "year": 1914,
-      "latitude": -29.3,
-      "longitude": 21.15
+    "success": {
+        "meteorite": {
+            "id": "12345",
+            "name": "Kopjes Vlei",
+            "recclass": "Iron, IIAB",
+            "mass": 13600,
+            "fall": "Found",
+            "year": 1914,
+            "latitude": -29.3,
+            "longitude": 21.15
+        }
     }
-  }
 }
 ```
 
@@ -208,41 +208,41 @@ curl "https://meteorites.nde-code.workers.dev/random?count=3"
 
 ```json
 {
-  "success": {
-    "count": 3,
-    "meteorites": [
-      {
-        "id": "14764",
-        "name": "Mabwe-Khoywa",
-        "recclass": "L5",
-        "mass": 540,
-        "fall": "Fell",
-        "year": 1937,
-        "latitude": 19,
-        "longitude": 97
-      },
-      {
-        "id": "11442",
-        "name": "Guibga",
-        "recclass": "L5",
-        "mass": 288,
-        "fall": "Fell",
-        "year": 1972,
-        "latitude": 13.5,
-        "longitude": -0.68333
-      },
-      {
-        "id": "8671",
-        "name": "Elephant Moraine 90262",
-        "recclass": "L6",
-        "mass": 9.2,
-        "fall": "Found",
-        "year": 1990,
-        "latitude": -76.28752,
-        "longitude": 156.44737
-      }
-    ]
-  }
+    "success": {
+        "count": 3,
+        "meteorites": [
+            {
+                "id": "14764",
+                "name": "Mabwe-Khoywa",
+                "recclass": "L5",
+                "mass": 540,
+                "fall": "Fell",
+                "year": 1937,
+                "latitude": 19,
+                "longitude": 97
+            },
+            {
+                "id": "11442",
+                "name": "Guibga",
+                "recclass": "L5",
+                "mass": 288,
+                "fall": "Fell",
+                "year": 1972,
+                "latitude": 13.5,
+                "longitude": -0.68333
+            },
+            {
+                "id": "8671",
+                "name": "Elephant Moraine 90262",
+                "recclass": "L6",
+                "mass": 9.2,
+                "fall": "Found",
+                "year": 1990,
+                "latitude": -76.28752,
+                "longitude": 156.44737
+            }
+        ]
+    }
 }
 ```
 
@@ -289,50 +289,50 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 
 ```js
 {
-  "success": {
-    "meteorites_count": 8500,
-    "min_year": "860",
-    "max_year": "2013",
-    "min_mass_g": 0.1,
-    "max_mass_g": 60000000,
-    "avg_mass_g": 68231.78,
-    "years": [
-      "860",
-      "920",
-      "1399",
-      "1490",
-      "1491",
-      ...
-    ],
-    "years_distribution": {
-      "860": 1,
-      "920": 1,
-      "1399": 1,
-      "1490": 1,
-      "1491": 1,
-      ...
+    "success": {
+        "meteorites_count": 8500,
+        "min_year": "860",
+        "max_year": "2013",
+        "min_mass_g": 0.1,
+        "max_mass_g": 60000000,
+        "avg_mass_g": 68231.78,
+        "years": [
+            "860",
+            "920",
+            "1399",
+            "1490",
+            "1491",
+            ...
+        ],
+        "years_distribution": {
+            "860": 1,
+            "920": 1,
+            "1399": 1,
+            "1490": 1,
+            "1491": 1,
+            ...
+        }
+        "recclasses": [
+            "Acapulcoite",
+            "Achondrite-ung",
+            "Angrite",
+            "Aubrite",
+            ...
+        ],
+        "recclasses_distribution": {
+            "L6": 1616,
+            "H5": 1461,
+            "H6": 749,
+            "L5": 653,
+            "H4": 637,
+            ...
+        },
+        "geolocated_count": 8500,
+        "fall_counts": {
+            "fell": 1095,
+            "found": 7405
+        }
     }
-    "recclasses": [
-      "Acapulcoite",
-      "Achondrite-ung",
-      "Angrite",
-      "Aubrite",
-      ...
-    ],
-    "recclasses_distribution": {
-      "L6": 1616,
-      "H5": 1461,
-      "H6": 749,
-      "L5": 653,
-      "H4": 637,
-      ...
-    },
-    "geolocated_count": 8500,
-    "fall_counts": {
-      "fell": 1095,
-      "found": 7405
-    }
-  }
 }
 ```
 
