@@ -1,6 +1,6 @@
 # Meteorites Landings API:
 
-A RESTful API built with **TypeScript** and **Wrangler** to query and analyze the NASA Meteorites Landings dataset.
+A RESTful API built with **TypeScript** and **Wrangler CLI** to query and analyze the NASA Meteorites Landings dataset.
 
 You can found the original dataset here and by: [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)
 
