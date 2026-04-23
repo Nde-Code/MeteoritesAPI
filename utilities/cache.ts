@@ -1,4 +1,4 @@
-import rawData from "../data/meteorites_small.json" assert { type: "json" };
+import rawData from "../data/meteorites_small.json";
 
 import { normalizeString, sortDistribution } from "./utils.ts";
 

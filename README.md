@@ -336,6 +336,67 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 }
 ```
 
+### 5. **[GET]** `/health`:
+
+Monitor the service status and the integrity of the internal cache.
+
+This endpoint performs a self-diagnostic to ensure all data structures are correctly loaded and indexed.
+
+#### **Response Fields:**
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `status` | string | Overall health status: `"healthy"` or `"unhealthy"` |
+| `timestamp` | string | ISO 8601 timestamp of the check |
+| `message` | string | A summary message of the system state |
+| `checks` | object | Detailed status of internal components (see below) |
+
+#### **Internal Checks Detail (`checks`):**
+
+* `cache_ready`: Boolean indicating if the main cache is fully loaded.
+
+* `meteorites_count`: Total number of cleaned meteorites currently in memory.
+
+* `shuffled_meteorites_count`: Number of meteorites available for the `/random` endpoint.
+
+* `stats_available`: Boolean indicating if the pre-computed statistics are ready.
+
+* `by_id_index_size`: Number of entries in the ID-based lookup index.
+
+* `by_name_index_size`: Number of entries in the Name-based lookup index.
+
+> **Note:** The service is considered **unhealthy** (returning a `503` status) if the cache is not ready, or if any of the meteorite counts or index sizes are zero, or if statistics have failed to generate.
+
+#### **Response:**
+
+* `200 OK`: All systems are operational and data is fully indexed.
+
+* `503 Service Unavailable`: One or more health checks failed (e.g., cache loading or indexing issue).
+
+#### **Example Request:**
+
+```bash
+curl "https://meteorites.nde-code.workers.dev/health"
+```
+
+#### **Example Response (Healthy):**
+
+```json
+{
+    "status": "healthy",
+    "timestamp": "2026-04-23T13:36:14.000Z",
+    "message": "All endpoints are functional",
+    "checks": {
+        "cache_ready": true,
+        "meteorites_count": 45716,
+        "shuffled_meteorites_count": 45716,
+        "stats_available": true,
+        "by_id_index_size": 45716,
+        "by_name_index_size": 45716
+    }
+}
+```
+
 ## 🖥️ Documentation for developers:
 
 The project is a [Cloudflare Workers](https://workers.cloudflare.com/) application that uses the Cloudflare runtime called [Workerd](https://github.com/cloudflare/workerd). The setup and code are not very different from a Node.js or Deno project, but there are a few things to keep in mind. So, for that, I provide documentation [here](docs/docs.md).

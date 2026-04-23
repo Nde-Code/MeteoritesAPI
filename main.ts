@@ -52,6 +52,8 @@ import {
 
 } from "./utilities/utils.ts";
 
+import { handleHealthCheck } from "./utilities/health.ts";
+
 const configMinValues: Partial<Record<keyof StaticConfig, number>> = {
 
     RATE_LIMIT_INTERVAL_S: 1,
@@ -121,6 +123,8 @@ async function handler(req: Request, env: Env): Promise<Response> {
     }
 
     if (req.method === "GET" && pathname === "/") return createJsonResponse({ "success": "Welcome to the API root. Refer to the documentation at https://github.com/Nde-Code/MeteoritesAPI." }, 200);
+
+    if (req.method === "GET" && pathname === "/health") { return await handleHealthCheck(); }
 
     if (req.method === "GET" && pathname === "/stats") {
 

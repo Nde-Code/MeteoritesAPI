@@ -26,6 +26,32 @@ export interface RuntimeConfig extends StaticConfig {
 
 }
 
+export interface HealthCheckResult {
+
+    status: "healthy" | "degraded" | "unhealthy";
+
+    timestamp: string;
+
+    checks: {
+
+        cache_ready: boolean;
+
+        meteorites_count: number;
+
+        shuffled_meteorites_count: number;
+
+        stats_available: boolean;
+
+        by_id_index_size: number;
+
+        by_name_index_size: number;
+
+    };
+
+    message: string;
+    
+}
+
 export interface Filters { 
 
     recclass: string | null;
