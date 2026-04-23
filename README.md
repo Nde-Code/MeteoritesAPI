@@ -51,7 +51,7 @@ DEFAULT_RANDOM_METEORITES: 100    # Fallback when 'count' is missing
 
 Search meteorites using various filters, including name, class, date, mass, and geographic location.
 
-#### **Query Parameters:**
+#### **Query parameters:**
 
 | Parameter     | Type   | Description                                                                |
 | ------------- | ------ | -------------------------------------------------------------------------- |
@@ -84,13 +84,13 @@ Search meteorites using various filters, including name, class, date, mass, and 
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
-#### **Example Request:**
+#### **Example request:**
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/search?minYear=1998&centerLatitude=45.0&centerLongitude=5.0&radius=200"
 ```
 
-#### **Example Response:**
+#### **Example response:**
 
 ```json
 {
@@ -116,7 +116,7 @@ curl "https://meteorites.nde-code.workers.dev/search?minYear=1998&centerLatitude
 
 Retrieve detailed information about a single meteorite by either its unique `id` or its exact `name`.
 
-#### **Query Parameters:**
+#### **Query parameters:**
 
 | Parameter | Type   | Description                                  |
 | --------- | ------ | --------------------------------------------|
@@ -139,7 +139,7 @@ Retrieve detailed information about a single meteorite by either its unique `id`
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
-#### **Example Requests:**
+#### **Example requests:**
 
 Get meteorite by `id`:
 
@@ -153,7 +153,7 @@ Get meteorite by `name`:
 curl "https://meteorites.nde-code.workers.dev/get?name=Kopjes%20Vlei"
 ```
 
-#### **Example Response:**
+#### **Example response:**
 
 ```json
 {
@@ -178,7 +178,7 @@ Get a random selection of meteorites.
 
 Returns a randomly selected subset of meteorites, limited by a configurable maximum.
 
-#### **Query Parameters:**
+#### **Query parameters:**
 
 | Parameter | Type   | Description                                                                                                                                    |
 | --------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -198,13 +198,13 @@ Returns a randomly selected subset of meteorites, limited by a configurable maxi
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
-#### **Example Request:**
+#### **Example request:**
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/random?count=3"
 ```
 
-#### **Example Response:**
+#### **Example response:**
 
 ```json
 {
@@ -252,7 +252,7 @@ Retrieve aggregated statistics about the meteorite dataset stored.
 
 Returns useful insights such as year ranges, mass stats, classification counts, and geolocation information.
 
-#### **Fields Explained:**
+#### **Response fields:**
 
 | Field                      | Type      | Description                                             |
 | -------------------------- | --------- | ------------------------------------------------------- |
@@ -279,13 +279,13 @@ Returns useful insights such as year ranges, mass stats, classification counts, 
 
 * `503 Service Unavailable`: Cache is empty or loading.
 
-#### **Example Request:**
+#### **Example request:**
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/stats"
 ```
 
-#### **Returned JSON Structure:**
+#### **Returned JSON structure:**
 
 ```js
 {
@@ -342,7 +342,7 @@ Monitor the service status and the integrity of the internal cache.
 
 This endpoint performs a self-diagnostic to ensure all data structures are correctly loaded and indexed.
 
-#### **Response Fields:**
+#### **Response fields:**
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
@@ -351,7 +351,7 @@ This endpoint performs a self-diagnostic to ensure all data structures are corre
 | `message` | string | A summary message of the system state |
 | `checks` | object | Detailed status of internal components (see below) |
 
-#### **Internal Checks Detail (`checks`):**
+#### **Internal checks detail (`checks`):**
 
 * `cache_ready`: Boolean indicating if the main cache is fully loaded.
 
@@ -373,13 +373,13 @@ This endpoint performs a self-diagnostic to ensure all data structures are corre
 
 * `503 Service Unavailable`: One or more health checks failed (e.g., cache loading or indexing issue).
 
-#### **Example Request:**
+#### **Example request:**
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/health"
 ```
 
-#### **Example Response (Healthy):**
+#### **Example response (Healthy):**
 
 ```json
 {
