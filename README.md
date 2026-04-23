@@ -384,16 +384,16 @@ curl "https://meteorites.nde-code.workers.dev/health"
 ```json
 {
     "status": "healthy",
-    "timestamp": "2026-04-23T13:36:14.000Z",
-    "message": "All endpoints are functional",
+    "timestamp": "2026-04-23T12:14:49.107Z",
     "checks": {
         "cache_ready": true,
-        "meteorites_count": 45716,
-        "shuffled_meteorites_count": 45716,
+        "meteorites_count": 8500,
+        "shuffled_meteorites_count": 8500,
         "stats_available": true,
-        "by_id_index_size": 45716,
-        "by_name_index_size": 45716
-    }
+        "by_id_index_size": 8500,
+        "by_name_index_size": 8500
+    },
+    "message": "All endpoints are functional."
 }
 ```
 
