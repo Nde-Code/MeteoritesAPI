@@ -40,17 +40,17 @@ export async function handleHealthCheck(): Promise<Response> {
 
     const result: HealthCheckResult = {
 
-        status: allHealthy ? "healthy" : "unhealthy",
+        status: (allHealthy === true) ? "healthy" : "unhealthy",
 
         timestamp: new Date().toISOString(),
 
         checks,
 
-        message: allHealthy ? "All endpoints are functional." : "One or more endpoints may be unavailable."
+        message: (allHealthy === true) ? "All endpoints are functional." : "One or more endpoints may be unavailable."
 
     };
 
-    const statusCode: 200 | 503 = allHealthy ? 200 : 503;
+    const statusCode: 200 | 503 = (allHealthy === true) ? 200 : 503;
 
     return createJsonResponse(result, statusCode);
 
