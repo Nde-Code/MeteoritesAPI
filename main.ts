@@ -124,7 +124,15 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/") return createJsonResponse({ "success": "Welcome to the API root. Refer to the documentation at https://github.com/Nde-Code/MeteoritesAPI." }, 200);
 
-    if (req.method === "GET" && pathname === "/health") { return await handleHealthCheck(); }
+    if (req.method === "GET" && pathname === "/health") {
+
+        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+
+        if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
+        
+        return await handleHealthCheck();
+    
+    }
 
     if (req.method === "GET" && pathname === "/stats") {
 
