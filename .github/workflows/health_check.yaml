@@ -2,7 +2,7 @@ name: MeteoritesAPI Full integration & Health check
 
 on:
 
-  # Trigger on push to the main branch
+  # Trigger on push to the main branch:
   push:
     branches:
       - main
