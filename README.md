@@ -8,7 +8,7 @@ You can deploy your own instance of this API using the button below:
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/MeteoritesAPI)
 
-> I host the project on the free plan, so it works well with medium and small datasets (see [data/](data/)). However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
+> I host the project on the free plan, so it works well with medium and small datasets (see [`data/`](data/)). However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
 
 > Feel free to check my status page: [https://nde-status.instatus.com/](https://nde-status.instatus.com/) if you're experiencing latency or problems while using the API.
 
@@ -404,12 +404,12 @@ The project is a [Cloudflare Workers](https://workers.cloudflare.com/) applicati
 
 As explained above, this API works on data, and I designed something highly optimized. However, with limited resources, I had to make choices and reduce the dataset a little bit. Here are the different databases you can use if you deploy the project on your own instance:
 
-- The entire database (33K entries): [meteorites_complete.json](data/meteorites_complete.json)
+- The entire database (33K entries): [`meteorites_complete.json`](data/meteorites_complete.json)
 
-- The medium dataset (15K entries, reduced by *grid filtering*): [meteorites_medium.json](data/meteorites_medium.json)
+- The medium dataset (15K entries, reduced by *grid filtering*): [`meteorites_medium.json`](data/meteorites_medium.json)
 > Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_medium.json --grid 0.00085 --limit 15000 --clean-up --minify`
 
-- The small dataset **(used)** (8.5K entries, reduced by *grid filtering*): [meteorites_small.json](data/meteorites_small.json)
+- The small dataset **(used)** (8.5K entries, reduced by *grid filtering*): [`meteorites_small.json`](data/meteorites_small.json)
 > Compiled via *(see below for instructions on how to use the CLI)*: `python compiler.py --input data/meteorites.csv --output data/meteorites_small.json --grid 0.014 --limit 8500 --clean-up --minify`
 
 ### Compile your own dataset using the Python CLI:
@@ -418,7 +418,7 @@ If you need to create your own dataset, you can use the Python CLI (requires **P
 
 | Argument        | Description |
 |-----------------|-------------|
-| `--input`       | Path to the input [meteorites.csv](data/meteorites.csv) file **(required)**. |
+| `--input`       | Path to the input [`meteorites.csv`](data/meteorites.csv) file **(required)**. |
 | `--output`      | Path to the output JSON file **(required)**. |
 | `--grid`        | Grid cell size in degrees (optional, > 0 enables grid filtering). |
 | `--limit`       | Maximum number of records (optional, `0` = unlimited) and stops processing the input file as soon as the limit of filtered records is reached. |
@@ -426,7 +426,7 @@ If you need to create your own dataset, you can use the Python CLI (requires **P
 | `--minify`      | Minifies the output JSON file by removing all unnecessary whitespace and indentation to reduce file size. |
 | `--debug`       | Debug level: `0` (silent), `1` (info), `2` (verbose). |
 
-Navigate to the directory containing `compiler.py` and run the following command:
+Navigate to the directory containing [`compiler.py`](compiler.py) and run the following command:
 ```bash
 python compiler.py --input data/meteorites.csv --output data/my_db.json --clean-up --debug 2
 ```
@@ -436,7 +436,7 @@ You can also get help directly in your terminal via:
 python compiler.py --help
 ```
 
-⚠️ **Visualization only:** The `--grid` option limits each cell to one meteorite to reduce clutter (e.g., in Antarctic fields). While individual record attributes remain 100% accurate, the resulting datasets (like `meteorites_medium.json` & `meteorites_small.json`) lose their original statistical distribution and must not be used for scientific research.
+⚠️ **Visualization only:** The `--grid` option limits each cell to one meteorite to reduce clutter (e.g., in Antarctic fields). While individual record attributes remain 100% accurate, the resulting datasets (like [`meteorites_medium.json`](data/meteorites_medium.json) & [`meteorites_small.json`](data/meteorites_small.json)) lose their original statistical distribution and must not be used for scientific research.
 
 ## ⚖️ License:
 
