@@ -32,7 +32,7 @@ The API is available here:
 
 | Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
 | :--- | :--- | :-- | :--- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [`Privacy`](docs/privacy.md) | [`Small`](data/meteorites_small.json) |
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [`privacy.md`](docs/privacy.md) | [`meteorites_small.json`](data/meteorites_small.json) |
 
 And here is an overview of how [`my config.ts`](config.ts) is currently configured for endpoints limitations:
 
