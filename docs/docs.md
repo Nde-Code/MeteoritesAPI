@@ -30,7 +30,7 @@ wrangler login
 
 ## ⚙️ Setting up the configuration:
 
-First, take a look at the [wrangler.jsonc](../wrangler.jsonc) file, which contains the full configuration for your project:
+First, take a look at the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the full configuration for your project:
 
 ```jsonc
 {
@@ -128,7 +128,7 @@ wrangler secret put HASH_KEY
 
 > Check out [https://developers.cloudflare.com/workers/configuration/secrets/](https://developers.cloudflare.com/workers/configuration/secrets/) if you need further information.
 
-### Software configuration file [config.ts](../config.ts):
+### Software configuration file [`config.ts`](../config.ts):
 
 ```ts
 export const config: StaticConfig = {
@@ -181,7 +181,7 @@ wrangler types
 
 > Be sure that your `wrangler.jsonc` is correctly configured before running this command.
 
-and put in `tsconfig.json`: 
+and put in [`tsconfig.json`](../tsconfig.json): 
 
 > already done, if you've cloned the project so you don't need to do that.
 
