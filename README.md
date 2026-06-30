@@ -4,11 +4,9 @@ A RESTful API built with **TypeScript** and **Wrangler CLI** to query and analyz
 
 You can found the original dataset here and by: [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)
 
-You can deploy your own instance of this API using the button below:
+I host the project on the free plan, so it works well with medium and small datasets (see [`data/`](data/)). However, the complete dataset may require a paid plan, especially if you intend to use the API at scale. You can deploy your own instance of this API using the button below:
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/MeteoritesAPI)
-
-> I host the project on the free plan, so it works well with medium and small datasets (see [`data/`](data/)). However, the complete dataset may require a paid plan, especially if you intend to use the API at scale.
 
 > Feel free to check my status page: [https://nde-status.instatus.com/](https://nde-status.instatus.com/) if you're experiencing latency or problems while using the API.
 
@@ -22,7 +20,7 @@ You can deploy your own instance of this API using the button below:
 
 - Basic rate limiting implemented to prevent API abuse.
 
-- GDPR compliant: IP addresses are hashed using `SHA-256` with a strong, secure key.
+- GDPR compliant: IP addresses are hashed using *SHA-256* with a strong, secure key.
 
 - Accurate search: You can apply multiple filters to tailor the request as precisely as needed.
 
@@ -34,9 +32,9 @@ The API is available here:
 
 | Link: | Rate limit: | Owner: | Privacy Notice: | Dataset |
 | :--- | :--- | :-- | :--- | :--- |
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [privacy.md](docs/privacy.md) | 8.5K of [entries](data/meteorites_small.json) |
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Nde-Code](https://nde-code.github.io/) | [`Privacy`](docs/privacy.md) | [`Small`](data/meteorites_small.json) |
 
-And here is an overview of how [my config.ts](config.ts) is currently configured for endpoints limitations:
+And here is an overview of how [`my config.ts`](config.ts) is currently configured for endpoints limitations:
 
 ```yaml
 MAX_RANDOM_METEORITES: 1000       # Max meteorites allowed (Error if exceeded)
