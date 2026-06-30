@@ -1,36 +1,40 @@
-# The developer documentation:
+# Developer Documentation:
 
-Here is the complete developer guide for anyone who wants to contribute or create their own version of this project and make it work on [Cloudflare Workers](https://workers.cloudflare.com/) using [Wrangler](https://developers.cloudflare.com/workers/wrangler/).
+Complete developer guide for contributing to this project or creating your own version to run on [Cloudflare Workers](https://workers.cloudflare.com/) using [Wrangler](https://developers.cloudflare.com/workers/wrangler/).
 
-## 🚀 To begin:
+## 🚀 Getting Started:
 
-### 1. Create or login to your cloudflare account: [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)
+### 1. Create or Log In to Cloudflare:
 
-### 2. Install Node.js and npm: [https://nodejs.org/en/download](https://nodejs.org/en/download)
+Visit [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up) to create an account or log in.
 
-### 3. Install the Wrangler CLI using:
+### 2. Install Node.js and npm:
+
+Download from [https://nodejs.org/en/download](https://nodejs.org/en/download).
+
+### 3. Install Wrangler CLI:
 
 ```bash
 npm install -g wrangler
 ```
 
-> If you haven't installed Wrangler globally, prefix commands with `npx`, for example `npx wrangler`. 
+> If Wrangler is not installed globally, prefix commands with `npx` (e.g., `npx wrangler`).
 
-### 4. Clone the project branch:
+### 4. Clone the Repository:
 
 ```bash
 git clone https://github.com/Nde-Code/MeteoritesAPI.git
 ```
 
-### 5. Log your Wrangler CLI to your Cloudflare account using:
+### 5. Authenticate with Cloudflare:
 
 ```bash
 wrangler login
 ```
 
-## ⚙️ Setting up the configuration:
+## ⚙️ Configuration Setup:
 
-First, take a look at the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the full configuration for your project:
+Review the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the complete project configuration:
 
 ```jsonc
 {
@@ -51,84 +55,82 @@ First, take a look at the [`wrangler.jsonc`](../wrangler.jsonc) file, which cont
 }
 ```
 
-### Main elements:
+### Core Configuration Fields:
 
 #### `name`
 
-Defines the **name of your Worker project**.
-This determines the public URL for your Worker on Cloudflare (for example:
-`https://project_name.username.workers.dev`).
+Defines the **Worker project name**.
+This determines your public URL (e.g., `https://project_name.username.workers.dev`).
 
 #### `main`
 
 Specifies the **entry point** of your Worker script.
-This is the file that exports your main fetch handler.
+This file exports your main fetch handler.
 
 #### `compatibility_date`
 
-Locks your Worker to a specific version of the Cloudflare Workers runtime.
-This ensures your code continues to work as expected, even if Cloudflare updates the runtime.
+Locks your Worker to a specific Cloudflare Workers runtime version.
+Ensures compatibility even as Cloudflare updates the platform.
 
 #### `preview_urls`
 
-It’s used to create a previewable URL. That’s a feature in Cloudflare Workers, but it’s not really useful for a small project. Feel free to take a look at: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/)
+Enables preview URLs for testing. Learn more: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/)
 
-### Observability:
+### Observability Configuration
 
 #### `observability.enabled`
 
-When set to `true`, enables **automatic metrics and logs collection** for your Worker.
-This lets you monitor performance and errors in the Cloudflare dashboard.
+When `true`, enables **automatic metrics and logs collection**.
+Allows performance and error monitoring in the Cloudflare dashboard.
 
 #### `observability.head_sampling_rate`
 
-Defines the **percentage of requests sampled for tracing** (from `0` to `1`).
+Defines the **percentage of requests sampled for tracing** (0 to 1):
 
-* `1` = 100% of requests are sampled (useful for debugging).
-* `0.1` = 10% of requests are traced (better for production environments).
+* `1` = 100% sampling (useful for debugging)
+* `0.1` = 10% sampling (better for production)
 
 #### `observability.logs.invocation_logs`
 
-Controls whether **automatic invocation logs** are collected for each Worker execution.
+Controls **automatic invocation log collection**:
 
-* `true` (default) = Cloudflare logs metadata like request method, URL, headers, and execution details.
-* `false` = Disables automatic logs, keeping only your custom `console.log` entries.
+* `true` = Logs request metadata, headers, and execution details
+* `false` = Disables automatic logs, keeping only custom `console.log` entries
 
-> Disabling invocation logs is recommended for **GDPR compliance**, as it prevents Cloudflare from storing potentially sensitive request data.
+> Disabling invocation logs is **recommended for GDPR compliance** to prevent storage of sensitive request data.
 
-#### `observability.tracing.enabled`
+#### `observability.traces.enabled`
 
-Controls whether **distributed tracing** is enabled for your Worker.
+Controls **distributed tracing**:
 
-* `true` = Enables tracing spans and trace IDs for each request (requires compatible tracing backend).
-* `false` = Disables tracing entirely.
+* `true` = Enables tracing spans and trace IDs
+* `false` = Disables tracing entirely
 
-> Tracing is disabled by default. If you're not using OpenTelemetry or a tracing system, leave this off to reduce data collection.
+> Leave disabled if not using OpenTelemetry or a tracing system.
 
 ### Environment Variables:
 
-To start working **locally** with environment variables, create a file called `.dev.vars` and add the following content:
+Create a `.dev.vars` file for local development:
 
 ```env
 HASH_KEY="THE_KEY_USED_TO_HASH_IPS"
 ```
 
-**List of variables in this project:**
+#### Variables in This Project:
 
-| Variable   | Description                                                                 |
-| ---------- | --------------------------------------------------------------------------- |
-| `HASH_KEY` | The cryptographic key used to hash user IPs.       |
+| Variable | Description |
+|----------|-------------|
+| `HASH_KEY` | Cryptographic key for hashing user IP addresses |
 
-When you have finished, **make sure there are no traces of secrets** in your code, and run the following command.  
-*(Normally, you'll only need to do this once, when you first create the project.)*
+Once configured, add the secret to your Worker:
 
 ```bash
 wrangler secret put HASH_KEY
 ```
 
-> Check out [https://developers.cloudflare.com/workers/configuration/secrets/](https://developers.cloudflare.com/workers/configuration/secrets/) if you need further information.
+> For more details: [https://developers.cloudflare.com/workers/configuration/secrets/](https://developers.cloudflare.com/workers/configuration/secrets/)
 
-### Software configuration file [`config.ts`](../config.ts):
+### Software Configuration: [`config.ts`](../config.ts)
 
 ```ts
 export const config: StaticConfig = {
@@ -148,42 +150,34 @@ export const config: StaticConfig = {
 };
 ```
 
-- **`RATE_LIMIT_INTERVAL_S`** *(in second)*: This is the rate limit based on requests.
-  - **Currently**:
-    - **Max**: one request per second (absolute min).
+#### Configuration Parameters:
 
-- **`MAX_RANDOM_METEORITES`**: The maximum number of meteorites retrieved from `/random`.
-  - **Absolute min of max**: 100 meteorites.
- 
-- **`MAX_RETURNED_SEARCH_RESULTS`**: The maximum number of meteorites retrieved from `/search` when the result set is large.
-  - **Absolute min of max**: 100 meteorites.
+| Parameter | Description | Constraints |
+|-----------|-------------|-------------|
+| **`RATE_LIMIT_INTERVAL_S`** | Rate limit interval in seconds | Minimum: 1 second |
+| **`MAX_RANDOM_METEORITES`** | Maximum meteorites returned by `/random` | Minimum max: 100 |
+| **`MAX_RETURNED_SEARCH_RESULTS`** | Maximum meteorites returned by `/search` | Minimum max: 100 |
+| **`MIN_RADIUS`** | Minimum allowed search radius (km) | Minimum: 1 |
+| **`MAX_RADIUS`** | Maximum allowed search radius (km) | Minimum: 1000 |
+| **`DEFAULT_RANDOM_NUMBER_OF_METEORITES`** | Default count for `/random` if not specified | Minimum: 100 |
 
-- **`MIN_RADIUS`** & **`MAX_RADIUS`**: The minimum and maximum radius values allowed by the API to define the circular search area.
-  - **Absolute min of `MIN_RADIUS`**: 1 (Currently)
-  - **Absolute min of `MAX_RADIUS`**: 1000
+**Important Rules:**
+- `MAX_RANDOM_METEORITES` must be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`
+- Violating these constraints will trigger configuration errors
 
-- **`DEFAULT_RANDOM_NUMBER_OF_METEORITES`**: In `/random`, if no `count` parameter is provided, this is the default number of meteorites retrieved.
-  - **Absolute min**: 100 meteorites.
+## 💻 Development Server:
 
-**NB:** `MAX_RANDOM_METEORITES` must be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`.
+### Initialize TypeScript Types:
 
-> Ensure these values and rules are respected; otherwise, your configuration will trigger an error message.
-
-## 💻 Start the development server:
-
-### First, initialize TypeScript types:
-
-To benefit from TypeScript definitions in your editor and avoid compilation errors, you can add the Cloudflare Workers type definitions by running:
+To enable TypeScript definitions in your editor and prevent compilation errors:
 
 ```bash
 wrangler types
 ```
 
-> Be sure that your `wrangler.jsonc` is correctly configured before running this command.
+> Ensure `wrangler.jsonc` is properly configured before running this command.
 
-and put in [`tsconfig.json`](../tsconfig.json): 
-
-> already done, if you've cloned the project so you don't need to do that.
+This generates type definitions that should be included in [`tsconfig.json`](../tsconfig.json):
 
 ```json
 {
@@ -220,79 +214,49 @@ and put in [`tsconfig.json`](../tsconfig.json):
 }
 ```
 
-Here's a brief summary of what the `tsconfig.json` file do:
+### TypeScript Configuration Explanation:
 
-* **`noEmit: true`**
-  Prevents TypeScript from emitting compiled JS files locally. The build and bundling is handled by **Wrangler/esbuild**, so this is only for type checking.
+| Setting | Purpose |
+|---------|---------|
+| **`noEmit: true`** | Prevents TypeScript from emitting JS locally; Wrangler handles bundling |
+| **`allowImportingTsExtensions: true`** | Allows direct `.ts` file imports for relative paths |
+| **`target: "ES2020"`** | Uses modern JavaScript syntax supported by Workers runtime |
+| **`lib: ["ES2020", "DOM"]`** | Includes modern JS features and Web APIs (fetch, Request, Response) |
+| **`module: "ESNext"`** | Uses ES Modules standard for Workers |
+| **`moduleResolution: "Bundler"`** | Configures module resolution for bundler-based ESM environments |
+| **`strict: true`** | Enables all strict type checking for safer code |
+| **`esModuleInterop: true`** | Facilitates CommonJS interoperability |
+| **`skipLibCheck: true`** | Skips type checking for `.d.ts` files to speed up compilation |
+| **`forceConsistentCasingInFileNames: true`** | Prevents file casing errors across operating systems |
+| **`types: ["./worker-configuration.d.ts"]`** | Includes Wrangler binding type definitions |
+| **`resolveJsonModule: true`** | Enables importing JSON data into memory |
+| **`include`** | Source files and types to type check |
+| **`exclude`** | Build artifacts and dependencies to ignore |
 
-* **`allowImportingTsExtensions: true`**
-  Allows importing `.ts` files directly, which is required for relative imports.
+> This project has **no external dependencies**—no `package.json` or npm packages required.
 
-* **`target: "ES2020"`**
-  Uses modern JavaScript syntax supported by the Worker runtime.
+### Run and Deploy:
 
-* **`lib: ["ES2020", "DOM"]`**
-  Includes modern JS features (`ES2020`) and standard Web APIs (`DOM`) like `fetch`, `Request`, and `Response`.
-
-* **`module: "ESNext"`**
-  Uses ES Modules, which is the standard for Workers and modern TypeScript projects.
-
-* **`moduleResolution: "Bundler"`**
-  Tells TypeScript/IDE how to resolve modules in a bundler-based (ESM) environment.
-
-  * Not strictly needed for relative `.ts` imports (they work anyway).
-  * Required/recommended for Cloudflare Workers and modern tooling (esbuild, Wrangler).
-  * Useful when using npm packages: TypeScript and VS Code correctly resolve ESM exports and types.
-  * Does **not affect the final bundle**; esbuild handles module resolution at build time.
-
-* **`strict: true`**
-  Enables all strict type checking options for safer, more predictable code.
-
-* **`esModuleInterop: true`**
-  Facilitates interoperability with CommonJS modules if needed.
-
-* **`skipLibCheck: true`**
-  Skips type checking for `.d.ts` files in dependencies to speed up compilation.
-
-* **`forceConsistentCasingInFileNames: true`**
-  Prevents file casing errors across different operating systems.
-
-* **`types: ["./worker-configuration.d.ts"]`**
-  Includes type definitions for Wrangler bindings (KV, R2, Durable Objects, etc.).
-
-* **`resolveJsonModule: true`**
-  Because data are imported into memory using an `import`.
-
-* **`include`**
-  Files/folders that TypeScript will type check: project source code and types.
-
-* **`exclude`**
-  Ignored folders: build artifacts (`dist`), dependencies (`node_modules`).
-
-This project doesn't rely on any external libraries or dependencies, so there's no `package.json` or npm-related files.
-
-### Run the project and deploy it once it's ready:
-
-To run locally, run:
+**Start local development:**
 
 ```bash
 wrangler dev
 ```
 
-To bundle the project before deploying, run:
+**Bundle for production:**
 
 ```bash
 wrangler build
 ```
 
-And in the end, to deploy in the Workers network, run:
+**Deploy to Cloudflare Workers:**
 
 ```bash
 wrangler deploy
 ```
 
-and your project is now deployed and accessible to anyone with the link.
+Your project is now live and accessible via the provided URL.
 
-## 📌 At the end:
+## 📌 Support:
 
-If you need any assistance, feel free to open an issue at [https://github.com/Nde-Code/MeteoritesAPI/issues](https://github.com/Nde-Code/MeteoritesAPI/issues).
+For issues or questions, open an issue on GitHub: [https://github.com/Nde-Code/MeteoritesAPI/issues](https://github.com/Nde-Code/MeteoritesAPI/issues)
