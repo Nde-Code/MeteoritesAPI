@@ -3,7 +3,7 @@
 ## Introduction:  
 To be clear and transparent about what data this software uses and how it is handled.
 
-## Information collection and use: 
+## Information Collection and Use: 
 ### Rate limiting, Privacy and Security:
 
 To implement a *rate limiting* system, this software works with your IP address. 
