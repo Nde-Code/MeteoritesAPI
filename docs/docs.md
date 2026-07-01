@@ -76,7 +76,7 @@ Ensures compatibility even as Cloudflare updates the platform.
 
 Enables preview URLs for testing. Learn more: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/)
 
-### Observability Configuration
+### Observability Configuration:
 
 #### `observability.enabled`
 

@@ -13,11 +13,17 @@ The API is hosted on a free plan, optimized for medium and small datasets (see [
 ## 🚀 Key Features:
 
 - **CORS enabled:** use the API directly from your website or any other project.
+
 - **No sign-up required:** no account creation, credit card, or personal data needed.
+
 - **Privacy-focused:** no user activity logs (logs only for debugging).
+
 - **Rate limiting:** protection against abuse with request throttling.
+
 - **GDPR compliant:** IP addresses hashed with SHA-256 using a secure key.
+
 - **Advanced search:** multiple filters for precise queries.
+
 - **Serverless optimized:** lightweight, high-performance architecture.
 
 ## 🌐 API Access:
@@ -85,7 +91,7 @@ Search meteorites by multiple criteria: name, classification, date, mass, and ge
 #### Example Request:
 
 ```bash
-curl "https://meteorites.nde-code.workers.dev/search?minYear=1998&centerLatitude=45.0&centerLongitude=5.0&radius=200"
+curl "https://meteorites.nde-code.workers.dev/search?year=2013"
 ```
 
 #### Example Response:
@@ -96,14 +102,14 @@ curl "https://meteorites.nde-code.workers.dev/search?minYear=1998&centerLatitude
         "count": 1,
         "meteorites": [
             {
-                "id": "458",
-                "name": "Alby sur Chéran",
-                "recclass": "Eucrite-mmict",
-                "mass": 252,
+                "id": "57165",
+                "name": "Chelyabinsk",
+                "recclass": "LL5",
+                "mass": 100000,
                 "fall": "Fell",
-                "year": 2002,
-                "latitude": 45.82133,
-                "longitude": 6.01533
+                "year": 2013,
+                "latitude": 54.81667,
+                "longitude": 61.11667
             }
         ]
     }
@@ -434,8 +440,8 @@ python compiler.py --help
 
 This project is licensed under the [Apache License v2.0](LICENSE).
 
-## 👤 Author:
+## 🎯 Author:
 
 Created and maintained by [Nde-Code](https://nde-code.github.io/).
 
-Have questions or suggestions? Feel free to open an issue or pull request ! 🤝
+Have questions or suggestions ? Feel free to open an issue or pull request ! 🤝
