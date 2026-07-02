@@ -44,7 +44,7 @@ MAX_RADIUS: 2500                      # Maximum radius (km)
 DEFAULT_RANDOM_METEORITES: 100        # Default count for /random
 ```
 
-> ⚠️ **Important:** these limits may be updated. Check the repository regularly to stay informed.
+> **Note:** these limits may be updated, so check the repository regularly to stay informed.
 
 ## 📚 Available Endpoints:
 
