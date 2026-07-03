@@ -36,13 +36,13 @@ The API is hosted on a free plan, optimized for medium and small datasets (see [
 
 Here are the parameters in [`config.ts`](config.ts):
 
-```yaml
-MAX_RANDOM_METEORITES: 1000           # Max meteorites (error if exceeded)
-MAX_RETURNED_SEARCH_RESULTS: 500      # Hard limit for searches
-MIN_RADIUS: 1                         # Minimum radius (km)
-MAX_RADIUS: 2500                      # Maximum radius (km)
-DEFAULT_RANDOM_METEORITES: 100        # Default count for /random
-```
+| Key | Value | Description |
+|-----|--------|-------------|
+| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of meteorites allowed (error if exceeded) |
+| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Hard limit for search results |
+| `MIN_RADIUS` | 1 | Minimum radius (km) |
+| `MAX_RADIUS` | 2500 | Maximum radius (km) |
+| `DEFAULT_RANDOM_METEORITES` | 100 | Default count for `/random` |
 
 > **Note:** these limits may be updated, so check the repository regularly to stay informed.
 
