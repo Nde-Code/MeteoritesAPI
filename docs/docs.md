@@ -120,7 +120,7 @@ HASH_KEY="THE_KEY_USED_TO_HASH_IPS"
 
 | Variable | Description |
 |----------|-------------|
-| `HASH_KEY` | Cryptographic key for hashing user IP addresses |
+| **`HASH_KEY`** | Cryptographic key for hashing user IP addresses |
 
 Once configured, add the secret to your Worker:
 

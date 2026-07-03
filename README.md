@@ -38,11 +38,11 @@ Here are the parameters in [`config.ts`](config.ts):
 
 | Key | Value | Description |
 |-----|--------|-------------|
-| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of meteorites allowed (error if exceeded) |
-| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Hard limit for search results |
-| `MIN_RADIUS` | 1 | Minimum radius (km) |
-| `MAX_RADIUS` | 2500 | Maximum radius (km) |
-| `DEFAULT_RANDOM_METEORITES` | 100 | Default count for `/random` |
+| **`MAX_RANDOM_METEORITES`** | 1000 | Maximum number of meteorites allowed (error if exceeded) |
+| **`MAX_RETURNED_SEARCH_RESULTS`** | 500 | Hard limit for search results |
+| **`MIN_RADIUS`** | 1 | Minimum radius (km) |
+| **`MAX_RADIUS`** | 2500 | Maximum radius (km) |
+| **`DEFAULT_RANDOM_METEORITES`** | 100 | Default count for `/random` |
 
 > **Note:** these limits may be updated, so check the repository regularly to stay informed.
 
@@ -339,12 +339,12 @@ Check API integrity and status, including cache and indexes.
 
 #### Internal Checks Detail:
 
-- **`cache_ready`** : Main cache fully loaded
-- **`meteorites_count`** : Total meteorites in memory
-- **`shuffled_meteorites_count`** : Meteorites available for `/random`
-- **`stats_available`** : Pre-computed statistics ready
-- **`by_id_index_size`** : Entries in ID lookup index
-- **`by_name_index_size`** : Entries in name lookup index
+- `cache_ready`: main cache fully loaded
+- `meteorites_count`: total meteorites in memory
+- `shuffled_meteorites_count`: meteorites available for `/random`
+- `stats_available`: pre-computed statistics ready
+- `by_id_index_size`: entries in ID lookup index
+- `by_name_index_size`: entries in name lookup index
 
 > **Service Health:** a `503` response indicates at least one check failed (cache not ready, empty indexes, etc.).
 
