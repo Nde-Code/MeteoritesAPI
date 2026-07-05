@@ -38,13 +38,22 @@ You can deploy your own instance by clicking the button below:
 
 Here are the parameters in [`config.ts`](config.ts):
 
-| Key | Value | Description |
-|-----|--------|-------------|
-| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of meteorites allowed (error if exceeded) |
-| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Hard limit for search results |
-| `MIN_RADIUS` | 1 | Minimum radius (km) |
-| `MAX_RADIUS` | 2500 | Maximum radius (km) |
-| `DEFAULT_RANDOM_METEORITES` | 100 | Default count for `/random` |
+```yaml
+# Absolute upper limit; exceeding this value triggers an error:
+MAX_RANDOM_METEORITES: 1000      
+
+# Maximum number of results the search system will return: 
+MAX_RETURNED_SEARCH_RESULTS: 500 
+
+# Smallest allowed radius for any computation or query:
+MIN_RADIUS: 1   
+
+# Largest allowed radius to prevent overly broad or costly searches:
+MAX_RADIUS: 2500    
+
+# Default number used when no 'count' value is provided:
+DEFAULT_RANDOM_METEORITES: 100
+```
 
 > **Note:** these limits may be updated, so check the repository regularly to stay informed.
 
@@ -288,7 +297,7 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 
 #### Example response:
 
-```json
+```js
 {
     "success": {
         "meteorites_count": 8500,
@@ -302,27 +311,31 @@ curl "https://meteorites.nde-code.workers.dev/stats"
             "920",
             "1399",
             "1490",
-            "1491"
+            "1491",
+            ...
         ],
         "years_distribution": {
             "860": 1,
             "920": 1,
             "1399": 1,
             "1490": 1,
-            "1491": 1
-        },
+            "1491": 1,
+            ...
+        }
         "recclasses": [
             "Acapulcoite",
             "Achondrite-ung",
             "Angrite",
-            "Aubrite"
+            "Aubrite",
+            ...
         ],
         "recclasses_distribution": {
             "L6": 1616,
             "H5": 1461,
             "H6": 749,
             "L5": 653,
-            "H4": 637
+            "H4": 637,
+            ...
         },
         "geolocated_count": 8500,
         "fall_counts": {
