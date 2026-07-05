@@ -14,13 +14,13 @@ The IP is **never stored in any external database** or service.
 
 The **hashed IP** is the **only personal information** used by this project, and it's solely for security and abuse-prevention purposes. While fingerprinting could also be used, this project aims to remain as **privacy-friendly** as possible.
 
-**Data retention:** the hashed IP is kept only for the time required to apply rate limiting and is automatically removed afterward.
+The **hashed IP** is kept **only for the time required** to apply rate limiting and is **automatically removed afterward**.
 
 You can check the [rate.ts](../utilities/rate.ts) file if you want to see how it works.
 
 ### Legal Basis:
 
-The processing of the hashed IP address is strictly for protecting the service against abuse (rate limiting). This data is pseudonymized and cannot identify any user.
+The processing of the **hashed IP** address **is strictly for protecting** the service against abuse (rate limiting). This data is **pseudonymized and cannot identify any user**.
 
 ## Cookies: 
 **No cookies**, **no analytics**, **no tracking logs**, or **any other** data is collected by the project.
@@ -40,9 +40,9 @@ Any updates will be posted on this page and will take effect immediately upon po
 
 ## Your Rights:
 
-If you wish to request the removal of the hashed IP associated with your usage, you may contact me.
+If you wish to request the removal of the **hashed IP** associated with your usage, you may contact me.
 
-Please note that this hash cannot identify you personally and is never linked to any other data.
+Please note that this hash **cannot identify you personally** and is never linked to any other data.
 
 ## Contact me:  
 If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact me.
