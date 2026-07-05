@@ -1,14 +1,14 @@
-# Developer Documentation:
+# Developer documentation:
 
 Complete developer guide for contributing to this project or creating your own version to run on [Cloudflare Workers](https://workers.cloudflare.com/) using [Wrangler](https://developers.cloudflare.com/workers/wrangler/).
 
-## 🚀 Getting Started:
+## 🚀 Getting started:
 
-### 1. Create or Log In to Cloudflare:
+### 1. Create or log-in to Cloudflare:
 
 Visit [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up) to create an account or log in.
 
-### 2. Install Node.js and npm:
+### 2. Install Node.js and NPM:
 
 Download from [https://nodejs.org/en/download](https://nodejs.org/en/download).
 
@@ -20,7 +20,7 @@ npm install -g wrangler
 
 > If Wrangler is not installed globally, prefix commands with `npx` (e.g., `npx wrangler`).
 
-### 4. Clone the Repository:
+### 4. Clone the repository:
 
 ```bash
 git clone https://github.com/Nde-Code/MeteoritesAPI.git
@@ -32,7 +32,7 @@ git clone https://github.com/Nde-Code/MeteoritesAPI.git
 wrangler login
 ```
 
-## ⚙️ Configuration Setup:
+## ⚙️ Configuration setup:
 
 Review the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the complete project configuration:
 
@@ -55,7 +55,7 @@ Review the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the comple
 }
 ```
 
-### Core Configuration Fields:
+### Core configuration fields:
 
 #### `name`
 
@@ -76,7 +76,7 @@ Ensures compatibility even as Cloudflare updates the platform.
 
 Enables preview URLs for testing. Learn more: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/)
 
-### Observability Configuration:
+### Observability configuration:
 
 #### `observability.enabled`
 
@@ -108,7 +108,7 @@ Controls **distributed tracing**:
 
 > Leave disabled if not using OpenTelemetry or a tracing system.
 
-### Environment Variables:
+### Environment variables:
 
 Create a `.dev.vars` file for local development:
 
@@ -116,11 +116,11 @@ Create a `.dev.vars` file for local development:
 HASH_KEY="THE_KEY_USED_TO_HASH_IPS"
 ```
 
-#### Variables in This Project:
+#### Variables in this project:
 
 | Variable | Description |
 |----------|-------------|
-| **`HASH_KEY`** | Cryptographic key for hashing user IP addresses |
+| `HASH_KEY` | Cryptographic key for hashing user IP addresses |
 
 Once configured, add the secret to your Worker:
 
@@ -130,7 +130,7 @@ wrangler secret put HASH_KEY
 
 > For more details: [https://developers.cloudflare.com/workers/configuration/secrets/](https://developers.cloudflare.com/workers/configuration/secrets/)
 
-### Software Configuration: [`config.ts`](../config.ts)
+### Software configuration: [`config.ts`](../config.ts)
 
 ```ts
 export const config: StaticConfig = {
@@ -150,24 +150,22 @@ export const config: StaticConfig = {
 };
 ```
 
-#### Configuration Parameters:
+#### Configuration parameters:
 
 | Parameter | Description | Constraints |
 |-----------|-------------|-------------|
-| **`RATE_LIMIT_INTERVAL_S`** | Rate limit interval in seconds | Minimum: 1 second |
-| **`MAX_RANDOM_METEORITES`** | Maximum meteorites returned by `/random` | Minimum max: 100 |
-| **`MAX_RETURNED_SEARCH_RESULTS`** | Maximum meteorites returned by `/search` | Minimum max: 100 |
-| **`MIN_RADIUS`** | Minimum allowed search radius (km) | Minimum: 1 |
-| **`MAX_RADIUS`** | Maximum allowed search radius (km) | Minimum: 1000 |
-| **`DEFAULT_RANDOM_NUMBER_OF_METEORITES`** | Default count for `/random` if not specified | Minimum: 100 |
+| `RATE_LIMIT_INTERVAL_S` | Rate limit interval in seconds | Minimum: 1 second |
+| `MAX_RANDOM_METEORITES` | Maximum meteorites returned by `/random` | Minimum max: 100 |
+| `MAX_RETURNED_SEARCH_RESULTS` | Maximum meteorites returned by `/search` | Minimum max: 100 |
+| `MIN_RADIUS` | Minimum allowed search radius (km) | Minimum: 1 |
+| `MAX_RADIUS` | Maximum allowed search radius (km) | Minimum: 1000 |
+| `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | Default count for `/random` if not specified | Minimum: 100 |
 
-**Important Rules:**
-- `MAX_RANDOM_METEORITES` must be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`
-- Violating these constraints will trigger configuration errors
+> **Important:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`. If this condition is not met, the configuration will produce errors.
 
-## 💻 Development Server:
+## 🖧 Development server:
 
-### Initialize TypeScript Types:
+### Initialize TypeScript types:
 
 To enable TypeScript definitions in your editor and prevent compilation errors:
 
@@ -214,28 +212,28 @@ This generates type definitions that should be included in [`tsconfig.json`](../
 }
 ```
 
-### TypeScript Configuration Explanation:
+### TypeScript configuration explanation:
 
 | Setting | Purpose |
 |---------|---------|
-| **`noEmit: true`** | Prevents TypeScript from emitting JS locally; Wrangler handles bundling |
-| **`allowImportingTsExtensions: true`** | Allows direct `.ts` file imports for relative paths |
-| **`target: "ES2020"`** | Uses modern JavaScript syntax supported by Workers runtime |
-| **`lib: ["ES2020", "DOM"]`** | Includes modern JS features and Web APIs (fetch, Request, Response) |
-| **`module: "ESNext"`** | Uses ES Modules standard for Workers |
-| **`moduleResolution: "Bundler"`** | Configures module resolution for bundler-based ESM environments |
-| **`strict: true`** | Enables all strict type checking for safer code |
-| **`esModuleInterop: true`** | Facilitates CommonJS interoperability |
-| **`skipLibCheck: true`** | Skips type checking for `.d.ts` files to speed up compilation |
-| **`forceConsistentCasingInFileNames: true`** | Prevents file casing errors across operating systems |
-| **`types: ["./worker-configuration.d.ts"]`** | Includes Wrangler binding type definitions |
-| **`resolveJsonModule: true`** | Enables importing JSON data into memory |
-| **`include`** | Source files and types to type check |
-| **`exclude`** | Build artifacts and dependencies to ignore |
+| `noEmit: true` | Prevents TypeScript from emitting JS locally; Wrangler handles bundling |
+| `allowImportingTsExtensions: true` | Allows direct `.ts` file imports for relative paths |
+| `target: "ES2020"` | Uses modern JavaScript syntax supported by Workers runtime |
+| `lib: ["ES2020", "DOM"]` | Includes modern JS features and Web APIs (fetch, Request, Response) |
+| `module: "ESNext"` | Uses ES Modules standard for Workers |
+| `moduleResolution: "Bundler"` | Configures module resolution for bundler-based ESM environments |
+| `strict: true` | Enables all strict type checking for safer code |
+| `esModuleInterop: true` | Facilitates CommonJS interoperability |
+| `skipLibCheck: true` | Skips type checking for `.d.ts` files to speed up compilation |
+| `forceConsistentCasingInFileNames: true` | Prevents file casing errors across operating systems |
+| `types: ["./worker-configuration.d.ts"]` | Includes Wrangler binding type definitions |
+| `resolveJsonModule: true` | Enables importing JSON data into memory |
+| `include` | Source files and types to type check |
+| `exclude` | Build artifacts and dependencies to ignore |
 
-> This project has **no external dependencies**—no `package.json` or npm packages required.
+> This project has **no external dependencies**, no `package.json` or npm packages required.
 
-### Run and Deploy:
+### Run and deploy:
 
 **Start local development:**
 

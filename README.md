@@ -4,13 +4,15 @@ A RESTful API built with **TypeScript** and **Wrangler CLI** to query and analyz
 
 The original dataset is available from the [NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings).
 
-The API is hosted on a free plan, optimized for medium and small datasets (see [`data/`](data/)). The complete dataset may require a paid plan, especially for large-scale usage. You can deploy your own instance by clicking the button below:
+The API is hosted on a free plan, optimized for medium and small datasets (see [`data/`](data/)). The complete dataset may require a paid plan, especially for large-scale usage.
+
+You can deploy your own instance by clicking the button below:
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/MeteoritesAPI)
 
-> **Service Status:** check the [status page](https://nde-status.instatus.com/) if you experience latency or issues.
+> **Service status:** check the [status page](https://nde-status.instatus.com/) if you experience latency or issues.
 
-## 🚀 Key Features:
+## 🚀 Key features:
 
 - **CORS enabled:** use the API directly from your website or any other project.
 
@@ -26,33 +28,33 @@ The API is hosted on a free plan, optimized for medium and small datasets (see [
 
 - **Serverless optimized:** lightweight, high-performance architecture.
 
-## 🌐 API Access:
+## 🌐 API access:
 
-| Endpoint | Rate Limit | Maintainer | Privacy | Dataset |
+| Endpoint | Rate limit | Maintainer | Privacy | Dataset |
 |----------|-----------|-----------|---------|---------|
 | [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/s | [Me](https://nde-code.github.io/) | [`privacy.md`](docs/privacy.md) | [`meteorites_small.json`](data/meteorites_small.json) |
 
-### Configuration Limits:
+### Configuration limits:
 
 Here are the parameters in [`config.ts`](config.ts):
 
 | Key | Value | Description |
 |-----|--------|-------------|
-| **`MAX_RANDOM_METEORITES`** | 1000 | Maximum number of meteorites allowed (error if exceeded) |
-| **`MAX_RETURNED_SEARCH_RESULTS`** | 500 | Hard limit for search results |
-| **`MIN_RADIUS`** | 1 | Minimum radius (km) |
-| **`MAX_RADIUS`** | 2500 | Maximum radius (km) |
-| **`DEFAULT_RANDOM_METEORITES`** | 100 | Default count for `/random` |
+| `MAX_RANDOM_METEORITES` | 1000 | Maximum number of meteorites allowed (error if exceeded) |
+| `MAX_RETURNED_SEARCH_RESULTS` | 500 | Hard limit for search results |
+| `MIN_RADIUS` | 1 | Minimum radius (km) |
+| `MAX_RADIUS` | 2500 | Maximum radius (km) |
+| `DEFAULT_RANDOM_METEORITES` | 100 | Default count for `/random` |
 
 > **Note:** these limits may be updated, so check the repository regularly to stay informed.
 
-## 📚 Available Endpoints:
+## 📚 Available endpoints:
 
-### 1. **[GET]** `/search` — Advanced Search:
+### 1. **[GET]** `/search` - Advanced search:
 
 Search meteorites by multiple criteria: name, classification, date, mass, and geographic location.
 
-#### Query Parameters:
+#### Query parameters:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -69,16 +71,21 @@ Search meteorites by multiple criteria: name, classification, date, mass, and ge
 | `radius` | number | Search radius in km (min: `MIN_RADIUS`, max: `MAX_RADIUS`) **(required with coordinates)** |
 | `limit` | number | Maximum results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`) |
 
-⚠️ **Geographic Precision:** distance calculation uses equirectangular approximation (optimized for performance). Highly accurate for local/regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, minor distortions may occur compared to geodesic (Haversine) calculations.
+⚠️ **Geographic precision:** distance calculation uses equirectangular approximation (optimized for performance). Highly accurate for local/regional queries (< 1000–1500 km). For larger radii, especially at high latitudes, minor distortions may occur compared to geodesic (Haversine) calculations.
 
-**Parameter Behavior:**
-- Unknown parameters are ignored
-- Invalid numeric parameters are treated as absent (e.g., `year=abc`)
-- Conflicting filters return `400` error (e.g., `year` with `minYear`/`maxYear`)
-- Geographic search requires all three: `centerLatitude`, `centerLongitude`, and `radius`
-- `limit` is automatically capped at `MAX_RETURNED_SEARCH_RESULTS`
+#### Parameter behavior:
 
-#### Response Codes:
+- **Unknown parameters:** are ignored.
+
+- **Invalid numeric parameters:** are treated as absent (e.g., `year=abc`).
+
+- **Conflicting filters:** return `400` error (e.g., `year` with `minYear`/`maxYear`).
+
+- **Geographic search:** requires all three: `centerLatitude`, `centerLongitude`, and `radius`.
+
+- **`limit`:** is automatically capped at `MAX_RETURNED_SEARCH_RESULTS`.
+
+#### Response codes:
 
 | Code | Description |
 |------|-------------|
@@ -88,13 +95,13 @@ Search meteorites by multiple criteria: name, classification, date, mass, and ge
 | `500` | Server error (config or environment) |
 | `503` | Service unavailable (cache empty/loading) |
 
-#### Example Request:
+#### Example request:
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/search?year=2013"
 ```
 
-#### Example Response:
+#### Example response:
 
 ```json
 {
@@ -116,11 +123,11 @@ curl "https://meteorites.nde-code.workers.dev/search?year=2013"
 }
 ```
 
-### 2. **[GET]** `/get` — Meteorite Details:
+### 2. **[GET]** `/get` - Meteorite details:
 
 Retrieve detailed information about a single meteorite by `id` or `name`.
 
-#### Query Parameters:
+#### Query parameters:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -129,7 +136,7 @@ Retrieve detailed information about a single meteorite by `id` or `name`.
 
 > **Important:** provide **either** `id` **or** `name`, but not both. Providing neither will result in a `400` error.
 
-#### Response Codes:
+#### Response codes:
 
 | Code | Description |
 |------|-------------|
@@ -140,19 +147,21 @@ Retrieve detailed information about a single meteorite by `id` or `name`.
 | `500` | Server error |
 | `503` | Service unavailable |
 
-#### Example Requests:
+#### Example requests:
 
 By ID:
+
 ```bash
 curl "https://meteorites.nde-code.workers.dev/get?id=12345"
 ```
 
 By name:
+
 ```bash
 curl "https://meteorites.nde-code.workers.dev/get?name=Kopjes%20Vlei"
 ```
 
-#### Example Response:
+#### Example response:
 
 ```json
 {
@@ -171,11 +180,11 @@ curl "https://meteorites.nde-code.workers.dev/get?name=Kopjes%20Vlei"
 }
 ```
 
-### 3. **[GET]** `/random` — Random Selection:
+### 3. **[GET]** `/random` - Random selection:
 
 Get a random set of meteorites.
 
-#### Query Parameters:
+#### Query parameters:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -183,7 +192,7 @@ Get a random set of meteorites.
 
 > **Note:** invalid `count` returns the default number.
 
-#### Response Codes:
+#### Response codes:
 
 | Code | Description |
 |------|-------------|
@@ -193,13 +202,13 @@ Get a random set of meteorites.
 | `500` | Server error |
 | `503` | Service unavailable |
 
-#### Example Request:
+#### Example request:
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/random?count=3"
 ```
 
-#### Example Response:
+#### Example response:
 
 ```json
 {
@@ -241,11 +250,11 @@ curl "https://meteorites.nde-code.workers.dev/random?count=3"
 }
 ```
 
-### 4. **[GET]** `/stats` — Dataset Statistics:
+### 4. **[GET]** `/stats` - Dataset statistics:
 
 Get aggregated statistics: year ranges, mass stats, classifications, and geolocation info.
 
-#### Response Fields:
+#### Response fields:
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -262,7 +271,7 @@ Get aggregated statistics: year ranges, mass stats, classifications, and geoloca
 
 > **Note:** some meteorites have a mass of **0 grams**. This reflects specific cases (extreme alteration, fossilization, missing fragments) and is not an error.
 
-#### Response Codes:
+#### Response codes:
 
 | Code | Description |
 |------|-------------|
@@ -271,13 +280,13 @@ Get aggregated statistics: year ranges, mass stats, classifications, and geoloca
 | `500` | Server error |
 | `503` | Service unavailable |
 
-#### Example Request:
+#### Example request:
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/stats"
 ```
 
-#### Example Response:
+#### Example response:
 
 ```json
 {
@@ -324,44 +333,46 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 }
 ```
 
-### 5. **[GET]** `/health` — Service Status:
+### 5. **[GET]** `/health` - Service status:
 
 Check API integrity and status, including cache and indexes.
 
-#### Response Fields:
+#### Response fields:
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `status` | string | Overall status: `"healthy"` or `"unhealthy"` |
 | `timestamp` | string | ISO 8601 timestamp of check |
-| `message` | string | Status summary message |
 | `checks` | object | Details of internal components |
+| `message` | string | Status summary message |
 
-#### Internal Checks Detail:
+#### Internal checks detail:
 
-- `cache_ready`: main cache fully loaded
-- `meteorites_count`: total meteorites in memory
-- `shuffled_meteorites_count`: meteorites available for `/random`
-- `stats_available`: pre-computed statistics ready
-- `by_id_index_size`: entries in ID lookup index
-- `by_name_index_size`: entries in name lookup index
+| Check | Description |
+|----------|-----------------|
+| `cache_ready` | Main cache fully loaded |
+| `meteorites_count` | Total meteorites in memory |
+| `shuffled_meteorites_count` | Meteorites available for `/random` |
+| `stats_available` | Pre-computed statistics ready |
+| `by_id_index_size` | Entries in ID lookup index |
+| `by_name_index_size` | Entries in name lookup index |
 
 > **Service Health:** a `503` response indicates at least one check failed (cache not ready, empty indexes, etc.).
 
-#### Response Codes:
+#### Response codes:
 
 | Code | Description |
 |------|-------------|
 | `200` | All systems operational |
 | `503` | One or more checks failed |
 
-#### Example Request:
+#### Example request:
 
 ```bash
 curl "https://meteorites.nde-code.workers.dev/health"
 ```
 
-#### Example Response (Healthy):
+#### Example response (Healthy):
 
 ```json
 {
@@ -379,11 +390,11 @@ curl "https://meteorites.nde-code.workers.dev/health"
 }
 ```
 
-## 🖥️ Developer Documentation:
+## 🖥️ Developer documentation:
 
 This project is a [Cloudflare Workers](https://workers.cloudflare.com/) application using the [Workerd](https://github.com/cloudflare/workerd) runtime. The structure is similar to Node.js or Deno with a few specifics. See the [full documentation](docs/docs.md) for details.
 
-### Available Datasets:
+### Available datasets:
 
 The API is optimized for performance with limited resources. Choose datasets based on your needs:
 
@@ -393,23 +404,27 @@ The API is optimized for performance with limited resources. Choose datasets bas
 | [`meteorites_medium.json`](data/meteorites_medium.json) | ~15k entries | Reduced via grid filtering |
 | [`meteorites_small.json`](data/meteorites_small.json) | ~8.5k entries | **Default**, reduced via grid filtering |
 
+> All these datasets have been cleaned up (see below for further details).
+
 **Medium dataset** generated via:
+
 ```bash
 python compiler.py --input data/meteorites.csv --output data/meteorites_medium.json \
   --grid 0.00085 --limit 15000 --clean-up --minify
 ```
 
 **Small dataset** generated via:
+
 ```bash
 python compiler.py --input data/meteorites.csv --output data/meteorites_small.json \
   --grid 0.014 --limit 8500 --clean-up --minify
 ```
 
-## 🔧 Python CLI for Custom Datasets:
+## >_ Python CLI for custom datasets:
 
 Requires **Python 3.10+** (no external dependencies).
 
-### Available Options:
+### Available options:
 
 | Argument | Description |
 |----------|-------------|
@@ -434,7 +449,7 @@ For help:
 python compiler.py --help
 ```
 
-⚠️ **Important:** the `--grid` option creates visually optimized datasets (one meteorite per cell) but loses original statistical distribution. These datasets **must not be used for scientific research**.
+> **Note:** the `--grid` option creates visually optimized datasets (one meteorite per cell) but loses original statistical distribution. These datasets **must not be used for scientific research**.
 
 ## ⚖️ License:
 
