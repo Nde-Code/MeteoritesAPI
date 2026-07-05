@@ -417,7 +417,7 @@ The API is optimized for performance with limited resources. Choose datasets bas
 | [`meteorites_medium.json`](data/meteorites_medium.json) | ~15k entries | Reduced via grid filtering |
 | [`meteorites_small.json`](data/meteorites_small.json) | ~8.5k entries | **Default**, reduced via grid filtering |
 
-> All these datasets have been cleaned up (see below for further details).
+> All these datasets have been cleaned up (see the CLI documentation and the `--clean-up` argument for details).
 
 **Medium dataset** generated via:
 
