@@ -38,7 +38,7 @@ Review the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the comple
 
 ```jsonc
 {
-	"name": "meteorites",
+	"name": "project_name",
 	"main": "main.ts",
 	"compatibility_date": "2026-03-08",
 	"preview_urls": false,
