@@ -1,5 +1,3 @@
-import { checkTimeRateLimit, hashIP } from "./utilities/rate.ts"; 
-
 import {
 
     cachedMeteoritesCleaned,
@@ -50,6 +48,8 @@ import {
 
     toNumber,
 
+    applyRateLimit
+
 } from "./utilities/utils.ts";
 
 import { handleHealthCheck } from "./utilities/health.ts";
@@ -66,7 +66,7 @@ const configMinValues: Partial<Record<keyof StaticConfig, number>> = {
 
     MAX_RADIUS: 1000,
 
-    DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100,
+    DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100
 
 };
 
@@ -126,20 +126,20 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/health") {
 
-        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const rateLimitResponse = await applyRateLimit(req, currentConfig);
 
-        if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
-        
+        if (rateLimitResponse) return rateLimitResponse;
+
         return await handleHealthCheck();
     
     }
 
     if (req.method === "GET" && pathname === "/stats") {
 
-        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const rateLimitResponse = await applyRateLimit(req, currentConfig);
 
-        if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
-        
+        if (rateLimitResponse) return rateLimitResponse;
+
         const statsResponse: Response = createJsonResponse({ "success": cachedStatsResult }, 200);
 
         printLogLine("INFO", `Returned /stats data.`);
@@ -150,9 +150,9 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/random") {
 
-        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const rateLimitResponse = await applyRateLimit(req, currentConfig);
 
-        if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
+        if (rateLimitResponse) return rateLimitResponse;
 
         const countParam: string | null = url.searchParams.get("count");
         
@@ -190,10 +190,10 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/get") {
 
-        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const rateLimitResponse = await applyRateLimit(req, currentConfig);
 
-        if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
-        
+        if (rateLimitResponse) return rateLimitResponse;
+
         const query: URLSearchParams = url.searchParams;
 
         const id: string | null = getTrimmedParam(query.get("id"));
@@ -228,10 +228,10 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/search") {
 
-        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const rateLimitResponse = await applyRateLimit(req, currentConfig);
 
-        if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
-        
+        if (rateLimitResponse) return rateLimitResponse;
+
         const query: URLSearchParams = url.searchParams;
 
         const filters: Filters = {
