@@ -32,7 +32,7 @@ export async function checkTimeRateLimit(hashedIp: string, limitSeconds: number)
 
 }
 
-export async function hashIp(ip: string, salt: string): Promise<string> {
+export async function hashIP(ip: string, salt: string): Promise<string> {
 
     const msgBuffer = new TextEncoder().encode(ip + salt);
 

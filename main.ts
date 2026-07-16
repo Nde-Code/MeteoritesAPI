@@ -1,4 +1,4 @@
-import { checkTimeRateLimit, hashIp } from "./utilities/rate.ts"; 
+import { checkTimeRateLimit, hashIP } from "./utilities/rate.ts"; 
 
 import {
 
@@ -126,7 +126,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/health") {
 
-        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
 
         if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
         
@@ -136,7 +136,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/stats") {
 
-        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
 
         if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
         
@@ -150,7 +150,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/random") {
 
-        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
 
         if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
 
@@ -190,7 +190,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/get") {
 
-        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
 
         if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
         
@@ -228,7 +228,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/search") {
 
-        const hashedIP: string = await hashIp(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
+        const hashedIP: string = await hashIP(req.headers.get("cf-connecting-ip") ?? "unknown", currentConfig.HASH_KEY);
 
         if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);  
         
