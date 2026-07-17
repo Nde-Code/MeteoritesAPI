@@ -126,7 +126,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/health") {
 
-        const rateLimitResponse = await applyRateLimit(req, currentConfig);
+        const rateLimitResponse: Response | null = await applyRateLimit(req, currentConfig);
 
         if (rateLimitResponse) return rateLimitResponse;
 
@@ -136,7 +136,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/stats") {
 
-        const rateLimitResponse = await applyRateLimit(req, currentConfig);
+        const rateLimitResponse: Response | null = await applyRateLimit(req, currentConfig);
 
         if (rateLimitResponse) return rateLimitResponse;
 
@@ -150,7 +150,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/random") {
 
-        const rateLimitResponse = await applyRateLimit(req, currentConfig);
+        const rateLimitResponse: Response | null = await applyRateLimit(req, currentConfig);
 
         if (rateLimitResponse) return rateLimitResponse;
 
@@ -190,7 +190,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/get") {
 
-        const rateLimitResponse = await applyRateLimit(req, currentConfig);
+        const rateLimitResponse: Response | null = await applyRateLimit(req, currentConfig);
 
         if (rateLimitResponse) return rateLimitResponse;
 
@@ -228,7 +228,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (req.method === "GET" && pathname === "/search") {
 
-        const rateLimitResponse = await applyRateLimit(req, currentConfig);
+        const rateLimitResponse: Response | null = await applyRateLimit(req, currentConfig);
 
         if (rateLimitResponse) return rateLimitResponse;
 
