@@ -2,7 +2,7 @@ import rawData from "../data/meteorites_small.json";
 
 import { normalizeString, sortDistribution } from "./utils.ts";
 
-import { Meteorite, Meteorites, MeteoriteRaw, MeteoritesRaw, MeteoritesDBFormat } from "../types/types.ts";
+import { Meteorite, Meteorites, MeteoritesRaw, MeteoritesDBFormat } from "../types/meteorites.ts";
 
 type MeteoritesRoot = { meteorites: MeteoritesDBFormat };
 

@@ -22,13 +22,11 @@ import {
 
     RuntimeConfig,
     
-    Filters,
-    
-    Meteorite,
-    
-    Meteorites
+    Filters
 
 } from "./types/types.ts";
+
+import { Meteorite, Meteorites } from "./types/meteorites.ts";
 
 import { config } from "./config.ts";
 
