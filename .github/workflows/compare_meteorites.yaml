@@ -33,7 +33,7 @@ jobs:
 
       # 1. Install the Python interpreter.
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
