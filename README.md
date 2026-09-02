@@ -1,6 +1,6 @@
 # Meteorites Landings API:
 
-A RESTful API built with **TypeScript** and **Wrangler CLI** to query and analyze the [NASA Meteorite Landings dataset](https://data.nasa.gov/dataset/meteorite-landings).
+A RESTful API built with [Wrangler](https://developers.cloudflare.com/workers/wrangler/) for querying and analyzing the [NASA Meteorite Landings dataset](https://data.nasa.gov/dataset/meteorite-landings).
 
 The project has been designed to run on serverless infrastructure, with optimized processing and algorithms that require minimal resources. As a result, it performs well on [small and medium-sized datasets](#available-datasets) and under moderate traffic volumes.
 
@@ -401,9 +401,9 @@ curl "https://meteorites.nde-code.workers.dev/health"
 }
 ```
 
-## 🖥️ Developer documentation:
+## 🖥️ Developer documentation and datasets:
 
-This project is a [Cloudflare Workers](https://workers.cloudflare.com/) application using the [Workerd](https://github.com/cloudflare/workerd) runtime. The structure is similar to Node.js or Deno with a few specifics. See the [full documentation](docs/docs.md) for details.
+For setup, configuration, and deployment using Wrangler CLI, see the [developer guide](docs/docs.md).
 
 ### Available datasets:
 

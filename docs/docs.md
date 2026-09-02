@@ -14,7 +14,7 @@ Using Codespaces is the recommended way to work on the project because it automa
 
 First, create a fork of the repository by following: [https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo).
 
-> You will obtain a repository containing your own copy of the project on your GitHub account, which allows you to use the project, make modifications, and share them with me via a pull request if you wish.
+You will obtain a repository containing your own copy of the project on your GitHub account, which allows you to use the project, make modifications, and share them with me via a pull request if you wish.
 
 ### 1. Configure the required secrets:
 
@@ -48,17 +48,14 @@ The [`.devcontainer.json`](../.devcontainer.json) file:
 
 defines the Codespace development environment:
 
-- **Base image:** Ubuntu-based development container.
-
-- **Node.js:** version 24.
-
-- **Cloudflare Wrangler:** latest version, with v4 or later required.
-
-- **Environment variables:** `IP_HASH_SALT` is populated from the Codespaces environment and written to `.dev.vars`.
-
-- **TypeScript definitions:** generated with `wrangler types` for [Cloudflare Worker Bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/).
-
-- **Remote user:** `vscode`
+| Component | Configuration |
+|---|---|
+| **Base image** | Ubuntu-based development container |
+| **Node.js** | Version `24` |
+| **Cloudflare Wrangler** | Latest version, with `v4` or later required |
+| **Environment variables** | Populated from the Codespaces environment and written to `.dev.vars` |
+| **TypeScript definitions** | Generated with `wrangler types` for [Cloudflare Worker Bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/) |
+| **Remote user** | `vscode` |
 
 The `postCreateCommand` automatically performs the required setup when the Codespace is created.
 
@@ -183,11 +180,15 @@ wrangler secret put IP_HASH_SALT
 
 #### Security notes:
 
-* **`IP_HASH_SALT`**: use a strong value with at least 30 characters, including uppercase and lowercase letters and numbers.
+| Variable | Requirements |
+|---|---|
+| `IP_HASH_SALT` | Use a strong value with at least **30 characters**, including uppercase and lowercase letters and numbers |
 
 > `IP_HASH_SALT` is a sensitive secret and must be handled with extreme caution. You may use scripts or tools to generate it, but make sure you never leak, log, or expose it.
 
-### Software configuration: [`config.ts`](../config.ts)
+### Software configuration:
+
+Take a look at the [`config.ts`](../config.ts) file at the root of the project, which looks like:
 
 ```ts
 export const config: StaticConfig = {
@@ -220,7 +221,7 @@ export const config: StaticConfig = {
 
 > **Important:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`.
 
-## 🖧 Development server:
+## 💻 Development server:
 
 Once your Codespace is ready and your Cloudflare account is authenticated, you're ready to start coding, but some explanation of TypeScript types and the running process will be provided in this section.
 
