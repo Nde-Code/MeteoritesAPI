@@ -1,0 +1,81 @@
+export interface Env {
+
+    IP_HASH_SALT: string;
+
+}
+
+export interface StaticConfig  {
+
+    RATE_LIMIT_INTERVAL_S: number;
+
+    MAX_RANDOM_METEORITES: number;
+
+    MAX_RETURNED_SEARCH_RESULTS: number;
+
+    MIN_RADIUS: number;
+
+    MAX_RADIUS: number;
+
+    DEFAULT_RANDOM_NUMBER_OF_METEORITES: number;
+
+}
+
+export interface RuntimeConfig extends StaticConfig {
+
+    IP_HASH_SALT: string;
+
+}
+
+export interface HealthCheckResult {
+
+    status: "healthy" | "degraded" | "unhealthy";
+
+    timestamp: string;
+
+    checks: {
+
+        cache_ready: boolean;
+
+        meteorites_count: number;
+
+        shuffled_meteorites_count: number;
+
+        stats_available: boolean;
+
+        by_id_index_size: number;
+
+        by_name_index_size: number;
+
+    };
+
+    message: string;
+    
+}
+
+export interface Filters { 
+
+    recclass: string | null;
+
+    fall: string | null;
+
+    year: number | null;
+
+    minYear: number | null;
+
+    maxYear: number | null;
+
+    mass: number | null;
+
+    minMass: number | null;
+
+    maxMass: number | null;
+
+    centerLat: number | null;
+
+    centerLon: number | null;
+
+    radius: number | null;
+
+    limit: number | null;
+    
+}

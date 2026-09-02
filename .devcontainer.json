@@ -1,0 +1,11 @@
+{
+    "name": "MeteoritesAPI Codespaces setup script",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "24"
+        }
+    },
+    "postCreateCommand": "npm install -g wrangler && echo \"IP_HASH_SALT=\\\"$IP_HASH_SALT\\\"\" > .dev.vars && wrangler types",
+    "remoteUser": "vscode"
+}

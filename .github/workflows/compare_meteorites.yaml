@@ -1,0 +1,46 @@
+name: Meteorites Dataset Diff Check
+
+on:
+
+  # Trigger on push to the main branch:
+  push:
+    branches:
+      - main
+
+  # Plan a monthly check to ensure proper integrity:
+  schedule:
+    - cron: '13 1 14 * *'
+
+  # Provide the option to run it manually if required:
+  workflow_dispatch:
+
+jobs:
+
+  compare:
+
+    # Execute this job on a Linux environment:
+    runs-on: ubuntu-latest
+
+    # Define read-only permission:
+    permissions:
+      contents: read
+
+    steps:
+
+      # 0. Initialize project sources:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # 1. Install the Python interpreter:
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      # 2. Download and run the meteorites comparison script:
+      - name: Compare meteorites dataset
+        run: |
+          curl -sL "${{ vars.GIST_COMPARE_SCRIPT }}" -o meteorites-diff.py && \
+          python meteorites-diff.py \
+            --local-file "data/meteorites.csv" \
+            --remote-file "${{ vars.METEORITES_REMOTE_CSV }}"
