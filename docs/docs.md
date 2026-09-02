@@ -18,7 +18,7 @@ You will obtain a repository containing your own copy of the project on your Git
 
 ### 1. Configure the required secrets:
 
-Before you start a new Codespaces environment and begin coding in it, you need to register the required secrets in the repository's GitHub Codespaces secrets.
+Before you start a new Codespaces environment and begin coding in it, you need to register the required secrets *(in this project, only one secret is required)* in the repository's GitHub Codespaces secrets.
 
 See the [environment variables](#environment-variables) section for the required configuration and the [GitHub Codespaces documentation about secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces) for more details.
 
@@ -54,7 +54,7 @@ defines the Codespace development environment:
 | **Node.js** | Version `24` |
 | **Cloudflare Wrangler** | Latest version, with `v4` or later required |
 | **Environment variables** | Populated from the Codespaces environment and written to `.dev.vars` |
-| **TypeScript definitions** | Generated with `wrangler types` for [Cloudflare Worker Bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/) |
+| **TypeScript definitions** | Generated with `wrangler types` |
 | **Remote user** | `vscode` |
 
 The `postCreateCommand` automatically performs the required setup when the Codespace is created.
@@ -219,7 +219,7 @@ export const config: StaticConfig = {
 | `MAX_RADIUS` | Maximum allowed search radius (km) | Minimum: 1000 km |
 | `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | Default count for `/random` if not specified | Minimum: 100 meteorites |
 
-> **Important:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`.
+> **Important:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES` and violating constraints will trigger a configuration error.
 
 ## 💻 Development server:
 
@@ -229,9 +229,7 @@ Once your Codespace is ready and your Cloudflare account is authenticated, you'r
 
 The Dev Container automatically runs `wrangler types` when the Codespace is created, generating the TypeScript definitions required by the Worker in `worker-configuration.d.ts`.
 
-> There are currently no bindings configured in this project.
-
-If you change your Wrangler configuration or bindings, regenerate the definitions manually with:
+If you change your Wrangler configuration, regenerate the definitions manually with:
 
 ```bash
 wrangler types
