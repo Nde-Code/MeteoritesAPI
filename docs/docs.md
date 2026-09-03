@@ -59,7 +59,7 @@ defines the Codespace development environment:
 
 The `postCreateCommand` automatically performs the required setup when the Codespace is created.
 
-Wrangler is intentionally installed globally inside the Codespace to keep the repository free of Node.js project dependencies.
+Wrangler is intentionally installed globally inside the Codespace to keep the repository free of Node.js dependencies.
 
 > **Note:** `.dev.vars` is a local development file and must never be committed to the repository. It is already included in [`.gitignore`](../.gitignore).
 
@@ -167,7 +167,7 @@ The Worker uses standard environment variables in a `.dev.vars` file for local d
 Create/configure the following value as [GitHub Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces). When the Codespace is created, [`.devcontainer.json`](../.devcontainer.json) automatically writes it to `.dev.vars`:
 
 ```env
-IP_HASH_SALT="THE_KEY_USED_TO_HASH_IPS"
+IP_HASH_SALT="THE_SALT_USED_TO_HASH"
 ```
 
 #### Production:
