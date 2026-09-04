@@ -437,15 +437,15 @@ Requires **Python 3.10+** (no external dependencies).
 
 ### Available options:
 
-| Argument | Description |
-|----------|-------------|
-| `--input` | Path to [`meteorites.csv`](data/meteorites.csv) **(required)** |
-| `--output` | Path to output JSON file **(required)** |
-| `--grid` | Grid cell size in degrees (optional, > 0 enables filtering) |
-| `--limit` | Max records (optional, `0` = unlimited). Processing stops once limit reached |
-| `--clean-up` | Remove records with missing/invalid location data and normalize empty fields **(recommended)** |
-| `--minify` | Minify output JSON by removing unnecessary whitespace |
-| `--debug` | Verbosity level: `0` (silent), `1` (info), `2` (verbose) |
+| Argument     | Description                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| `--input`    | Path to [`meteorites.csv`](data/meteorites.csv) **(required)**                                    |
+| `--output`   | Path to the output JSON file **(required)**                                                       |
+| `--grid`     | Grid cell size in degrees. If `> 0`, keeps at most one meteorite per grid cell                    |
+| `--limit`    | Maximum number of records. `0` = unlimited. Processing stops once the limit is reached            |
+| `--clean-up` | Remove records with missing or invalid location data and normalize empty fields **(recommended)** |
+| `--minify`   | Minify the output JSON by removing unnecessary whitespace                                         |
+| `--debug`    | Verbosity level: `0` (silent), `1` (info), `2` (verbose)                                          |
 
 ### Usage:
 
