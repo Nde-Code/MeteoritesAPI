@@ -24,7 +24,7 @@ export async function checkTimeRateLimit(hashedIp: string, limitSeconds: number)
 
     } catch (_err) {
 
-        printLogLine("ERROR", "Cache API failure.");
+        printLogLine("ERROR", "Cloudflare Cache API failure.");
 
         return false;
 

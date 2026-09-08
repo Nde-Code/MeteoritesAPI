@@ -92,7 +92,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (!isCacheReady) {
 
-        printLogLine("ERROR", "Data cache is not ready or empty.");
+        printLogLine("ERROR", "Data cache is not ready or unavailable.");
 
         return createJsonResponse({ "error": "Service is warming up or data source is unavailable." }, 503);
 
@@ -140,7 +140,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         const statsResponse: Response = createJsonResponse({ "success": cachedStatsResult }, 200);
 
-        printLogLine("INFO", `Returned /stats data.`);
+        printLogLine("INFO", "Successfully returned /stats data.");
 
         return statsResponse;
 
@@ -212,7 +212,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
         if (!result) {
 
-            printLogLine("WARN", `Unable to find using ${pathname + url.search}.`);
+            printLogLine("WARN", `No meteorite found using ${pathname + url.search}.`);
 
             return createJsonResponse({ "error": "No meteorite found for the given identifier." }, 404);
 
@@ -398,7 +398,7 @@ export default {
 
         } catch (_err) {
 
-            printLogLine("ERROR", "An error occurred while handling the request.");
+            printLogLine("ERROR", "An unexpected error occurred while handling the request.");
 
             return createJsonResponse({ "error": "Internal server error." }, 500);
 
