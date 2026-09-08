@@ -15,13 +15,13 @@ import {
 } from "./utilities/cache.ts";
 
 import type {
-    
+
     Env,
 
-    StaticConfig, 
+    StaticConfig,
 
     RuntimeConfig,
-    
+
     Filters
 
 } from "./types/types.ts";
@@ -69,13 +69,13 @@ const configMinValues: Partial<Record<keyof StaticConfig, number>> = {
 };
 
 async function handler(req: Request, env: Env): Promise<Response> {
-        
+
     const currentConfig: RuntimeConfig = {
 
         ...config,
 
         "IP_HASH_SALT": env.IP_HASH_SALT ?? ""
-        
+
     };
 
     const isConfigValid = isConfigValidWithMinValues(currentConfig, configMinValues) && currentConfig.DEFAULT_RANDOM_NUMBER_OF_METEORITES <= currentConfig.MAX_RANDOM_METEORITES;
@@ -87,15 +87,15 @@ async function handler(req: Request, env: Env): Promise<Response> {
     if (pathname === "/favicon.ico") return new Response(null, { "status": 204 });
 
     if (!currentConfig.IP_HASH_SALT) return createJsonResponse({ "error": "Your credentials are missing." }, 500);
-    
+
     if (!isConfigValid) return createJsonResponse({"error": "Invalid configuration detected. Please refer to the documentation."}, 500);
-    
+
     if (!isCacheReady) {
 
         printLogLine("ERROR", "Data cache is not ready or empty.");
 
-        return createJsonResponse({ "error": "Service is warming up or data source is unavailable." }, 503); 
-    
+        return createJsonResponse({ "error": "Service is warming up or data source is unavailable." }, 503);
+
     }
 
     if (req.method === "OPTIONS") {
@@ -129,7 +129,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         if (rateLimitResponse) return rateLimitResponse;
 
         return await handleHealthCheck();
-    
+
     }
 
     if (req.method === "GET" && pathname === "/stats") {
@@ -141,7 +141,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         const statsResponse: Response = createJsonResponse({ "success": cachedStatsResult }, 200);
 
         printLogLine("INFO", `Returned /stats data.`);
-        
+
         return statsResponse;
 
     }
@@ -153,7 +153,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         if (rateLimitResponse) return rateLimitResponse;
 
         const countParam: string | null = url.searchParams.get("count");
-        
+
         let requestedCount: number = countParam ? parseInt(countParam) : currentConfig.DEFAULT_RANDOM_NUMBER_OF_METEORITES;
 
         if (isNaN(requestedCount)) requestedCount = currentConfig.DEFAULT_RANDOM_NUMBER_OF_METEORITES;
@@ -183,7 +183,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         printLogLine("INFO", `Returned ${randomMeteorites.length} meteorites from ${pathname + url.search} (start index: ${start}).`);
 
         return randomResponse;
-        
+
     }
 
     if (req.method === "GET" && pathname === "/get") {
@@ -207,7 +207,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         let result: Meteorite | undefined;
 
         if (id) result = meteoritesByID.get(id);
-            
+
         else if (name) result = meteoritesByName.get(normalizeString(name!));
 
         if (!result) {
@@ -219,7 +219,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         }
 
         printLogLine("INFO", `Returned meteorite from ${pathname + url.search}.`);
-        
+
         return createJsonResponse({ "success": { "meteorite": result } }, 200);
 
     }
@@ -271,7 +271,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         if (filters.radius !== null && (filters.radius < currentConfig.MIN_RADIUS || filters.radius > currentConfig.MAX_RADIUS)) return createJsonResponse({ "error": `The radius must be between ${currentConfig.MIN_RADIUS} km and ${currentConfig.MAX_RADIUS} km.` }, 400);
 
         if ((filters.centerLat !== null || filters.centerLon !== null || filters.radius !== null) && !(filters.centerLat !== null && filters.centerLon !== null && filters.radius !== null)) return createJsonResponse({ "error": "Incomplete geographic parameters: centerLatitude, centerLongitude, and radius must all be provided together." }, 400);
-        
+
         if (filters.limit !== null && !isPositiveInteger(filters.limit)) return createJsonResponse({ "error": "The limit parameter must be a positive integer." }, 400);
 
         const limit: number = (filters.limit !== null && isPositiveInteger(filters.limit)) ? Math.min(filters.limit, currentConfig.MAX_RETURNED_SEARCH_RESULTS) : currentConfig.MAX_RETURNED_SEARCH_RESULTS;
@@ -287,7 +287,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
         if (useLocation) {
 
             if (filters.centerLat! < -90 || filters.centerLat! > 90) return createJsonResponse({ "error": "Latitude must be between -90 and 90." }, 400);
-            
+
             if (filters.centerLon! < -180 || filters.centerLon! > 180) return createJsonResponse({ "error": "Longitude must be between -180 and 180." }, 400);
 
             const latRad: number = filters.centerLat! * Math.PI / 180;
@@ -360,14 +360,14 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
                 let diffLon: number = Math.abs(lon - centerLon!);
 
-                if (diffLon > 180) diffLon = 360 - diffLon; 
-                
+                if (diffLon > 180) diffLon = 360 - diffLon;
+
                 const dLat: number = (lat - centerLat!) * degToRad;
 
                 const dLon: number = diffLon * degToRad;
 
                 const x: number = dLon * Math.cos((lat + centerLat!) * degToRad * 0.5);
-                
+
                 if ((x * x + dLat * dLat) > maxDistSq) continue;
 
             }
@@ -385,7 +385,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
     }
 
     return createJsonResponse({ "error": "The requested endpoint is invalid." }, 404);
-    
+
 }
 
 export default {

@@ -49,10 +49,10 @@ export interface HealthCheckResult {
     };
 
     message: string;
-    
+
 }
 
-export interface Filters { 
+export interface Filters {
 
     recclass: string | null;
 
@@ -77,5 +77,5 @@ export interface Filters {
     radius: number | null;
 
     limit: number | null;
-    
+
 }

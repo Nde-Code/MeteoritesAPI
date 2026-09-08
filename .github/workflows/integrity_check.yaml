@@ -17,10 +17,10 @@ on:
 jobs:
 
   test:
-  
+
     # Use ubuntu-latest as required for compatibility:
     runs-on: ubuntu-latest
-    
+
     # Define read-only permission:
     permissions:
       contents: read
@@ -65,7 +65,7 @@ jobs:
           sleep 15
 
       # 7. Execute the health check script against the local worker:
-      - name: Run API integrity test suite 
+      - name: Run API integrity test suite
         run: |
           curl -sL "${{ vars.GIST_TEST_SCRIPT }}" -o meteorites-api.py && \
           python meteorites-api.py \

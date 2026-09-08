@@ -6,7 +6,7 @@ export async function checkTimeRateLimit(hashedIp: string, limitSeconds: number)
 
         const cache = (caches as any)?.default;
 
-        if (!cache) return true; 
+        if (!cache) return true;
 
         const cacheKey = `https://ratelimit.local/${hashedIp}`;
 
@@ -26,7 +26,7 @@ export async function checkTimeRateLimit(hashedIp: string, limitSeconds: number)
 
         printLogLine("ERROR", "Cache API failure.");
 
-        return false; 
+        return false;
 
     }
 
@@ -39,7 +39,7 @@ export async function hashIP(ip: string, salt: string): Promise<string> {
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
 
     const hashArray = new Uint8Array(hashBuffer);
-    
+
     let hexString = "";
 
     for (let i = 0; i < hashArray.length; i++) {

@@ -8,12 +8,12 @@ export interface Meteorite {
 
     mass: number | null;
 
-    year: number | null; 
+    year: number | null;
 
     latitude: number | null;
 
     longitude: number | null;
-    
+
     fall: string;
 }
 

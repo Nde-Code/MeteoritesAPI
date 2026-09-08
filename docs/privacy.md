@@ -10,7 +10,8 @@ This privacy policy explains clearly and transparently what data this software p
 
 This project implements **rate limiting** to protect the service against abusive usage. The only mechanism implemented is **burst protection**, which prevents the service from being overwhelmed by repeated and rapid requests. It uses [Cloudflare Workers Cache](https://developers.cloudflare.com/workers/runtime-apis/cache/) to store the required data.
 
-To implement **rate limiting**, this software processes your **IP address**.  
+To implement **rate limiting**, this software processes your **IP address**.
+
 However, the IP address is **immediately pseudonymized**:
 
 - It is hashed using **SHA-256**.

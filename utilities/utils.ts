@@ -1,9 +1,9 @@
 import type { StaticConfig, RuntimeConfig } from "../types/types.ts";
 
 import {
-		
+
 	checkTimeRateLimit,
-		
+
 	hashIP
 
 } from "../utilities/rate.ts";
@@ -31,7 +31,7 @@ export function createJsonResponse(body: object, status = 200, headers: HeadersI
 export function normalizeString(str: string): string { return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
 export function isConfigValidWithMinValues(config: StaticConfig, rules: Partial<Record<keyof StaticConfig, number>>): boolean {
-    
+
     for (const key in rules) {
 
         const typedKey = key as keyof StaticConfig;
@@ -56,8 +56,8 @@ export async function applyRateLimit(req: Request, currentConfig: RuntimeConfig)
 
     if (!(await checkTimeRateLimit(hashedIP, currentConfig.RATE_LIMIT_INTERVAL_S))) return createJsonResponse({ "warning": `Rate limit exceeded: only 1 request per ${currentConfig.RATE_LIMIT_INTERVAL_S}s allowed.` }, 429);
 
-    return null; 
-    
+    return null;
+
 }
 
 export function printLogLine(level: "INFO" | "WARN" | "ERROR", text: string): void {
@@ -90,14 +90,14 @@ export function getTrimmedParam(param: string | null | undefined): string | null
 
     if (typeof param !== "string") return null;
 
-    if (param.length > MAX_PARAM_LENGTH + 100) return null; 
+    if (param.length > MAX_PARAM_LENGTH + 100) return null;
 
     const trimmed: string = param.trim();
 
     if (trimmed.length === 0 || trimmed.length > MAX_PARAM_LENGTH) return null;
 
     return trimmed;
-    
+
 }
 
 export function toNumber(value: string | null | undefined): number | null {
@@ -111,5 +111,5 @@ export function toNumber(value: string | null | undefined): number | null {
     const n: number = Number(trimmed);
 
     return isNaN(n) ? null : n;
-    
+
 }

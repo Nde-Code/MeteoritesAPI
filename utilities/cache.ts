@@ -31,13 +31,13 @@ function initializeData() {
     const rootData: MeteoritesRoot = rawData as MeteoritesRoot;
 
     const initialRawData: MeteoritesRaw = Object.values(rootData.meteorites);
-    
+
     const cleaned: Meteorites = [];
 
     const yearsDist: Record<string, number> = {};
 
     const classesDist: Record<string, number> = {};
-    
+
     let minYear = Infinity, maxYear = -Infinity;
 
     let minMass = Infinity, maxMass = -Infinity;
@@ -99,7 +99,7 @@ function initializeData() {
         if (fall === "fell") countFell++;
 
         else if (fall === "found") countFound++;
-        
+
         if (lat !== null && lon !== null) geolocatedCount++;
 
     }
