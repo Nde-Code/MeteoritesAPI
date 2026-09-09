@@ -113,12 +113,10 @@ Ensures compatibility even as Cloudflare updates the platform.
 
 #### `preview_urls`
 
-Enables or disables preview URLs for testing.
+Enables or disables preview URLs for testing: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/).
 
 - `true` = Enables preview URLs
 - `false` = Disables preview URLs
-
-> For more details: [https://developers.cloudflare.com/workers/configuration/previews/](https://developers.cloudflare.com/workers/configuration/previews/)
 
 ### Observability configuration:
 
@@ -160,15 +158,13 @@ The Worker uses standard environment variables in a `.dev.vars` file for local d
 
 | Variable | Description |
 |----------|-------------|
-| `IP_HASH_SALT` | Cryptographic salt for hashing user IP addresses. |
+| `IP_HASH_SALT` | The salt used to hash IP addresses. |
 
 #### Local development:
 
-Create/configure the following value as [GitHub Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces). When the Codespace is created, [`.devcontainer.json`](../.devcontainer.json) automatically writes it to `.dev.vars`:
+Create/configure the value above as [GitHub Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces).
 
-```env
-IP_HASH_SALT="THE_SALT_USED_TO_HASH"
-```
+> When the Codespace is created, [`.devcontainer.json`](../.devcontainer.json) automatically writes it to `.dev.vars`, as explained above.
 
 #### Production:
 
@@ -219,11 +215,11 @@ export const config: StaticConfig = {
 | `MAX_RADIUS` | Maximum allowed search radius (km) | Minimum: 1000 km |
 | `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | Default count for `/random` if not specified | Minimum: 100 meteorites |
 
-> **Important:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES` and violating constraints will trigger a configuration error.
+> **Note:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES` and violating constraints will trigger a configuration error.
 
 ## 💻 Development server:
 
-Once your Codespace is ready and your Cloudflare account is authenticated, you're ready to start coding, but some explanation of TypeScript types and the running process will be provided in this section.
+Once your Codespace is ready and your Cloudflare account is authenticated, you're ready to start coding. This section provides an overview of how the TypeScript types are initialized, as well as how to run and deploy the project.
 
 ### 1. TypeScript types:
 
