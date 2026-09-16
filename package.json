@@ -1,0 +1,28 @@
+{
+	"name": "meteoritesapi",
+	"version": "1.0.0",
+	"private": true,
+	"description": "A RESTful API developed with Wrangler for querying and analyzing NASA's Meteorite Landings dataset.",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"types": "wrangler types",
+		"login": "wrangler login",
+		"check-types": "tsc --noEmit"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Nde-Code/MeteoritesAPI.git"
+	},
+	"author": "Nde-Code",
+	"license": "Apache-2.0",
+	"type": "module",
+	"bugs": {
+		"url": "https://github.com/Nde-Code/MeteoritesAPI/issues"
+	},
+	"homepage": "https://github.com/Nde-Code/MeteoritesAPI#readme",
+	"devDependencies": {
+		"typescript": "^7.0.2",
+		"wrangler": "^4.131.2"
+	}
+}
