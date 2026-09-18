@@ -1,37 +1,37 @@
 name: CI
 
 on:
-  # Trigger on push to the main branch:
+  # Run workflow when changes are pushed to the main branch:
   push:
     branches:
       - main
 
-  # Plan regular integrity checks:
+  # Run scheduled integrity and dataset checks:
   schedule:
     - cron: "42 3 22 * *"
     - cron: "13 1 14 * *"
 
-  # Provide the option to run it manually if required:
+  # Allow manual workflow execution:
   workflow_dispatch:
 
 jobs:
   type-check:
-    # Run type checking only on push to the main branch:
+    # Run type checking only on push events:
     if: github.event_name == 'push'
 
-    # Use ubuntu-latest as required for compatibility:
+    # Use ubuntu-latest runner for a consistent Linux CI environment:
     runs-on: ubuntu-latest
 
-    # Define read-only permission:
+    # Restrict repository access to read-only:
     permissions:
       contents: read
 
     steps:
-      # 0. Init project sources:
+      # 0. Checkout repository sources:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # 1. Install Node.js runtime for Wrangler and TypeScript tools:
+      # 1. Set up Node.js runtime required by project tooling:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
@@ -50,28 +50,28 @@ jobs:
         run: npm run check-types
 
   integrity-test:
-    # Run integrity test on push, manual trigger and scheduled CI check:
+    # Run integrity tests for push, manual, and scheduled executions:
     if: github.event_name != 'schedule' || github.event.schedule == '42 3 22 * *'
 
-    # Use ubuntu-latest as required for compatibility:
+    # Use ubuntu-latest runner for a consistent Linux CI environment:
     runs-on: ubuntu-latest
 
-    # Define read-only permission:
+    # Restrict repository access to read-only:
     permissions:
       contents: read
 
     steps:
-      # 0. Init project sources:
+      # 0. Checkout repository sources:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # 1. Install Node.js runtime for Wrangler:
+      # 1. Set up Node.js runtime required by project tooling:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
           node-version: "24"
 
-      # 2. Set up Python for the test script:
+      # 2. Set up Python environment for the integrity test script:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
@@ -87,18 +87,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # 5. Create .dev.vars:
+      # 5. Create local environment variables:
       - name: Create .dev.vars
         run: |
           echo "IP_HASH_SALT=\"${{ secrets.IP_HASH_SALT }}\"" > .dev.vars
 
-      # 6. Start Wrangler Dev in the background:
+      # 6. Start Wrangler development server in the background:
       - name: Start Wrangler Dev (Background)
         run: |
           npm run dev -- --show-interactive-dev-session=false --port 8787 &
           sleep 15
 
-      # 7. Execute the health check script against the local worker:
+      # 7. Execute the API integrity test suite against the local worker:
       - name: Run API integrity test suite
         run: |
           curl -sL "${{ vars.GIST_TEST_SCRIPT }}" -o meteorites-api.py && \
@@ -111,28 +111,28 @@ jobs:
             --max-search 500
 
   dataset-diff-check:
-    # Run dataset comparison on push, manual trigger and scheduled dataset check:
+    # Run dataset comparison for push, manual, and scheduled executions:
     if: github.event_name != 'schedule' || github.event.schedule == '13 1 14 * *'
 
-    # Execute this job on a Linux environment:
+    # Use ubuntu-latest runner for a consistent Linux CI environment:
     runs-on: ubuntu-latest
 
-    # Define read-only permission:
+    # Restrict repository access to read-only:
     permissions:
       contents: read
 
     steps:
-      # 0. Initialize project sources:
+      # 0. Checkout repository sources:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # 1. Install the Python interpreter:
+      # 1. Set up Python environment:
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
-      # 2. Download and run the meteorites comparison script:
+      # 2. Download and execute the meteorites dataset comparison script:
       - name: Compare meteorites dataset
         run: |
           curl -sL "${{ vars.GIST_COMPARE_SCRIPT }}" -o meteorites-diff.py && \
