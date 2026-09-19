@@ -34,7 +34,7 @@ The [`.devcontainer.json`](../.devcontainer.json) file:
 
 ```json
 {
-	"name": "MeteoritesAPI Codespaces setup script",
+	"name": "MeteoritesAPI Codespace setup script",
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
