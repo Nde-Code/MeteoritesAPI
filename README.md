@@ -403,7 +403,7 @@ curl "https://meteorites.nde-code.workers.dev/health"
 
 ## 🖥️ Developer documentation and datasets:
 
-For setup, configuration, and deployment using Wrangler CLI, see the [developer guide](docs/docs.md).
+For setup, configuration, and deployment using Wrangler CLI, see the [developer guide](docs/documentation.md).
 
 ### Available datasets:
 
