@@ -14,11 +14,9 @@ You can deploy your own instance by clicking the button below:
 
 - **No sign-up required:** no account creation, credit card, or personal data needed.
 
-- **Privacy-focused:** no user activity logs (logs only for debugging).
-
 - **Rate limiting:** protection against abuse with request throttling.
 
-- **Compliant with the GDPR:** IP addresses (used only for rate limiting) are hashed with SHA-256 using a salt.
+- **Privacy-conscious:** built with privacy in mind, considering GDPR principles where applicable.
 
 - **Advanced search:** multiple filters for precise queries.
 
@@ -26,9 +24,11 @@ You can deploy your own instance by clicking the button below:
 
 ## 🌐 API access:
 
-| Endpoint | Rate limit | Maintainer | Privacy | Dataset |
-|----------|-----------|-----------|---------|---------|
-| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/IP/s | [Me](https://nde-code.github.io/) | [`privacy.md`](docs/privacy.md) | [`meteorites_small.json`](data/meteorites_small.json) |
+| Endpoint | Rate limit | Maintainer | Dataset |
+|----------|-----------|-----------|---------|
+| [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/IP/s | [Me](https://nde-code.github.io/) | [`meteorites_small.json`](data/meteorites_small.json) |
+
+The rate-limiting system temporarily processes IP addresses, which are pseudonymized using a hash combined with a secret salt before being used for rate limiting. It provides burst protection, and the resulting hashed value is temporarily stored in [Cloudflare Workers Cache](https://developers.cloudflare.com/workers/runtime-apis/cache/). The hashed value is retained only for the duration required to enforce these limits and is automatically removed afterward.
 
 Check the [status page](https://nde-status.instatus.com/) if you experience latency or other issues while using my public online instance.
 
