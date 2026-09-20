@@ -34,15 +34,15 @@ The [`.devcontainer.json`](../.devcontainer.json) file:
 
 ```json
 {
-	"name": "MeteoritesAPI Codespace setup script",
-	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-	"features": {
-		"ghcr.io/devcontainers/features/node:1": {
-			"version": "24"
-		}
-	},
-	"postCreateCommand": "npm install && echo \"IP_HASH_SALT=\\\"$IP_HASH_SALT\\\"\" > .dev.vars && npm run types",
-	"remoteUser": "vscode"
+    "name": "MeteoritesAPI Codespace setup script",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "24"
+        }
+    },
+    "postCreateCommand": "npm install && echo \"IP_HASH_SALT=\\\"$IP_HASH_SALT\\\"\" > .dev.vars && npm run types",
+    "remoteUser": "vscode"
 }
 ```
 
@@ -77,20 +77,20 @@ Review the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the comple
 
 ```jsonc
 {
-	"name": "project-name",
-	"main": "main.ts",
-	"compatibility_date": "2026-08-12",
-	"preview_urls": false,
-	"observability": {
-		"enabled": true,
-		"head_sampling_rate": 1,
-		"logs": {
-			"invocation_logs": false
-		},
-		"traces": {
-			"enabled": false
-		}
-	}
+    "name": "project-name",
+    "main": "main.ts",
+    "compatibility_date": "2026-08-12",
+    "preview_urls": false,
+    "observability": {
+        "enabled": true,
+        "head_sampling_rate": 1,
+        "logs": {
+            "invocation_logs": false
+        },
+        "traces": {
+            "enabled": false
+        }
+    }
 }
 ```
 
@@ -189,17 +189,17 @@ Take a look at the [`config.ts`](../config.ts) file at the root of the project, 
 ```ts
 export const config: StaticConfig = {
 
-	RATE_LIMIT_INTERVAL_S: 1, // Min: 1
+    "RATE_LIMIT_INTERVAL_S": 1, // Min: 1
 
-	MAX_RANDOM_METEORITES: 1000, // Min: 100
+    "MAX_RANDOM_METEORITES": 1000, // Min: 100
 
-	MAX_RETURNED_SEARCH_RESULTS: 500, // Min: 100
+    "MAX_RETURNED_SEARCH_RESULTS": 500, // Min: 100
 
-	MIN_RADIUS: 1, // Min: 1
+    "MIN_RADIUS": 1, // Min: 1
 
-	MAX_RADIUS: 2500, // Min: 1000
+    "MAX_RADIUS": 2500, // Min: 1000
 
-	DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100 // Min: 100
+    "DEFAULT_RANDOM_NUMBER_OF_METEORITES": 100 // Min: 100
 
 };
 ```
@@ -237,43 +237,43 @@ The generated definitions are automatically picked up by TypeScript through the 
 
 ```json
 {
-	"compilerOptions": {
-		"noEmit": true,
-		"allowImportingTsExtensions": true,
-		"target": "ES2020",
-		"lib": [
-			"ES2020",
-			"DOM"
-		],
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
-		"verbatimModuleSyntax": true,
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"allowUnreachableCode": false,
-		"allowUnusedLabels": false,
-		"types": [
-			"./worker-configuration.d.ts"
-		],
-		"resolveJsonModule": true
-	},
-	"include": [
-		"utilities",
-		"worker-configuration.d.ts",
-		"main.ts",
-		"config.ts",
-		"types"
-	],
-	"exclude": [
-		"node_modules",
-		"dist"
-	]
+    "compilerOptions": {
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "target": "ES2020",
+        "lib": [
+            "ES2020",
+            "DOM"
+        ],
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "verbatimModuleSyntax": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "types": [
+            "./worker-configuration.d.ts"
+        ],
+        "resolveJsonModule": true
+    },
+    "include": [
+        "utilities",
+        "worker-configuration.d.ts",
+        "main.ts",
+        "config.ts",
+        "types"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }
 ```
 
