@@ -23,6 +23,6 @@
     "homepage": "https://github.com/Nde-Code/MeteoritesAPI#readme",
     "devDependencies": {
         "typescript": "^7.0.2",
-        "wrangler": "^4.134.0"
+        "wrangler": "^4.135.0"
     }
 }
