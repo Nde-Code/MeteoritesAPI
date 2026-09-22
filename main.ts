@@ -88,7 +88,7 @@ async function handler(req: Request, env: Env): Promise<Response> {
 
     if (!currentConfig.IP_HASH_SALT) return createJsonResponse({ "error": "Your credentials are missing." }, 500);
 
-    if (!isConfigValid) return createJsonResponse({"error": "Invalid configuration detected. Please refer to the documentation."}, 500);
+    if (!isConfigValid) return createJsonResponse({ "error": "Invalid configuration detected. Please refer to the documentation." }, 500);
 
     if (!isCacheReady) {
 
