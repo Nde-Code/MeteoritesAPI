@@ -2,9 +2,9 @@ import type { StaticConfig, RuntimeConfig } from "../types/types.ts";
 
 import {
 
-	checkTimeRateLimit,
+    checkTimeRateLimit,
 
-	hashIP
+    hashIP
 
 } from "../utilities/rate.ts";
 

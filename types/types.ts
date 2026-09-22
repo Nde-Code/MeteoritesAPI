@@ -4,7 +4,7 @@ export interface Env {
 
 }
 
-export interface StaticConfig  {
+export interface StaticConfig {
 
     RATE_LIMIT_INTERVAL_S: number;
 
