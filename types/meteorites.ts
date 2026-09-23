@@ -15,6 +15,7 @@ export interface Meteorite {
     longitude: number | null;
 
     fall: string;
+
 }
 
 export type Meteorites = Meteorite[];
