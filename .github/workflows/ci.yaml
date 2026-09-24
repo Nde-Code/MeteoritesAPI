@@ -1,131 +1,103 @@
 name: CI
 
 on:
-  # Run workflow when changes are pushed to the main branch:
   push:
     branches:
       - main
 
-  # Run scheduled integrity and dataset checks:
   schedule:
     - cron: '42 3 22 * *'
     - cron: '13 1 14 * *'
 
-  # Allow manual workflow execution:
   workflow_dispatch:
 
 jobs:
   format-check:
-    # Use ubuntu-latest runner for a consistent Linux CI environment:
     runs-on: ubuntu-latest
 
-    # Restrict repository access to read-only:
     permissions:
       contents: read
 
     steps:
-      # 0. Checkout repository sources:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # 1. Set up Node.js runtime required by project tooling:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
           node-version: '24'
 
-      # 2. Install Node.js dependencies:
       - name: Install Node.js dependencies
         run: npm ci
 
-      # 3. Check code formatting with Prettier:
       - name: Prettier format check
         run: npm run prettier-check
 
   type-check:
-    # Run type checking only on push events:
     if: github.event_name == 'push'
 
-    # Use ubuntu-latest runner for a consistent Linux CI environment:
     runs-on: ubuntu-latest
 
-    # Restrict repository access to read-only:
     permissions:
       contents: read
 
     steps:
-      # 0. Checkout repository sources:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # 1. Set up Node.js runtime required by project tooling:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
           node-version: '24'
 
-      # 2. Install Node.js dependencies:
       - name: Install Node.js dependencies
         run: npm ci
 
-      # 3. Generate Wrangler types for the TypeScript project:
       - name: Generate Wrangler types
         run: npm run types
 
-      # 4. Run TypeScript type checking:
       - name: TypeScript type check
         run: npm run check-types
 
   integrity-test:
-    # Run integrity tests for push, manual, and scheduled executions:
     if: github.event_name != 'schedule' || github.event.schedule == '42 3 22 * *'
 
-    # Use ubuntu-latest runner for a consistent Linux CI environment:
     runs-on: ubuntu-latest
 
-    # Restrict repository access to read-only:
     permissions:
       contents: read
 
     steps:
-      # 0. Checkout repository sources:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # 1. Set up Node.js runtime required by project tooling:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
           node-version: '24'
 
-      # 2. Set up Python environment for the integrity test script:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
-      # 3. Install Node.js dependencies:
       - name: Install Node.js dependencies
         run: npm ci
 
-      # 4. Install Python dependencies:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      # 5. Create local environment variables:
       - name: Create .dev.vars file
         run: |
           echo "IP_HASH_SALT=\"${{ secrets.IP_HASH_SALT }}\"" > .dev.vars
 
-      # 6. Start Wrangler development server in the background:
       - name: Start Wrangler Dev
         run: |
           npm run dev -- --show-interactive-dev-session=false --port 8787 &
           sleep 15
 
-      # 7. Execute the API integrity test suite:
       - name: Run API integrity test suite
         run: |
           curl -sL "${{ vars.GIST_TEST_SCRIPT }}" -o meteorites-api.py
@@ -138,28 +110,22 @@ jobs:
             --max-search 500
 
   dataset-diff-check:
-    # Run dataset comparison for push, manual, and scheduled executions:
     if: github.event_name != 'schedule' || github.event.schedule == '13 1 14 * *'
 
-    # Use ubuntu-latest runner for a consistent Linux CI environment:
     runs-on: ubuntu-latest
 
-    # Restrict repository access to read-only:
     permissions:
       contents: read
 
     steps:
-      # 0. Checkout repository sources:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # 1. Set up Python environment:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
-      # 2. Download and execute the meteorites dataset comparison script:
       - name: Compare meteorites dataset
         run: |
           curl -sL "${{ vars.GIST_COMPARE_SCRIPT }}" -o meteorites-diff.py
