@@ -1,9 +1,7 @@
-import { printLogLine } from "./utils.ts";
+import { printLogLine } from './utils.ts';
 
 export async function checkTimeRateLimit(hashedIp: string, limitSeconds: number): Promise<boolean> {
-
     try {
-
         const cache = (caches as any)?.default;
 
         if (!cache) return true;
@@ -14,42 +12,35 @@ export async function checkTimeRateLimit(hashedIp: string, limitSeconds: number)
 
         if (hit) return false;
 
-        await cache.put(cacheKey, new Response("1", {
-
-            "headers": { "Cache-Control": `max-age=${limitSeconds}` }
-
-        }));
+        await cache.put(
+            cacheKey,
+            new Response('1', {
+                headers: { 'Cache-Control': `max-age=${limitSeconds}` }
+            })
+        );
 
         return true;
-
     } catch (_err) {
-
-        printLogLine("ERROR", "Cloudflare Cache API failure.");
+        printLogLine('ERROR', 'Cloudflare Cache API failure.');
 
         return false;
-
     }
-
 }
 
 export async function hashIP(ip: string, salt: string): Promise<string> {
-
     const msgBuffer = new TextEncoder().encode(ip + salt);
 
-    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
 
     const hashArray = new Uint8Array(hashBuffer);
 
-    let hexString = "";
+    let hexString = '';
 
     for (let i = 0; i < hashArray.length; i++) {
-
         const b = hashArray[i];
 
-        hexString += ((b < 16) ? '0' : '') + b.toString(16);
-
+        hexString += (b < 16 ? '0' : '') + b.toString(16);
     }
 
     return hexString;
-
 }

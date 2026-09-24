@@ -1,11 +1,8 @@
 export interface Env {
-
     IP_HASH_SALT: string;
-
 }
 
 export interface StaticConfig {
-
     RATE_LIMIT_INTERVAL_S: number;
 
     MAX_RANDOM_METEORITES: number;
@@ -17,23 +14,18 @@ export interface StaticConfig {
     MAX_RADIUS: number;
 
     DEFAULT_RANDOM_NUMBER_OF_METEORITES: number;
-
 }
 
 export interface RuntimeConfig extends StaticConfig {
-
     IP_HASH_SALT: string;
-
 }
 
 export interface HealthCheckResult {
-
-    status: "healthy" | "degraded" | "unhealthy";
+    status: 'healthy' | 'degraded' | 'unhealthy';
 
     timestamp: string;
 
     checks: {
-
         cache_ready: boolean;
 
         meteorites_count: number;
@@ -45,15 +37,12 @@ export interface HealthCheckResult {
         by_id_index_size: number;
 
         by_name_index_size: number;
-
     };
 
     message: string;
-
 }
 
 export interface Filters {
-
     recclass: string | null;
 
     fall: string | null;
@@ -77,5 +66,4 @@ export interface Filters {
     radius: number | null;
 
     limit: number | null;
-
 }

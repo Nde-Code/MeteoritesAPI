@@ -24,8 +24,8 @@ You can deploy your own instance by clicking the button below:
 
 ## 🌐 API access:
 
-| Endpoint | Rate limit | Maintainer | Dataset |
-|----------|-----------|-----------|---------|
+| Endpoint                                                                             | Rate limit | Maintainer                        | Dataset                                               |
+| ------------------------------------------------------------------------------------ | ---------- | --------------------------------- | ----------------------------------------------------- |
 | [https://meteorites.nde-code.workers.dev/](https://meteorites.nde-code.workers.dev/) | 1 req/IP/s | [Me](https://nde-code.github.io/) | [`meteorites_small.json`](data/meteorites_small.json) |
 
 The rate-limiting system temporarily processes IP addresses, which are pseudonymized using a hash combined with a secret salt before being used for rate limiting. It provides burst protection, and the resulting hashed value is temporarily stored in [Cloudflare Workers Cache](https://developers.cloudflare.com/workers/runtime-apis/cache/). The hashed value is retained only for the duration required to enforce these limits and is automatically removed afterward.
@@ -63,20 +63,20 @@ Search meteorites by multiple criteria: name, classification, date, mass, and ge
 
 #### Query parameters:
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `recclass` | string | Meteorite classification |
-| `fall` | string | Fall status: `Fell` or `Found` |
-| `year` | number | Exact year of fall or discovery |
-| `minYear` | number | Minimum year |
-| `maxYear` | number | Maximum year |
-| `mass` | number | Exact mass (grams) |
-| `minMass` | number | Minimum mass (grams) |
-| `maxMass` | number | Maximum mass (grams) |
-| `centerLatitude` | number | Center latitude **(required with radius)** |
-| `centerLongitude` | number | Center longitude **(required with radius)** |
-| `radius` | number | Search radius in km (min: `MIN_RADIUS`, max: `MAX_RADIUS`) **(required with coordinates)** |
-| `limit` | number | Maximum results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`) |
+| Parameter         | Type   | Description                                                                                |
+| ----------------- | ------ | ------------------------------------------------------------------------------------------ |
+| `recclass`        | string | Meteorite classification                                                                   |
+| `fall`            | string | Fall status: `Fell` or `Found`                                                             |
+| `year`            | number | Exact year of fall or discovery                                                            |
+| `minYear`         | number | Minimum year                                                                               |
+| `maxYear`         | number | Maximum year                                                                               |
+| `mass`            | number | Exact mass (grams)                                                                         |
+| `minMass`         | number | Minimum mass (grams)                                                                       |
+| `maxMass`         | number | Maximum mass (grams)                                                                       |
+| `centerLatitude`  | number | Center latitude **(required with radius)**                                                 |
+| `centerLongitude` | number | Center longitude **(required with radius)**                                                |
+| `radius`          | number | Search radius in km (min: `MIN_RADIUS`, max: `MAX_RADIUS`) **(required with coordinates)** |
+| `limit`           | number | Maximum results (min: 1, max: `MAX_RETURNED_SEARCH_RESULTS`)                               |
 
 > **Note on geographic precision:** distance calculation uses equirectangular approximation (optimized for performance). Highly accurate for local/regional queries (< 1000-1500 km). For larger radii, especially at high latitudes, minor distortions may occur compared to geodesic (Haversine) calculations.
 
@@ -94,12 +94,12 @@ Search meteorites by multiple criteria: name, classification, date, mass, and ge
 
 #### Response codes:
 
-| Code | Description |
-|------|-------------|
-| `200` | Success (may return empty set) |
-| `400` | Missing or invalid parameters |
-| `429` | Rate limit exceeded |
-| `500` | Server error (config or environment) |
+| Code  | Description                               |
+| ----- | ----------------------------------------- |
+| `200` | Success (may return empty set)            |
+| `400` | Missing or invalid parameters             |
+| `429` | Rate limit exceeded                       |
+| `500` | Server error (config or environment)      |
 | `503` | Service unavailable (cache empty/loading) |
 
 #### Example request:
@@ -136,23 +136,23 @@ Retrieve detailed information about a single meteorite by `id` or `name`.
 
 #### Query parameters:
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `id` | string | Unique meteorite identifier |
-| `name` | string | Exact meteorite name (case-insensitive, normalized) |
+| Parameter | Type   | Description                                         |
+| --------- | ------ | --------------------------------------------------- |
+| `id`      | string | Unique meteorite identifier                         |
+| `name`    | string | Exact meteorite name (case-insensitive, normalized) |
 
 > **Note:** provide **either** `id` **or** `name`, but not both. Providing neither will result in a `400` error.
 
 #### Response codes:
 
-| Code | Description |
-|------|-------------|
-| `200` | Meteorite found |
+| Code  | Description                                 |
+| ----- | ------------------------------------------- |
+| `200` | Meteorite found                             |
 | `400` | Missing/invalid parameters or both provided |
-| `404` | No matching meteorite |
-| `429` | Rate limit exceeded |
-| `500` | Server error |
-| `503` | Service unavailable |
+| `404` | No matching meteorite                       |
+| `429` | Rate limit exceeded                         |
+| `500` | Server error                                |
+| `503` | Service unavailable                         |
 
 #### Example requests:
 
@@ -193,21 +193,21 @@ Get a random set of meteorites.
 
 #### Query parameters:
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `count` | number | Number of meteorites (default: `DEFAULT_RANDOM_NUMBER_OF_METEORITES`, max: `MAX_RANDOM_METEORITES`) |
+| Parameter | Type   | Description                                                                                         |
+| --------- | ------ | --------------------------------------------------------------------------------------------------- |
+| `count`   | number | Number of meteorites (default: `DEFAULT_RANDOM_NUMBER_OF_METEORITES`, max: `MAX_RANDOM_METEORITES`) |
 
 > **Note:** invalid `count` returns the default number.
 
 #### Response codes:
 
-| Code | Description |
-|------|-------------|
-| `200` | Success |
+| Code  | Description               |
+| ----- | ------------------------- |
+| `200` | Success                   |
 | `400` | Invalid `count` parameter |
-| `429` | Rate limit exceeded |
-| `500` | Server error |
-| `503` | Service unavailable |
+| `429` | Rate limit exceeded       |
+| `500` | Server error              |
+| `503` | Service unavailable       |
 
 #### Example request:
 
@@ -263,28 +263,28 @@ Get aggregated statistics: year ranges, mass stats, classifications, and geoloca
 
 #### Response fields:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `meteorites_count` | number | Total number of meteorites |
-| `min_year`, `max_year` | string | Earliest and latest year |
-| `min_mass_g`, `max_mass_g` | number | Minimum/maximum mass (grams) |
-| `avg_mass_g` | number | Average mass (2 decimal places) |
-| `years` | string[] | Sorted list of all available years |
-| `years_distribution` | object | Frequency by year |
-| `recclasses` | string[] | List of unique classifications |
-| `recclasses_distribution` | object | Frequency by classification |
-| `geolocated_count` | number | Meteorites with valid coordinates |
-| `fall_counts` | object | Breakdown of `fell` vs `found` |
+| Field                      | Type     | Description                        |
+| -------------------------- | -------- | ---------------------------------- |
+| `meteorites_count`         | number   | Total number of meteorites         |
+| `min_year`, `max_year`     | string   | Earliest and latest year           |
+| `min_mass_g`, `max_mass_g` | number   | Minimum/maximum mass (grams)       |
+| `avg_mass_g`               | number   | Average mass (2 decimal places)    |
+| `years`                    | string[] | Sorted list of all available years |
+| `years_distribution`       | object   | Frequency by year                  |
+| `recclasses`               | string[] | List of unique classifications     |
+| `recclasses_distribution`  | object   | Frequency by classification        |
+| `geolocated_count`         | number   | Meteorites with valid coordinates  |
+| `fall_counts`              | object   | Breakdown of `fell` vs `found`     |
 
 > **Note:** some meteorites have a mass of **0 grams**. This reflects specific cases (extreme alteration, fossilization, missing fragments) and is not an error.
 
 #### Response codes:
 
-| Code | Description |
-|------|-------------|
-| `200` | Success |
+| Code  | Description         |
+| ----- | ------------------- |
+| `200` | Success             |
 | `429` | Rate limit exceeded |
-| `500` | Server error |
+| `500` | Server error        |
 | `503` | Service unavailable |
 
 #### Example request:
@@ -350,31 +350,31 @@ Check API integrity and status, including cache and indexes.
 
 #### Response fields:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `status` | string | Overall status: `"healthy"` or `"unhealthy"` |
-| `timestamp` | string | ISO 8601 timestamp of check |
-| `checks` | object | Details of internal components |
-| `message` | string | Status summary message |
+| Field       | Type   | Description                                  |
+| ----------- | ------ | -------------------------------------------- |
+| `status`    | string | Overall status: `"healthy"` or `"unhealthy"` |
+| `timestamp` | string | ISO 8601 timestamp of check                  |
+| `checks`    | object | Details of internal components               |
+| `message`   | string | Status summary message                       |
 
 #### Internal checks detail:
 
-| Check | Description |
-|----------|-----------------|
-| `cache_ready` | Main cache fully loaded |
-| `meteorites_count` | Total meteorites in memory |
+| Check                       | Description                        |
+| --------------------------- | ---------------------------------- |
+| `cache_ready`               | Main cache fully loaded            |
+| `meteorites_count`          | Total meteorites in memory         |
 | `shuffled_meteorites_count` | Meteorites available for `/random` |
-| `stats_available` | Pre-computed statistics ready |
-| `by_id_index_size` | Entries in ID lookup index |
-| `by_name_index_size` | Entries in name lookup index |
+| `stats_available`           | Pre-computed statistics ready      |
+| `by_id_index_size`          | Entries in ID lookup index         |
+| `by_name_index_size`        | Entries in name lookup index       |
 
 > **Note:** a `503` response indicates at least one check failed (cache not ready, empty indexes, etc.).
 
 #### Response codes:
 
-| Code | Description |
-|------|-------------|
-| `200` | All systems operational |
+| Code  | Description               |
+| ----- | ------------------------- |
+| `200` | All systems operational   |
 | `503` | One or more checks failed |
 
 #### Example request:
@@ -409,11 +409,11 @@ For setup, configuration, and deployment using Wrangler CLI, see the [developer 
 
 The API is optimized for performance with limited resources. Choose datasets based on your needs:
 
-| Dataset | Size | Description |
-|---------|------|-------------|
-| [`meteorites_complete.json`](data/meteorites_complete.json) | ~33k entries | Complete dataset (unfiltered) |
-| [`meteorites_medium.json`](data/meteorites_medium.json) | ~15k entries | Reduced via grid filtering |
-| [`meteorites_small.json`](data/meteorites_small.json) | ~8.5k entries | **Default**, reduced via grid filtering |
+| Dataset                                                     | Size          | Description                             |
+| ----------------------------------------------------------- | ------------- | --------------------------------------- |
+| [`meteorites_complete.json`](data/meteorites_complete.json) | ~33k entries  | Complete dataset (unfiltered)           |
+| [`meteorites_medium.json`](data/meteorites_medium.json)     | ~15k entries  | Reduced via grid filtering              |
+| [`meteorites_small.json`](data/meteorites_small.json)       | ~8.5k entries | **Default**, reduced via grid filtering |
 
 > **Note:** these datasets have been cleaned up (see the CLI documentation and the `--clean-up` argument for details).
 
@@ -456,6 +456,7 @@ python compiler.py --input "data/meteorites.csv" --output "data/my_db.json" --cl
 ```
 
 For help:
+
 ```bash
 python compiler.py --help
 ```

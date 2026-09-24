@@ -18,7 +18,7 @@ You will obtain a repository containing your own copy of the project on your Git
 
 ### 1. Configure the required secrets:
 
-Before you start a new Codespaces environment and begin coding in it, you need to register the required secrets *(in this project, only one secret is required)* in the repository's GitHub Codespaces secrets.
+Before you start a new Codespaces environment and begin coding in it, you need to register the required secrets _(in this project, only one secret is required)_ in the repository's GitHub Codespaces secrets.
 
 See the [environment variables](#environment-variables) section for the required configuration and the [GitHub Codespaces documentation about secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces) for more details.
 
@@ -48,14 +48,14 @@ The [`.devcontainer.json`](../.devcontainer.json) file:
 
 defines the Codespace development environment:
 
-| Component | Configuration |
-|---|---|
-| **Base image** | Ubuntu-based development container |
-| **Node.js** | Version `24` |
-| **Cloudflare Wrangler** | Installed locally through npm dependencies |
-| **Environment variables** | Populated from the Codespaces environment and written to `.dev.vars` |
-| **TypeScript definitions** | Generated with `wrangler types` through `npm run types` |
-| **Remote user** | `vscode` |
+| Component                  | Configuration                                                        |
+| -------------------------- | -------------------------------------------------------------------- |
+| **Base image**             | Ubuntu-based development container                                   |
+| **Node.js**                | Version `24`                                                         |
+| **Cloudflare Wrangler**    | Installed locally through npm dependencies                           |
+| **Environment variables**  | Populated from the Codespaces environment and written to `.dev.vars` |
+| **TypeScript definitions** | Generated with `wrangler types` through `npm run types`              |
+| **Remote user**            | `vscode`                                                             |
 
 The `postCreateCommand` automatically performs the required setup when the Codespace is created.
 
@@ -156,8 +156,8 @@ The Worker uses standard environment variables in a `.dev.vars` file for local d
 
 #### Variable in this project:
 
-| Variable | Description |
-|----------|-------------|
+| Variable       | Description                         |
+| -------------- | ----------------------------------- |
 | `IP_HASH_SALT` | The salt used to hash IP addresses. |
 
 #### Local development:
@@ -176,8 +176,8 @@ wrangler secret put IP_HASH_SALT
 
 #### Security notes:
 
-| Variable | Requirements |
-|---|---|
+| Variable       | Requirements                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------ |
 | `IP_HASH_SALT` | A strong value with at least **30 characters**, including uppercase and lowercase letters and numbers. |
 
 > `IP_HASH_SALT` is a sensitive secret and must be handled with extreme caution. You may use scripts or tools to generate it, but make sure you never leak, log, or expose it.
@@ -188,31 +188,29 @@ Take a look at the [`config.ts`](../config.ts) file at the root of the project, 
 
 ```ts
 export const config: StaticConfig = {
+    RATE_LIMIT_INTERVAL_S: 1, // Min: 1
 
-    "RATE_LIMIT_INTERVAL_S": 1, // Min: 1
+    MAX_RANDOM_METEORITES: 1000, // Min: 100
 
-    "MAX_RANDOM_METEORITES": 1000, // Min: 100
+    MAX_RETURNED_SEARCH_RESULTS: 500, // Min: 100
 
-    "MAX_RETURNED_SEARCH_RESULTS": 500, // Min: 100
+    MIN_RADIUS: 1, // Min: 1
 
-    "MIN_RADIUS": 1, // Min: 1
+    MAX_RADIUS: 2500, // Min: 1000
 
-    "MAX_RADIUS": 2500, // Min: 1000
-
-    "DEFAULT_RANDOM_NUMBER_OF_METEORITES": 100 // Min: 100
-
+    DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100 // Min: 100
 };
 ```
 
 #### Configuration parameters:
 
-| Parameter | Description | Constraint |
-|-----------|-------------|-------------|
-| `RATE_LIMIT_INTERVAL_S` | Rate limit interval in seconds | Minimum: 1 second |
-| `MAX_RANDOM_METEORITES` | Maximum meteorites returned by `/random` | Minimum: 100 meteorites |
-| `MAX_RETURNED_SEARCH_RESULTS` | Maximum meteorites returned by `/search` | Minimum: 100 meteorites |
-| `MIN_RADIUS` | Minimum allowed search radius (km) | Minimum: 1 km |
-| `MAX_RADIUS` | Maximum allowed search radius (km) | Minimum: 1000 km |
+| Parameter                             | Description                                  | Constraint              |
+| ------------------------------------- | -------------------------------------------- | ----------------------- |
+| `RATE_LIMIT_INTERVAL_S`               | Rate limit interval in seconds               | Minimum: 1 second       |
+| `MAX_RANDOM_METEORITES`               | Maximum meteorites returned by `/random`     | Minimum: 100 meteorites |
+| `MAX_RETURNED_SEARCH_RESULTS`         | Maximum meteorites returned by `/search`     | Minimum: 100 meteorites |
+| `MIN_RADIUS`                          | Minimum allowed search radius (km)           | Minimum: 1 km           |
+| `MAX_RADIUS`                          | Maximum allowed search radius (km)           | Minimum: 1000 km        |
 | `DEFAULT_RANDOM_NUMBER_OF_METEORITES` | Default count for `/random` if not specified | Minimum: 100 meteorites |
 
 > **Note:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES` and violating constraints will trigger a configuration error.
@@ -241,10 +239,7 @@ The generated definitions are automatically picked up by TypeScript through the 
         "noEmit": true,
         "allowImportingTsExtensions": true,
         "target": "ES2020",
-        "lib": [
-            "ES2020",
-            "DOM"
-        ],
+        "lib": ["ES2020", "DOM"],
         "module": "ESNext",
         "moduleResolution": "Bundler",
         "verbatimModuleSyntax": true,
@@ -258,22 +253,11 @@ The generated definitions are automatically picked up by TypeScript through the 
         "noFallthroughCasesInSwitch": true,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
-        "types": [
-            "./worker-configuration.d.ts"
-        ],
+        "types": ["./worker-configuration.d.ts"],
         "resolveJsonModule": true
     },
-    "include": [
-        "utilities",
-        "worker-configuration.d.ts",
-        "main.ts",
-        "config.ts",
-        "types"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ]
+    "include": ["utilities", "worker-configuration.d.ts", "main.ts", "config.ts", "types"],
+    "exclude": ["node_modules", "dist"]
 }
 ```
 
@@ -309,6 +293,14 @@ The generated definitions are automatically picked up by TypeScript through the 
 
 ```bash
 npm run dev
+```
+
+#### Format code:
+
+Run Prettier to automatically format the codebase:
+
+```bash
+npm run format
 ```
 
 #### Deploy to Cloudflare Workers:
