@@ -1,6 +1,6 @@
 # Meteorites Landings API:
 
-A RESTful API built with [Wrangler](https://developers.cloudflare.com/workers/wrangler/) for querying and analyzing the [NASA Meteorite Landings dataset](https://data.nasa.gov/dataset/meteorite-landings).
+A serverless RESTful API running on [Cloudflare Workers](https://www.cloudflare.com/products/workers/), developed with [Wrangler](https://developers.cloudflare.com/workers/wrangler/), providing query and analysis capabilities for the [NASA Meteorite Landings dataset](https://data.nasa.gov/dataset/meteorite-landings).
 
 The project has been designed to run on serverless infrastructure, with optimized processing and algorithms that require minimal resources. As a result, it performs well on [small and medium-sized datasets](#available-datasets) and under moderate traffic volumes.
 
