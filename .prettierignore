@@ -5,4 +5,7 @@ build
 .wrangler
 worker-configuration.d.ts
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
 Thumbs.db
