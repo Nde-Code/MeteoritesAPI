@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Formatted using https://formatter.org/python-formatter with the "Column Limit" parameter set to 88.
 import csv
 import json
 import argparse

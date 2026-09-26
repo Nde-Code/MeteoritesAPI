@@ -160,7 +160,7 @@ Create/configure the value above as [GitHub Codespaces secrets](https://docs.git
 
 #### Production
 
-For the deployed Worker, configure the same value as a [Cloudflare Workers Secret](https://developers.cloudflare.com/workers/configuration/secrets/#secrets-on-deployed-workers):
+For the deployed Worker, configure _the same value_ (rigorously, `IP_HASH_SALT` can be different in local and in production) as a [Cloudflare Workers Secret](https://developers.cloudflare.com/workers/configuration/secrets/#secrets-on-deployed-workers):
 
 ```bash
 wrangler secret put IP_HASH_SALT
