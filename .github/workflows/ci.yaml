@@ -59,7 +59,7 @@ jobs:
       - name: Check TypeScript types
         run: npm run check-types
 
-  integrity-test:
+  integration-test:
     if: github.event_name != 'schedule' || github.event.schedule == '42 3 22 * *'
 
     runs-on: ubuntu-latest
@@ -98,7 +98,7 @@ jobs:
           npm run dev -- --show-interactive-dev-session=false --port 8787 &
           sleep 15
 
-      - name: Run API integrity tests
+      - name: Run API integration tests
         run: |
           curl -sL "${{ vars.GIST_TEST_SCRIPT }}" -o meteorites-api.py
           python meteorites-api.py \
@@ -126,7 +126,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Compare meteorites dataset
+      - name: Check meteorites dataset differences
         run: |
           curl -sL "${{ vars.GIST_COMPARE_SCRIPT }}" -o meteorites-diff.py
           python meteorites-diff.py \
