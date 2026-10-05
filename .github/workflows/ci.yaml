@@ -131,4 +131,6 @@ jobs:
           curl -sL "${{ vars.GIST_COMPARE_SCRIPT }}" -o meteorites-diff.py
           python meteorites-diff.py \
             --local-file "data/meteorites.csv" \
-            --remote-file "${{ vars.METEORITES_REMOTE_CSV }}"
+            --remote-file "${{ vars.METEORITES_REMOTE_CSV }}" \
+            --timeout 40 \
+            --retries 3
