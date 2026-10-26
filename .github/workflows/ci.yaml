@@ -62,7 +62,7 @@ jobs:
         run: npm run check-types
 
   integration-test:
-    if: github.event_name != 'pull_request' && (github.event_name != 'schedule' || github.event.schedule == '42 3 22 * *')
+    if: github.event_name != 'schedule' || github.event.schedule == '42 3 22 * *'
     runs-on: ubuntu-latest
 
     permissions:
@@ -90,9 +90,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      # I generate a temporary hash salt with Python; this is only a test salt for this CI run.
       - name: Create environment variables file
         run: |
-          echo "IP_HASH_SALT=\"${{ secrets.IP_HASH_SALT }}\"" > .dev.vars
+          echo "IP_HASH_SALT=$(python -c 'import secrets; print(secrets.token_hex(32))')" > .dev.vars
 
       - name: Start Wrangler dev server
         run: |
@@ -101,11 +102,11 @@ jobs:
 
       - name: Run API integration tests
         run: |
-          curl -sL "${{ vars.GIST_TEST_SCRIPT }}" -o meteorites-api.py
+          curl -fsSL "${{ vars.GIST_TEST_SCRIPT }}" -o meteorites-api.py
           python meteorites-api.py \
             --remote "http://localhost:8787" \
             --timeout 25 \
-            --delay 10 \
+            --delay 6 \
             --max-radius 2500 \
             --max-random 1000 \
             --max-search 500
@@ -128,7 +129,7 @@ jobs:
 
       - name: Check meteorites dataset differences
         run: |
-          curl -sL "${{ vars.GIST_COMPARE_SCRIPT }}" -o meteorites-diff.py
+          curl -fsSL "${{ vars.GIST_COMPARE_SCRIPT }}" -o meteorites-diff.py
           python meteorites-diff.py \
             --local-file "data/meteorites.csv" \
             --remote-file "${{ vars.METEORITES_REMOTE_CSV }}" \
