@@ -90,7 +90,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # I generate a temporary hash salt with Python; this is only a test salt for this CI run.
+      # Generate a temporary hash salt with Python for testing purposes only.
       - name: Create environment variables file
         run: |
           echo "IP_HASH_SALT=$(python -c 'import secrets; print(secrets.token_hex(32))')" > .dev.vars
