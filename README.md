@@ -21,11 +21,11 @@ The project is designed to run entirely on serverless infrastructure, with optim
 - [🌐 API access](#-api-access)
     - [Configuration limits](#configuration-limits)
 - [📚 Available endpoints](#-available-endpoints)
-    - [1. `/search` — Advanced search](#1-get-search---advanced-search)
-    - [2. `/get` — Meteorite details](#2-get-get---meteorite-details)
-    - [3. `/random` — Random selection](#3-get-random---random-selection)
-    - [4. `/stats` — Dataset statistics](#4-get-stats---dataset-statistics)
-    - [5. `/health` — Service status](#5-get-health---service-status)
+    - [1. `/search` - Advanced search](#1-get-search---advanced-search)
+    - [2. `/get` - Meteorite details](#2-get-get---meteorite-details)
+    - [3. `/random` - Random selection](#3-get-random---random-selection)
+    - [4. `/stats` - Dataset statistics](#4-get-stats---dataset-statistics)
+    - [5. `/health` - Service status](#5-get-health---service-status)
 - [🖥️ Developer documentation and datasets](#️-developer-documentation-and-datasets)
     - [Available datasets](#available-datasets)
 - [>\_ Python CLI for custom datasets](#_-python-cli-for-custom-datasets)
@@ -36,12 +36,12 @@ The project is designed to run entirely on serverless infrastructure, with optim
 
 ## 🚀 Key features
 
-- **CORS enabled** — use the API directly from your website or any other project.
-- **No sign-up required** — no account creation, credit card, or personal data needed.
-- **Rate limiting** — protection against abuse with request throttling.
-- **Privacy-conscious** — built with privacy in mind, considering GDPR principles where applicable.
-- **Advanced search** — multiple filters for precise queries.
-- **Serverless optimized** — lightweight, high-performance architecture.
+- **CORS enabled:** use the API directly from your website or any other project.
+- **No sign-up required:** no account creation, credit card, or personal data needed.
+- **Rate limiting:** protection against abuse with request throttling.
+- **Privacy-conscious:** built with privacy in mind, considering GDPR principles where applicable.
+- **Advanced search:** multiple filters for precise queries.
+- **Serverless optimized:** lightweight, high-performance architecture.
 
 ## 🌐 API access
 
