@@ -1,40 +1,16 @@
-<div align="center">
+# Developer Documentation
 
-# 🖥️ Developer Documentation
-
-**Complete developer guide for contributing to this project or building and deploying your own version.**
+Complete developer guide for contributing to this project or building and deploying your own version.
 
 Built on [Cloudflare Workers](https://workers.cloudflare.com/) with [Wrangler](https://developers.cloudflare.com/workers/wrangler/).
 
-</div>
-
 > **Note:** this project uses npm to manage development dependencies, including Wrangler, Prettier and TypeScript.
 
-## 📑 Table of contents
-
-- [🚀 Getting started with GitHub Codespaces](#-getting-started-with-github-codespaces)
-    - [0. Fork the repository](#0-fork-the-repository)
-    - [1. Configure the required secrets](#1-configure-the-required-secrets)
-    - [2. Open the repository in GitHub Codespaces](#2-open-the-repository-in-github-codespaces)
-    - [3. Automatic environment setup](#3-automatic-environment-setup)
-    - [4. Authenticate with Cloudflare](#4-authenticate-with-cloudflare)
-- [⚙️ Configuration setup](#️-configuration-setup)
-    - [Core configuration fields](#core-configuration-fields)
-    - [Observability configuration](#observability-configuration)
-    - [Environment variables](#environment-variables)
-    - [Software configuration](#software-configuration)
-- [💻 Development server](#-development-server)
-    - [1. TypeScript types](#1-typescript-types)
-    - [2. Run and deploy](#2-run-and-deploy)
-- [📌 Support](#-support)
-
----
-
-## 🚀 Getting started with GitHub Codespaces
+## Getting started with GitHub Codespaces
 
 The project provides a pre-configured [Dev Container](https://containers.dev/) environment for [GitHub Codespaces](https://github.com/features/codespaces), making it quick and easy to start coding.
 
-> ✅ Using Codespaces is the **recommended** way to work on the project, since it automatically sets up the required elements and provides a ready-to-code environment.
+> Using Codespaces is the **recommended** way to work on the project, since it automatically sets up the required elements and provides a ready-to-code environment.
 
 ### 0. Fork the repository
 
@@ -87,7 +63,7 @@ The `postCreateCommand` automatically performs the required setup when the Codes
 
 Wrangler is installed locally through npm dependencies to ensure a reproducible development environment across local machines, Codespaces, and CI workflows. This is also the approach now strongly recommended by Cloudflare for developers, see the [Wrangler install & update guide](https://developers.cloudflare.com/workers/wrangler/install-and-update/).
 
-> ⚠️ **Note:** `.dev.vars` is a local development file and must **never** be committed to the repository. It is already included in [`.gitignore`](../.gitignore).
+> **Note:** `.dev.vars` is a local development file and must **never** be committed to the repository. It is already included in [`.gitignore`](../.gitignore).
 
 ### 4. Authenticate with Cloudflare
 
@@ -97,7 +73,7 @@ Once the Codespace has finished initializing, authenticate Wrangler with your Cl
 npm run login
 ```
 
-## ⚙️ Configuration setup
+## Configuration setup
 
 Review the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the complete project configuration:
 
@@ -131,12 +107,12 @@ Review the [`wrangler.jsonc`](../wrangler.jsonc) file, which contains the comple
 
 ### Observability configuration
 
-| Field                                | Purpose                                                                                                                                                                                      |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `observability.enabled`              | When `true`, enables **automatic metrics and logs collection**, allowing performance and error monitoring in the Cloudflare dashboard.                                                       |
-| `observability.head_sampling_rate`   | Defines the **percentage of requests sampled for tracing** (0 to 1), `1` = 100% sampling (useful for debugging), `0.1` = 10% sampling (better for production).                               |
-| `observability.logs.invocation_logs` | Controls **automatic invocation log collection** — `true` logs request metadata, headers, and execution details; `false` disables automatic logs, keeping only custom `console.log` entries. |
-| `observability.traces.enabled`       | Controls **distributed tracing** — `true` enables tracing spans and trace IDs, `false` disables tracing entirely.                                                                            |
+| Field                                | Purpose                                                                                                                                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `observability.enabled`              | When `true`, enables **automatic metrics and logs collection**, allowing performance and error monitoring in the Cloudflare dashboard.                                                      |
+| `observability.head_sampling_rate`   | Defines the **percentage of requests sampled for tracing** (0 to 1), `1` = 100% sampling (useful for debugging), `0.1` = 10% sampling (better for production).                              |
+| `observability.logs.invocation_logs` | Controls **automatic invocation log collection**: `true` logs request metadata, headers, and execution details; `false` disables automatic logs, keeping only custom `console.log` entries. |
+| `observability.traces.enabled`       | Controls **distributed tracing**: `true` enables tracing spans and trace IDs, `false` disables tracing entirely.                                                                            |
 
 > Leave `traces.enabled` disabled if not using OpenTelemetry or a tracing system.
 
@@ -170,7 +146,7 @@ wrangler secret put IP_HASH_SALT
 | -------------- | ------------------------------------------------------------------------------------------------------ |
 | `IP_HASH_SALT` | A strong value with at least **30 characters**, including uppercase and lowercase letters and numbers. |
 
-> ⚠️ `IP_HASH_SALT` is a sensitive secret and must be handled with extreme caution. You may use scripts or tools to generate it, but make sure you never leak, log, or expose it.
+> `IP_HASH_SALT` is a sensitive secret and must be handled with extreme caution. You may use scripts or tools to generate it, but make sure you never leak, log, or expose it.
 
 ### Software configuration
 
@@ -205,7 +181,7 @@ export const config: StaticConfig = {
 
 > **Note:** `MAX_RANDOM_METEORITES` must always be greater than `DEFAULT_RANDOM_NUMBER_OF_METEORITES`. Violating these constraints will trigger a configuration error.
 
-## 💻 Development server
+## Development server
 
 Once your Codespace is ready and your Cloudflare account is authenticated, you're ready to start coding. This section provides an overview of how the TypeScript types are initialized, as well as how to run and deploy the project.
 
@@ -298,7 +274,7 @@ npm run format
 
 **Deploy to Cloudflare Workers:**
 
-> ⚠️ Make sure your [Cloudflare Workers Secrets](https://developers.cloudflare.com/workers/configuration/secrets/#secrets-on-deployed-workers) (for deployed Workers) have been configured before deploying, see [environment variables](#environment-variables).
+> Make sure your [Cloudflare Workers Secrets](https://developers.cloudflare.com/workers/configuration/secrets/#secrets-on-deployed-workers) (for deployed Workers) have been configured before deploying, see [environment variables](#environment-variables).
 
 ```bash
 npm run deploy
@@ -306,6 +282,6 @@ npm run deploy
 
 If the Worker is configured to use a `workers.dev` subdomain, Wrangler will display the deployed URL.
 
-## 📌 Support
+## Support
 
 For issues or questions, open an [issue on GitHub](https://github.com/Nde-Code/MeteoritesAPI/issues).

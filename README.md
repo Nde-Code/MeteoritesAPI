@@ -1,40 +1,15 @@
-<div align="center">
+# Meteorites Landings API
 
-# ☄️ Meteorites Landings API
-
-**A serverless RESTful API for querying and analyzing the [NASA Meteorite Landings dataset](https://data.nasa.gov/dataset/meteorite-landings).**
+A serverless RESTful API for querying and analyzing the [NASA Meteorite Landings dataset](https://data.nasa.gov/dataset/meteorite-landings).
 
 Built on [Cloudflare Workers](https://www.cloudflare.com/products/workers/) and developed with [Wrangler](https://developers.cloudflare.com/workers/wrangler/).
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Nde-Code/MeteoritesAPI)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-</div>
-
----
-
 The project is designed to run entirely on serverless infrastructure, with optimized processing and algorithms that require minimal resources. As a result, it performs well on [small and medium-sized datasets](#-available-datasets) and under moderate traffic volumes.
 
-## 📑 Table of contents
-
-- [🚀 Key features](#-key-features)
-- [🌐 API access](#-api-access)
-    - [Configuration limits](#configuration-limits)
-- [📚 Available endpoints](#-available-endpoints)
-    - [1. `/search` - Advanced search](#1-get-search---advanced-search)
-    - [2. `/get` - Meteorite details](#2-get-get---meteorite-details)
-    - [3. `/random` - Random selection](#3-get-random---random-selection)
-    - [4. `/stats` - Dataset statistics](#4-get-stats---dataset-statistics)
-    - [5. `/health` - Service status](#5-get-health---service-status)
-- [🖥️ Developer documentation and datasets](#️-developer-documentation-and-datasets)
-    - [Available datasets](#available-datasets)
-- [>\_ Python CLI for custom datasets](#_-python-cli-for-custom-datasets)
-- [⚖️ License](#️-license)
-- [🎯 Author](#-author)
-
----
-
-## 🚀 Key features
+## Key features
 
 - **CORS enabled:** use the API directly from your website or any other project.
 - **No sign-up required:** no account creation, credit card, or personal data needed.
@@ -43,7 +18,7 @@ The project is designed to run entirely on serverless infrastructure, with optim
 - **Advanced search:** multiple filters for precise queries.
 - **Serverless optimized:** lightweight, high-performance architecture.
 
-## 🌐 API access
+## API access
 
 | Endpoint                                                                             | Rate limit | Maintainer                        | Dataset                                               |
 | ------------------------------------------------------------------------------------ | ---------- | --------------------------------- | ----------------------------------------------------- |
@@ -51,7 +26,7 @@ The project is designed to run entirely on serverless infrastructure, with optim
 
 The rate-limiting system temporarily processes IP addresses, which are pseudonymized using a hash combined with a secret salt before being used for rate limiting. It provides burst protection, and the resulting hashed value is temporarily stored in [Cloudflare Workers Cache](https://developers.cloudflare.com/workers/runtime-apis/cache/). The hashed value is retained only for the duration required to enforce these limits and is automatically removed afterward.
 
-> 📡 Check the [status page](https://nde-status.instatus.com/) if you experience latency or other issues while using the public online instance.
+> Check the [status page](https://nde-status.instatus.com/) if you experience latency or other issues while using the public online instance.
 
 ### Configuration limits
 
@@ -76,9 +51,9 @@ DEFAULT_RANDOM_NUMBER_OF_METEORITES: 100
 
 > **Note:** these limits may be updated, so check the repository regularly to stay informed.
 
-## 📚 Available endpoints
+## Available endpoints
 
-### 1. **[GET]** `/search` - Advanced search
+### 1. [GET] `/search` - Advanced search
 
 Search meteorites by multiple criteria: name, classification, date, mass, and geographic location.
 
@@ -150,9 +125,7 @@ curl "https://meteorites.nde-code.workers.dev/search?year=2013"
 }
 ```
 
----
-
-### 2. **[GET]** `/get` - Meteorite details
+### 2. [GET] `/get` - Meteorite details
 
 Retrieve detailed information about a single meteorite by `id` or `name`.
 
@@ -209,9 +182,7 @@ curl "https://meteorites.nde-code.workers.dev/get?name=Kopjes%20Vlei"
 }
 ```
 
----
-
-### 3. **[GET]** `/random` - Random selection
+### 3. [GET] `/random` - Random selection
 
 Get a random set of meteorites.
 
@@ -281,9 +252,7 @@ curl "https://meteorites.nde-code.workers.dev/random?count=3"
 }
 ```
 
----
-
-### 4. **[GET]** `/stats` - Dataset statistics
+### 4. [GET] `/stats` - Dataset statistics
 
 Get aggregated statistics: year ranges, mass stats, classifications, and geolocation info.
 
@@ -370,9 +339,7 @@ curl "https://meteorites.nde-code.workers.dev/stats"
 }
 ```
 
----
-
-### 5. **[GET]** `/health` - Service status
+### 5. [GET] `/health` - Service status
 
 Check API integrity and status, including cache and indexes.
 
@@ -429,7 +396,7 @@ curl "https://meteorites.nde-code.workers.dev/health"
 }
 ```
 
-## 🖥️ Developer documentation and datasets
+## Developer documentation and datasets
 
 For setup, configuration, and deployment using the Wrangler CLI, see the **[developer guide](docs/documentation.md)**.
 
@@ -459,7 +426,7 @@ python compiler.py --input "data/meteorites.csv" --output "data/meteorites_small
   --grid 0.014 --limit 8500 --clean-up --minify
 ```
 
-## >\_ Python CLI for custom datasets
+## Python CLI for custom datasets
 
 Requires **Python 3.10+** (no external dependencies).
 
@@ -491,11 +458,11 @@ python compiler.py --help
 
 > **Note:** the `--grid` option creates visually optimized datasets (one meteorite per cell) but loses the original statistical distribution.
 
-## ⚖️ License
+## License
 
 This project is licensed under the **[Apache License v2.0](LICENSE)**.
 
-## 🎯 Author
+## Author
 
 Created and maintained by **[Nde-Code](https://nde-code.github.io/)**.
 
