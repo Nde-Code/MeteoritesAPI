@@ -458,6 +458,16 @@ python compiler.py --help
 
 > **Note:** the `--grid` option creates visually optimized datasets (one meteorite per cell) but loses the original statistical distribution.
 
+## Note regarding AI
+
+Generative AI has undoubtedly become an essential tool in modern software development. Its use is fully accepted and encouraged as a means of improving productivity, exploring solutions, and supporting the development process.
+
+For this project, generative AI tools have also been used, exclusively in **"Ask" mode**. AI has served as an assistant for suggestions, explanations, and problem-solving, rather than as an autonomous development agent.
+
+**Every single piece of code generated or suggested by AI has been individually reviewed, understood, and validated before being integrated or deployed.** No code has been blindly accepted or deployed without a clear understanding of its purpose, functionality, and implications.
+
+Ultimately, AI is a development aid, not a substitute for technical understanding, engineering judgment, or responsibility. Full ownership and responsibility for the project's codebase remain with the developer.
+
 ## License
 
 This project is licensed under the **[Apache License v2.0](LICENSE)**.
