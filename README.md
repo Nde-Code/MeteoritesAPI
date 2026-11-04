@@ -447,7 +447,11 @@ Requires **Python 3.10+** (no external dependencies).
 Navigate to the directory containing [`compiler.py`](compiler.py) and run:
 
 ```bash
-python compiler.py --input "data/meteorites.csv" --output "data/my_db.json" --clean-up --debug 2
+python compiler.py \
+    --input "data/meteorites.csv" \
+    --output "data/my_db.json" \
+    --clean-up \
+    --debug 2
 ```
 
 For help:
